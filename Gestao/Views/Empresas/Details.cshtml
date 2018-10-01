@@ -1,0 +1,72 @@
+﻿@model Gestao.Models.Empresa
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Detalhes</h2>
+
+<div>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.razaoSocial)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.razaoSocial)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold"> @Html.DisplayNameFor(model => model.nomeFantasia)</p> </div>
+        <div class="col-md-4">  @Html.DisplayFor(model => model.nomeFantasia)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.cnpj)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.cnpj)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.inscricaoEstadual)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.inscricaoEstadual)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.inscricaoMunicipal)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.inscricaoMunicipal)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.rua)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.rua)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.numero)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.numero)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.bairro)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.bairro)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.complemento)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.complemento)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.estado)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.estado)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.cidade)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.cidade)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.telefone1)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.telefone1)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.telefone2)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.telefone2)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.email)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.email)</div>
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id = Model.id },new {@class = "btn btn-primary" }) |
+    @Html.ActionLink("Voltar", "Index",null, new { @class = "btn btn-primary" })
+</p>

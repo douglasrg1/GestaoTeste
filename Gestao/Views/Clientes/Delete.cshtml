@@ -1,0 +1,72 @@
+﻿@model Gestao.Models.Cliente
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h3>Deseja remover o registro do sistema?</h3>
+<div>
+    <hr />
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.Nome)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.Nome)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold"> @Html.DisplayNameFor(model => model.TipoCliente)</p> </div>
+        <div class="col-md-4">  @Html.DisplayFor(model => model.TipoCliente)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.CnpjCpf)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.CnpjCpf)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.Rua)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.Rua)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.Numero)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.Numero)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.Bairro)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.Bairro)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.cidade)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.cidade)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.Estado)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.Estado)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.Telefone1)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.Telefone1)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.Telefone2)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.Telefone2)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.Email)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.Email)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.DataCadastro)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.DataCadastro)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.DataUtimaCompra)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.DataUtimaCompra)</div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Remover" class="btn btn-primary" /> |
+            @Html.ActionLink("Voltar", "Index", null, new { @class = "btn btn-primary" })
+        </div>
+    }
+</div>

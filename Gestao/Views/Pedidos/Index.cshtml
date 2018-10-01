@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Gestao.Models.Pedido>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.dataPedido)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.valorComissao)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.observacao)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.totalPedido)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.totalPago)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.valorDevedor)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.dataPedido)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.valorComissao)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.observacao)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.totalPedido)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.totalPago)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.valorDevedor)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>

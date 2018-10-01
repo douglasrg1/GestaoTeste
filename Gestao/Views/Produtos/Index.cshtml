@@ -1,0 +1,85 @@
+﻿@model IEnumerable<Gestao.Models.Produto>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Produtos</h2>
+
+<p>
+    @Html.ActionLink("Novo", "Create", null, new { @class = "btn btn-primary" })
+</p>
+<table id="gridProdutos" class="table table-condensed table-hover table-striped">
+
+    <thead>
+        <tr>
+            <th data-column-id="nome" data-order="asc">
+                @Html.DisplayNameFor(model => model.nome)
+            </th>
+            <th data-column-id="valorCompra">
+                @Html.DisplayNameFor(model => model.valorCompra)
+            </th>
+            <th data-column-id="valorFrete">
+                @Html.DisplayNameFor(model => model.valorFrete)
+            </th>
+            <th data-column-id="valorVenda" >
+                @Html.DisplayNameFor(model => model.valorVenda)
+            </th>
+            <th data-column-id="desconto" >
+                @Html.DisplayNameFor(model => model.desconto)
+            </th>
+            <th data-column-id="condigoReferencia">
+                @Html.DisplayNameFor(model => model.condigoReferencia)
+            </th>
+            <th data-column-id="quantidadeEstoque">
+                @Html.DisplayNameFor(model => model.quantidadeEstoque)
+            </th>
+            <th data-formatter="acoes">
+
+            </th>
+        </tr>
+    </thead>
+
+</table>
+
+
+
+@section scripts {
+    <script type="text/javascript">
+
+        var labels = {
+            all: "Todos", infos: "Mostrando de {{ctx.start}} Até {{ctx.end}} De um total de {{ctx.total}} Valores",
+            loading: "Carregando", noResults: "Nenhum Resultado Encontrado", refresh: "Recarregar", search: "Pesquisar"
+        }
+
+        $(document).ready(function () {
+
+            $("#gridProdutos").bootgrid({
+                ajax: true,
+                url:"@Url.Action("listarProdutos", "Produtos")",
+                labels: labels,
+                formatters: {
+                    "acoes": function (column, row) {
+                        return "<a href='@Url.Action("Details","Produtos")/" + row.id + "' class = 'btn btn-warning'><span class='glyphicon glyphicon-list-alt'></span></a>" +
+                            "<a href='@Url.Action("Edit", "Produtos")/" + row.id + "' class = 'btn btn-info'><span class='glyphicon glyphicon-edit'></a>" +
+                            "<a href='@Url.Action("Delete", "Produtos")/" + row.id + "' class = 'btn btn-danger'><span class='glyphicon glyphicon-trash'></a>";
+                    }
+                }
+            });
+
+        })
+
+        var messageerro = "@TempData["erro"]";
+        if (messageerro != "" && messageerro != null) {
+            toastr.error(messageerro);
+        }
+
+        var message = "@TempData["message"]";
+        if (message != "" && message != null) {
+            if (message == "Registro removido com sucesso!" || message == "Produto cadastrado com sucesso!" || message =="Registro editado com sucesso!")
+                toastr.success(message);
+            else if (message == "Erro ao remover o registro selecionado!" || message == "Erro ao realizar o cadastro do produto!" || message == "Erro ao editar registro selecionado!")
+                toastr.erro(message);
+        }
+    </script>
+}

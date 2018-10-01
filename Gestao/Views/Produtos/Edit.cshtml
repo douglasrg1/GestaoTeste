@@ -1,0 +1,97 @@
+﻿@model Gestao.Models.Produto
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.nome)
+            <div>
+                @Html.EditorFor(model => model.nome, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Nome" } })
+                @Html.ValidationMessageFor(model => model.nome, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.valorCompra)
+            <div>
+                @Html.EditorFor(model => model.valorCompra, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Valor da compra" } })
+                @Html.ValidationMessageFor(model => model.valorCompra, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.valorFrete)
+            <div>
+                @Html.EditorFor(model => model.valorFrete, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Valor do frete" } })
+                @Html.ValidationMessageFor(model => model.valorFrete, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.despesasAdicionaisdeCompra)
+            <div>
+                @Html.EditorFor(model => model.despesasAdicionaisdeCompra, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "valor das despesas" } })
+                @Html.ValidationMessageFor(model => model.despesasAdicionaisdeCompra, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.valorVenda)
+            <div>
+                @Html.EditorFor(model => model.valorVenda, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Valor de venda" } })
+                @Html.ValidationMessageFor(model => model.valorVenda, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.despesasAdicionaisdeVenda)
+            <div>
+                @Html.EditorFor(model => model.despesasAdicionaisdeVenda, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Valor das despesas adicionais de venda" } })
+                @Html.ValidationMessageFor(model => model.despesasAdicionaisdeVenda, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.desconto)
+            <div>
+                @Html.EditorFor(model => model.desconto, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Valor de desconto" } })
+                @Html.ValidationMessageFor(model => model.desconto, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.condigoReferencia)
+            <div>
+                @Html.EditorFor(model => model.condigoReferencia, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Codigo de referencia" } })
+                @Html.ValidationMessageFor(model => model.condigoReferencia, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.observacoes)
+            <div>
+                @Html.EditorFor(model => model.observacoes, new { htmlAttributes = new { @class = "form-control", @PlaceHolder = "Dados adicionais" } })
+                @Html.ValidationMessageFor(model => model.observacoes, "", new { @class = "text-danger" })
+            </div>
+            @Html.EditorFor(model => model.dataCadastro, new { htmlAttributes = new { @class = "form-control hidden"} })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div>
+            <input type="submit" value="Editar" class="btn btn-primary" /> |
+            @Html.ActionLink("Voltar", "Index", null, new { @class = "btn btn-default" })
+        </div>
+    </div>
+}

@@ -1,0 +1,73 @@
+﻿@model Gestao.Models.Produto
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Deseja remover o registro selecionado?</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div>
+        <hr />
+        <div class="row">
+            <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.nome)</p> </div>
+            <div class="col-md-4"> @Html.DisplayFor(model => model.nome)</div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.valorCompra)</p> </div>
+            <div class="col-md-4"> @Html.DisplayFor(model => model.valorCompra)</div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.valorFrete)</p> </div>
+            <div class="col-md-4"> @Html.DisplayFor(model => model.valorFrete)</div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.despesasAdicionaisdeCompra)</p> </div>
+            <div class="col-md-4"> @Html.DisplayFor(model => model.despesasAdicionaisdeCompra)</div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.valorVenda)</p> </div>
+            <div class="col-md-4"> @Html.DisplayFor(model => model.valorVenda)</div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.despesasAdicionaisdeVenda)</p> </div>
+            <div class="col-md-4"> @Html.DisplayFor(model => model.despesasAdicionaisdeVenda)</div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.dataCadastro)</p> </div>
+            <div class="col-md-4"> @Html.DisplayFor(model => model.dataCadastro)</div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.dataUltimaEntrada)</p> </div>
+            <div class="col-md-4"> @Html.DisplayFor(model => model.dataUltimaEntrada)</div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.dataUltimaSaida)</p> </div>
+            <div class="col-md-4"> @Html.DisplayFor(model => model.dataUltimaSaida)</div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.desconto)</p> </div>
+            <div class="col-md-4"> @Html.DisplayFor(model => model.desconto)</div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.condigoReferencia)</p> </div>
+            <div class="col-md-4"> @Html.DisplayFor(model => model.condigoReferencia)</div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.quantidadeEstoque)</p> </div>
+            <div class="col-md-4"> @Html.DisplayFor(model => model.quantidadeEstoque)</div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.observacoes)</p> </div>
+            <div class="col-md-4"> @Html.DisplayFor(model => model.observacoes)</div>
+        </div>
+    </div>
+
+    <div class="form-actions no-color">
+        <input type="submit" value="Remover" class="btn btn-primary" /> |
+        @Html.ActionLink("Voltar", "Index", null, new { @class = "btn btn-default" })
+    </div>
+}

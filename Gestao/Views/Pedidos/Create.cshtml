@@ -1,0 +1,402 @@
+﻿@model Gestao.Models.Pedido
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Novo Pedido</h2>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "formpedido" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="container">
+
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#home">Pedido</a></li>
+                <li><a data-toggle="tab" href="#menu1">Produtos</a></li>
+                <li><a data-toggle="tab" href="#menu2">Financeiro</a></li>
+            </ul>
+
+
+            <div class="tab-content">
+                <div id="home" class="tab-pane fade in active">
+                    <br />
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.numeroPedido)
+                            <div>
+                                @Html.EditorFor(model => model.numeroPedido, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.numeroPedido, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.cliente)
+                            <div>
+                                @Html.DropDownListFor(model => model.cliente, (IList<SelectListItem>)ViewBag.clientes, "Selecione...", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.cliente, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.observacao)
+                            <div>
+                                @Html.EditorFor(model => model.observacao, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.observacao, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="menu1" class="tab-pane fade">
+                    <br />
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            @Html.Label("Produto")
+                            <div>
+                                @Html.DropDownList("Produto", (IList<SelectListItem>)ViewBag.produtos, "Selecione...", new { @class = "form-control" })
+                                @Html.ValidationMessage("Produto", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.Label("Valor Unitario")
+                            <div>
+                                @Html.Editor("Valor Unitario", new { htmlAttributes = new { @class = "form-control", @id = "ValorUnitario", @type = "number", @value = "0" } })
+                                @Html.ValidationMessage("Valor Unitario", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.Label("Quantidade")
+                            <div>
+                                @Html.Editor("Quantidade", new { htmlAttributes = new { @class = "form-control", @type = "number", @value = "0" } })
+                                @Html.ValidationMessage("Quantidade", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            @Html.Label("Porcentagem de Desconto")
+                            <div>
+                                @Html.Editor("Porcentagem de Desconto", new { htmlAttributes = new { @class = "form-control", @id = "PorcentagemdeDesconto", @type = "number", @value = "0" } })
+                                @Html.ValidationMessage("Porcentagem de Desconto", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.Label("Valor Desconto")
+                            <div>
+                                @Html.Editor("Valor Desconto", new { htmlAttributes = new { @class = "form-control", @id = "ValorDesconto", @type = "number", @value = "0" } })
+                                @Html.ValidationMessage("Valor Desconto", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.Label("Valor Total")
+                            <div>
+                                @Html.Editor("Valor Total", new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id = "ValorTotal" } })
+                                @Html.ValidationMessage("Valor Total", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            @Html.Label("Observações")
+                            <div>
+                                @Html.Editor("Observações", new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessage("Observações", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div>
+                            <button type="button" class="btn btn-primary" onclick="processar()"> Adicionar Produto </button>
+                            <button type="button" class="btn btn-primary" onclick="mostrarid()"> Adicionar Produto </button>
+                        </div>
+                    </div>
+
+                    <table id="gridProdutosPedido" class="table table-condensed table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nome</th>
+                                <th>Valor Unitario</th>
+                                <th>Quantidade</th>
+                                <th>Porcentagem Desconto</th>
+                                <th>Valor desconto</th>
+                                <th>Valor Total</th>
+                                <th>OBS</th>
+                                <th>Remover</th>
+                            </tr>
+                        </thead>
+                        <tbody id="myTable"></tbody>
+                    </table>
+                </div>
+                <div id="menu2" class="tab-pane fade">
+                    <br />
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.totalPedido)
+                            <div>
+                                @Html.EditorFor(model => model.totalPedido, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.totalPedido, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.totalPago)
+                            <div>
+                                @Html.EditorFor(model => model.totalPago, new { htmlAttributes = new { @class = "form-control", @type = "number", @value = "0" } })
+                                @Html.ValidationMessageFor(model => model.totalPago, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.valorDevedor)
+                            <div>
+                                @Html.EditorFor(model => model.valorDevedor, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.valorDevedor, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.valorComissao)
+                            <div>
+                                @Html.EditorFor(model => model.valorComissao, new { htmlAttributes = new { @class = "form-control", @type = "number", @value = "0" } })
+                                @Html.ValidationMessageFor(model => model.valorComissao, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div>
+                            <input type="submit" value="Create" class="btn btn-primary" /> |
+                            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var d = document;
+        function processar(idTabela) {
+            if (validaCamposProduto()) {
+
+                var newRow = d.createElement('tr');
+                var id = $("#Produto option:selected").val();
+
+                newRow.insertCell(0).innerHTML = id;
+                newRow.insertCell(1).innerHTML = $("#Produto option:selected").text();
+                newRow.insertCell(2).innerHTML = d.getElementsByName('Valor Unitario')[0].value;
+                newRow.insertCell(3).innerHTML = d.getElementsByName('Quantidade')[0].value;
+                newRow.insertCell(4).innerHTML = d.getElementsByName('Porcentagem de Desconto')[0].value;
+                newRow.insertCell(5).innerHTML = d.getElementsByName('Valor Desconto')[0].value;
+
+                var a = newRow.insertCell(6);
+                a.setAttribute("data-valor", d.getElementsByName('Valor Total')[0].value);
+                a.innerHTML = d.getElementsByName('Valor Total')[0].value;
+
+                newRow.insertCell(7).innerHTML = d.getElementsByName('Observações')[0].value;
+                newRow.insertCell(8).innerHTML = "<a class = ' excluir btn btn-danger'><span class='glyphicon glyphicon-trash'></a>";
+
+                mostrarColumn(0, "gridProdutosPedido");
+                d.getElementById("gridProdutosPedido").appendChild(newRow);
+                ocultaColumn(0, "gridProdutosPedido");
+                var totalpedido = Number($("#totalPedido").val()) + Number(d.getElementsByName('Valor Total')[0].value);
+                $("#totalPedido").val(Number(totalpedido.toFixed(2)));
+                calculaTotalDevedor();
+                $('.excluir').unbind();
+                $(".excluir").on("click", Excluir);
+
+                limparDados();
+
+
+                return false;
+            }
+            
+        }
+        var idCliente = -1;
+
+        $(document).ready(function () {
+            ocultaColumn(0, "gridProdutosPedido");
+            $("#ValorUnitario").change(calculaValortotalProduto);
+            $("#Quantidade").change(calculaValortotalProduto);
+            $("#ValorDesconto").change(calculaValortotalProduto);
+            $("#PorcentagemdeDesconto").change(calculaValorDesconto);
+            $("#Produto").change(function () {
+                valorUnitarioProduto($("#Produto option:selected").val());
+            });
+            $("#totalPedido").change(calculaTotalDevedor);
+            $("#totalPago").change(calculaTotalDevedor);
+            $("#formpedido").submit(salvarPedido);
+            $("#cliente").change(function () {
+                idCliente = $("#cliente").val();
+            });
+        })
+
+        function ocultaColumn(colIndex, idtable) {
+            var table = document.getElementById(idtable);
+            for (var r = 0; r < table.rows.length; r++)
+                table.rows[r].cells[colIndex].style.display = 'none';
+        }
+        function mostrarColumn(colIndex, idtable) {
+            var table = document.getElementById(idtable);
+            for (var r = 0; r < table.rows.length; r++)
+                table.rows[r].cells[colIndex].style.display = 'inline';
+        }
+        function limparDados() {
+            $("#Produto").val( $('option:contains("Selecione...")').val() );
+            d.getElementsByName('Valor Unitario')[0].value = "";
+            d.getElementsByName('Quantidade')[0].value = "";
+            d.getElementsByName('Porcentagem de Desconto')[0].value = "";
+            d.getElementsByName('Valor Desconto')[0].value = "";
+            d.getElementsByName('Valor Total')[0].value = "";
+            d.getElementsByName('Observações')[0].value = "";
+            $('#ValorDesconto').attr('readonly', false);
+        }
+        function Excluir() {
+            
+            var tr = $(this).closest('tr');
+            var valorprod = tr.find('td[data-valor]').data("valor");
+            var valoratual = $("#totalPedido").val();
+            var valorpedido = (Number(valoratual) - Number(valorprod));
+            $("#totalPedido").val(valorpedido.toFixed(2));
+            calculaTotalDevedor();
+
+            tr.remove();
+        };
+        function calculaValortotalProduto() {
+            var valorUnitario = $("#ValorUnitario").val().replace(',','.');
+            var quantidade = $("#Quantidade").val();
+            var desconto = $("#ValorDesconto").val().replace(',', '.');
+
+            if (valorUnitario != "" && quantidade != "") {
+                var total = valorUnitario * quantidade - desconto;
+                total = Number((total).toFixed(2));
+                $("#ValorTotal").val(total);
+            }
+            
+            
+        }
+        function calculaValorDesconto() {
+            var total = $("#ValorTotal").val();
+            var porcDesconto = $("#PorcentagemdeDesconto").val();
+
+            if (porcDesconto != "" && total != "") {
+                var valordesconto = (porcDesconto / 100) * total;
+                valordesconto = Number((valordesconto).toFixed(2));
+                $("#ValorDesconto").val(valordesconto);
+                $('#ValorDesconto').attr('readonly', true);
+            }
+            else {
+                $("#ValorDesconto").val("");
+                $('#ValorDesconto').attr('readonly', false);
+            }
+            calculaValortotalProduto();
+        }
+        function validaCamposProduto() {
+            var resultado = true;
+
+            if ($("#Produto option:selected").val() == "")
+                resultado = false;
+            if ($("#Produto option:selected").text() == "Selecione...")
+                resultado = false;
+            if (d.getElementsByName('Valor Unitario')[0].value == "")
+                resultado = false;
+            if (d.getElementsByName('Quantidade')[0].value == "")
+                resultado = false;
+            if (d.getElementsByName('Valor Total')[0].value == "")
+                resultado = false;
+
+            return resultado;
+        }
+        function validaCamposPedido() {
+            var resposta = true;
+
+            if (idCliente < 0)
+                resposta = false;
+            if ($("#totalPedido").val() == "")
+                resposta = false;
+            if ($("#valorDevedor").val() == "")
+                resposta = false;
+
+            return resposta;
+        }
+
+        function valorUnitarioProduto(idproduto) {
+            if (idproduto != "") {
+                $.get("@Url.Action("retornarValorProduto")/?id=" + idproduto, function (data) {
+                    var valorUnitario = data;
+                    $("#ValorUnitario").val(Number(valorUnitario));
+                });
+            } else {
+                $("#ValorUnitario").val("");
+            }
+           
+        }
+
+        function calculaTotalDevedor() {
+            var total = $("#totalPedido").val() - $("#totalPago").val().replace(',','.');
+            $("#valorDevedor").val(Number(total));
+                
+        }
+
+        function salvarPedido(event) {
+            event.preventDefault();
+            if (validaCamposPedido() == false) {
+                alert("Preencha todos os campos antes de salvar o pedido");
+                return;
+            }
+            var dados = { produtosPedido: [] }
+
+            var idCLiente = idCliente;
+            var valorComicao = $("#valorComissao").val();
+            var observacao = $("#observacao").val();
+            var totalPedido = $("#totalPedido").val();
+            var totalPago = $("#totalPago").val();
+            var valorDevedor = $("#valorDevedor").val();
+            var numeroPedido = $("#numeroPedido").val();
+
+            var dadosPedido = { id: idCLiente, valorComissao: valorComicao, observacao: observacao, totalPedido: totalPedido, totalPago: totalPago, valorDevedor: valorDevedor };
+            dados.dadosPedido = dadosPedido;
+            mostrarColumn(0, "gridProdutosPedido");
+
+            var table = $('#gridProdutosPedido');
+
+            table.find('tr:gt(0)').each(function () {
+                var produtosPedido = {
+                    idproduto: $(this).find('td').eq(0).text(),
+                    valorUnitario: $(this).find('td').eq(2).text(),
+                    quantidade: $(this).find('td').eq(3).text(),
+                    porcDesconto: $(this).find('td').eq(4).text(),
+                    valorDesconto: $(this).find('td').eq(5).text(),
+                    valorTotal: $(this).find('td').eq(6).text(),
+                    obs: $(this).find('td').eq(7).text()
+                }
+                
+                dados.produtosPedido.push(produtosPedido);
+
+            });
+            ocultaColumn(0, "gridProdutosPedido");
+            var dados2 = $("#formpedido").serialize();
+            var data = {
+                __RequestVerificationToken: gettoken(),
+                    formData: dados
+            }
+
+            $.post("@Url.Action("Create","Pedidos")", data);
+
+        }
+        function gettoken() {
+            var token = '@Html.AntiForgeryToken()';
+            token = $(token).val();
+            return token;
+        }
+       
+
+    </script>
+}

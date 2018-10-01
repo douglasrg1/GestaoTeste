@@ -1,0 +1,66 @@
+﻿@model Gestao.Models.Pedido
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Pedido</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.dataPedido)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dataPedido)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.valorComissao)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.valorComissao)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.observacao)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.observacao)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.totalPedido)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.totalPedido)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.totalPago)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.totalPago)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.valorDevedor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.valorDevedor)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
