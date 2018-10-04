@@ -17,7 +17,7 @@ namespace Gestao.Controllers
         // GET: Pedidos
         public ActionResult Index()
         {
-            return View("Index", db.Pedido.ToList());
+            return View("index", db.Pedido.ToList());
         }
 
         // GET: Pedidos/Details/5
