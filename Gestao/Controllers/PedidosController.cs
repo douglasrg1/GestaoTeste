@@ -17,7 +17,7 @@ namespace Gestao.Controllers
         // GET: Pedidos
         public ActionResult Index()
         {
-            return View(db.Pedido.ToList());
+            return View("Index", db.Pedido.ToList());
         }
 
         // GET: Pedidos/Details/5
@@ -47,23 +47,46 @@ namespace Gestao.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(dadosRecebidos dadosRecebidos)
+        public ActionResult Create(Pedido pedido)
         {
-            Pedido pedido = new Pedido();
-            //pedido.cliente = db.Cliente.Where(c => c.Id == dadospedido.idCliente).First();
-            //pedido.numeroPedido = dadospedido.numeroPedido;
-            //pedido.observacao = dadospedido.obs;
-            //pedido.ProdutoPedido =dadospedido.produtoPedidos;
-            //pedido.totalPago = dadospedido.totalPago;
-            //pedido.totalPedido = dadospedido.toalPedido;
-            //pedido.valorComissao = dadospedido.valorComissao;
-            //pedido.valorDevedor = dadospedido.valorDevedor;
+            var dados = dadosRecebidos();
 
-            if (ModelState.IsValid)
+            pedido.cliente = db.Cliente.Where(c => c.Id == dados.dadosPedido.idCliente).First();
+            pedido.numeroPedido = dados.dadosPedido.numeroPedido;
+            pedido.observacao = dados.dadosPedido.observacao;
+            pedido.totalPago = dados.dadosPedido.totalPago;
+            pedido.totalPedido = dados.dadosPedido.totalPedido;
+            pedido.valorComissao = dados.dadosPedido.valorComissao;
+            pedido.valorDevedor = dados.dadosPedido.valorDevedor;
+            pedido.dataPedido = DateTime.Now;
+
+            db.Pedido.Add(pedido);
+
+            if (db.SaveChanges() != 0 )
             {
-                pedido.dataPedido = DateTime.Now;
-                db.Pedido.Add(pedido);
-                db.SaveChanges();
+                ProdutoPedido produtoPedido = new ProdutoPedido();
+                foreach(var item in dados.produtosPedidos)
+                {
+                    produtoPedido.observacao = item.obs;
+                    produtoPedido.Pedido = pedido;
+                    produtoPedido.porcDesconto = item.porcDesconto;
+                    produtoPedido.Produto = db.Produto.Find(item.idproduto);
+                    produtoPedido.quantidade = item.quantidade;
+                    produtoPedido.valorDesconto = item.valorDesconto;
+                    produtoPedido.valorTotal = item.valorTotal;
+                    produtoPedido.valorUnitario = item.valorUnitario;
+
+                    db.ProdutoPedido.Add(produtoPedido);
+                    if(db.SaveChanges() != 0)
+                    {
+                        var produto = db.Produto.Find(item.idproduto);
+                        produto.dataUltimaSaida = DateTime.Now;
+                        produto.quantidadeEstoque -= item.quantidade;
+                        db.Entry(produto).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
+
                 return RedirectToAction("Index");
             }
 
@@ -172,6 +195,49 @@ namespace Gestao.Controllers
             var valorProduto = db.Produto.Where(p => p.id == id).First().valorVenda;
             return valorProduto;
         }
+        public dadosRecebidos dadosRecebidos()
+        {
+            dadosRecebidos dadosRecebidos = new dadosRecebidos();
+            dadosPedido dadosPedido = new dadosPedido();
+            produtosPedido produtosPedido = new produtosPedido();
+
+            //dados peido
+            dadosPedido.numeroPedido = Convert.ToInt32(Request["dadosRecebidos[dadosPedido][numeroPedido]"]);
+            dadosPedido.idCliente = Convert.ToInt32(Request["dadosRecebidos[dadosPedido][idCliente]"]);
+            dadosPedido.valorComissao = Convert.ToDecimal(Request["dadosRecebidos[dadosPedido][valorComissao]"]);
+            dadosPedido.observacao = Request["dadosRecebidos[dadosPedido][observacao]"];
+            dadosPedido.totalPedido = Convert.ToDecimal(Request["dadosRecebidos[dadosPedido][totalPedido]"]);
+            dadosPedido.totalPago = Convert.ToDecimal(Request["dadosRecebidos[dadosPedido][totalPago]"]);
+            dadosPedido.valorDevedor = Convert.ToDecimal(Request["dadosRecebidos[dadosPedido][valorDevedor]"]);
+            dadosRecebidos.dadosPedido = dadosPedido;
+            //dados produtos
+            var produtosdoPedido = this.Request.Form.AllKeys.Where(k => k.Contains("dadosRecebidos[produtosPedido]")).ToList();
+            var quantKeys = (produtosdoPedido.Count - 1)/6;
+
+            if (quantKeys == 0)
+                return dadosRecebidos;
+
+            dadosRecebidos.produtosPedidos = new List<produtosPedido>();
+
+            for(var i = 0; i < quantKeys; i++)
+            {
+                produtosPedido.idproduto = Convert.ToInt32(Request["dadosRecebidos[produtosPedido][" + i + "][idproduto]"]);
+                produtosPedido.valorUnitario = Convert.ToDecimal(Request["dadosRecebidos[produtosPedido][" + i + "][valorUnitario]"]);
+                produtosPedido.quantidade = Convert.ToDecimal(Request["dadosRecebidos[produtosPedido][" + i + "][quantidade]"]);
+                produtosPedido.porcDesconto = Convert.ToDecimal(Request["dadosRecebidos[produtosPedido][" + i + "][porcDesconto]"]);
+                produtosPedido.valorDesconto = Convert.ToDecimal(Request["dadosRecebidos[produtosPedido][" + i + "][valorDesconto]"]);
+                produtosPedido.valorTotal = Convert.ToDecimal(Request["dadosRecebidos[produtosPedido][" + i + "][valorTotal]"]);
+                produtosPedido.obs = Request["dadosRecebidos[produtosPedido][" + i + "][obs]"];
+
+                dadosRecebidos.produtosPedidos.Add(produtosPedido);
+
+            }
+
+            
+
+
+            return dadosRecebidos;
+        }
 
         protected override void Dispose(bool disposing)
         {
@@ -183,27 +249,16 @@ namespace Gestao.Controllers
         }
     }
 }
-public struct DadosPedido
+public struct dadosPedido
 {
     public int idCliente { get; set; }
     public decimal valorComissao { get; set; }
-    public string obs { get; set; }
-    public decimal toalPedido { get; set; }
+    public string observacao { get; set; }
+    public decimal totalPedido { get; set; }
     public decimal totalPago { get; set; }
     public decimal valorDevedor { get; set; }
     public int numeroPedido { get; set; }
-    public List<ProdutoPedido> produtoPedidos { get; set; }
 
-
-}
-public struct dadosPedido
-{
-    public int id { get; set; }
-    public string observacao { get; set; }
-    public decimal totalPago { get; set; }
-    public decimal totalPedido { get; set; }
-    public decimal valorComissao { get; set; }
-    public decimal valorDevedor { get; set; }
 
 }
 public struct produtosPedido
@@ -219,6 +274,6 @@ public struct produtosPedido
 }
 public struct dadosRecebidos
 {
-    dadosPedido dadosPedido;
-    List<produtosPedido> produtosPedidos;
+    public dadosPedido dadosPedido;
+    public List<produtosPedido> produtosPedidos;
 }
