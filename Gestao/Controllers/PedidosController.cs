@@ -17,7 +17,8 @@ namespace Gestao.Controllers
         // GET: Pedidos
         public ActionResult Index()
         {
-            return View("index", db.Pedido.ToList());
+            var pedidos = db.Pedido.OrderByDescending(p => p.dataPedido).ToList();
+            return View("Index",pedidos);
         }
 
         // GET: Pedidos/Details/5
@@ -249,6 +250,7 @@ namespace Gestao.Controllers
         }
     }
 }
+
 public struct dadosPedido
 {
     public int idCliente { get; set; }

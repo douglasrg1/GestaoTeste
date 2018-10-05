@@ -170,7 +170,8 @@
                     <div class="form-group">
                         <div>
                             <input type="submit" value="Adicionar" class="btn btn-primary" /> |
-                            @Html.ActionLink("Voltar", "Index", null, new { @class = "btn btn-default" })
+                            @Html.ActionLink("Voltar", "Index", null, new { @class = "btn btn-default", @id = "btnVoltar" })
+                            <input type="button" value="voltar" class="btn btn-danger" onclick="voltarindex()" />
                         </div>
                     </div>
                 </div>
@@ -395,7 +396,7 @@
                 dadosRecebidos: dados
             }
 
-            $.post("@Url.Action("Create","Pedidos")", data);
+            $.post("@Url.Action("Create","Pedidos")", data, voltarindex);
 
         }
         function gettoken() {
@@ -407,6 +408,10 @@
             $("#totalPago").val(0.00);
             $("#valorComissao").val(0.00);
 
+        }
+        function voltarindex() {
+            var botao = document.getElementById("btnVoltar");
+            botao.click();
         }
        
 
