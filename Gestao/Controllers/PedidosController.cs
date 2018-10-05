@@ -109,6 +109,10 @@ namespace Gestao.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.produtos = listProdutos();
+            ViewBag.clientes = listItemclientes();
+
             return View(pedido);
         }
 
@@ -124,6 +128,10 @@ namespace Gestao.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
+            ViewBag.produtos = listProdutos();
+            ViewBag.clientes = listItemclientes();
+
             return View(pedido);
         }
 
