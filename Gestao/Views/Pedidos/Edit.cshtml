@@ -236,6 +236,7 @@
             $("#cliente").change(function () {
                 idCliente = $("#cliente").val();
             });
+            preencherdropdownCliente();
         })
 
         function ocultaColumn(colIndex, idtable) {
@@ -402,9 +403,8 @@
             token = $(token).val();
             return token;
         }
-        function iniciarCamposZerados() {
-            $("#totalPago").val(0.00);
-            $("#valorComissao").val(0.00);
+        function preencherdropdownCliente() {
+            $("#cliente").val(@Model.cliente.Id);
 
         }
         function voltarindex() {
