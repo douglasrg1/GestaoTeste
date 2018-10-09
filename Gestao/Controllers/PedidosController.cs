@@ -78,6 +78,7 @@ namespace Gestao.Controllers
                     produtoPedido.valorDesconto = item.valorDesconto;
                     produtoPedido.valorTotal = item.valorTotal;
                     produtoPedido.valorUnitario = item.valorUnitario;
+                    produtoPedido.Produto_id = item.idproduto;
 
                     db.ProdutoPedido.Add(produtoPedido);
                     if(db.SaveChanges() != 0)
