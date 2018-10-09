@@ -4,9 +4,11 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using Gestao.Models;
+using Newtonsoft.Json;
 
 namespace Gestao.Controllers
 {
@@ -112,6 +114,9 @@ namespace Gestao.Controllers
 
             ViewBag.produtos = listProdutos();
             ViewBag.clientes = listItemclientes();
+            var produtosPedido = db.ProdutoPedido.Where(p => p.Pedido.id == pedido.id).ToList();
+            foreach(var item in produtosPedido)
+                item.Pedido = null;
 
             return View(pedido);
         }
@@ -204,13 +209,25 @@ namespace Gestao.Controllers
             var valorProduto = db.Produto.Where(p => p.id == id).First().valorVenda;
             return valorProduto;
         }
+
+        
+        public ActionResult retornaProdutosDoPedido(int idreceita)
+        {
+            var produtos = db.ProdutoPedido.Where(p => p.Pedido.id == idreceita).ToList();
+            foreach(var produto in produtos)
+            {
+                produto.Produto = db.Produto.Where(p => p.id == produto.Produto_id).First();
+            }
+            return Json(produtos,JsonRequestBehavior.AllowGet);
+        }
+
         public dadosRecebidos dadosRecebidos()
         {
             dadosRecebidos dadosRecebidos = new dadosRecebidos();
             dadosPedido dadosPedido = new dadosPedido();
             produtosPedido produtosPedido = new produtosPedido();
 
-            //dados peido
+            //dados pedido
             dadosPedido.numeroPedido = Convert.ToInt32(Request["dadosRecebidos[dadosPedido][numeroPedido]"]);
             dadosPedido.idCliente = Convert.ToInt32(Request["dadosRecebidos[dadosPedido][idCliente]"]);
             dadosPedido.valorComissao = Convert.ToDecimal(Request["dadosRecebidos[dadosPedido][valorComissao]"]);

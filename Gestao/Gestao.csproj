@@ -235,6 +235,10 @@
     <Compile Include="Migrations\201809191859291_addNumeeroPedidoNaTabelaPedido.Designer.cs">
       <DependentUpon>201809191859291_addNumeeroPedidoNaTabelaPedido.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810091851124_naosei.cs" />
+    <Compile Include="Migrations\201810091851124_naosei.Designer.cs">
+      <DependentUpon>201810091851124_naosei.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Adicionais\Estados.cs" />
     <Compile Include="Models\Adicionais\Municipios.cs" />
@@ -389,6 +393,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809191859291_addNumeeroPedidoNaTabelaPedido.resx">
       <DependentUpon>201809191859291_addNumeeroPedidoNaTabelaPedido.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810091851124_naosei.resx">
+      <DependentUpon>201810091851124_naosei.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

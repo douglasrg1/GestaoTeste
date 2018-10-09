@@ -10,6 +10,7 @@ namespace Gestao.Models
     public class ProdutoPedido
     {
         public int id { get; set; }
+        public int Produto_id { get; set; }
         public Produto Produto { get; set; }
         public Pedido Pedido { get; set; }
         public decimal valorUnitario { get; set; }

@@ -237,6 +237,7 @@
                 idCliente = $("#cliente").val();
             });
             preencherdropdownCliente();
+            preencherTabelaComProdutos();
         })
 
         function ocultaColumn(colIndex, idtable) {
@@ -410,6 +411,32 @@
         function voltarindex() {
             var botao = document.getElementById("btnVoltar");
             botao.click();
+        }
+        function preencherTabelaComProdutos() {
+
+            $.getJSON("@Url.Action("retornaProdutosDoPedido")/?idreceita=" + @Model.id, preencherTableIni)
+
+        }
+        function preencherTableIni(json) {
+            $.each(json, function (index, item) {
+                var newRow = d.createElement('tr');
+                newRow.insertCell(0).innerHTML = item.Produto.id;
+                newRow.insertCell(1).innerHTML = item.Produto.nome;
+                newRow.insertCell(2).innerHTML = item.valorUnitario;
+                newRow.insertCell(3).innerHTML = item.quantidade;
+                newRow.insertCell(4).innerHTML = item.porcDesconto;
+                newRow.insertCell(5).innerHTML = item.valorDesconto;
+                newRow.insertCell(6).innerHTML = item.valorTotal;
+
+                newRow.insertCell(7).innerHTML = item.observacao;
+                newRow.insertCell(8).innerHTML = "<a class = ' excluir btn btn-danger'><span class='glyphicon glyphicon-trash'></a>";
+
+                mostrarColumn(0, "gridProdutosPedido");
+                d.getElementById("gridProdutosPedido").appendChild(newRow);
+                ocultaColumn(0, "gridProdutosPedido");
+                $('.excluir').unbind();
+                $(".excluir").on("click", Excluir);
+            })
         }
 
 
