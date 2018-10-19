@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -9,9 +10,11 @@ namespace Gestao.Models
     public class Pedido
     {
         public int id { get; set; }
+        [ForeignKey("Cliente")]
+        public int idCliente { get; set; }
         [Required]
         [Display(Name ="Cliente")]
-        public Cliente cliente { get; set; }
+        public virtual Cliente Cliente { get; set; }
         public DateTime dataPedido { get; set; }
         [Display(Name ="Valor Comissão")]
         public decimal? valorComissao { get; set; }

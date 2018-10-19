@@ -239,6 +239,10 @@
     <Compile Include="Migrations\201810091851124_naosei.Designer.cs">
       <DependentUpon>201810091851124_naosei.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810191905106_addForeingkeypedidoClienteToCliente.cs" />
+    <Compile Include="Migrations\201810191905106_addForeingkeypedidoClienteToCliente.Designer.cs">
+      <DependentUpon>201810191905106_addForeingkeypedidoClienteToCliente.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Adicionais\Estados.cs" />
     <Compile Include="Models\Adicionais\Municipios.cs" />
@@ -396,6 +400,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810091851124_naosei.resx">
       <DependentUpon>201810091851124_naosei.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810191905106_addForeingkeypedidoClienteToCliente.resx">
+      <DependentUpon>201810191905106_addForeingkeypedidoClienteToCliente.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

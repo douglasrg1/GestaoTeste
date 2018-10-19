@@ -54,7 +54,7 @@ namespace Gestao.Controllers
         {
             var dados = dadosRecebidos();
 
-            pedido.cliente = db.Cliente.Where(c => c.Id == dados.dadosPedido.idCliente).First();
+            pedido.Cliente = db.Cliente.Where(c => c.Id == dados.dadosPedido.idCliente).First();
             pedido.numeroPedido = dados.dadosPedido.numeroPedido;
             pedido.observacao = dados.dadosPedido.observacao;
             pedido.totalPago = dados.dadosPedido.totalPago;
@@ -131,7 +131,8 @@ namespace Gestao.Controllers
             var dados = dadosRecebidos();
 
             pedido.id = dados.dadosPedido.idPedido;
-            pedido.cliente = db.Cliente.Where(c => c.Id == dados.dadosPedido.idCliente).First();
+            pedido.idCliente = dados.dadosPedido.idCliente;
+            pedido.Cliente = db.Cliente.Find(dados.dadosPedido.idCliente);
             pedido.numeroPedido = dados.dadosPedido.numeroPedido;
             pedido.observacao = dados.dadosPedido.observacao;
             pedido.totalPago = dados.dadosPedido.totalPago;
