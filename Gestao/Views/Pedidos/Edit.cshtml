@@ -362,6 +362,7 @@
             }
             var dados = { produtosPedido: [] }
 
+            var idPedido = @Model.id;
             var idCLiente = idCliente;
             var valorComicao = $("#valorComissao").val().replace('.',',');
             var observacao = $("#observacao").val();
@@ -370,7 +371,7 @@
             var valorDevedor = $("#valorDevedor").val().replace('.', ',');
             var numeroPedido = $("#numeroPedido").val();
 
-            var dadosPedido = { numeroPedido: 1, idCliente: idCLiente, valorComissao: valorComicao, observacao: observacao, totalPedido: totalPedido, totalPago: totalPago, valorDevedor: valorDevedor };
+            var dadosPedido = { idPedido: idPedido, numeroPedido: 1, idCliente: idCLiente, valorComissao: valorComicao, observacao: observacao, totalPedido: totalPedido, totalPago: totalPago, valorDevedor: valorDevedor };
             dados.dadosPedido = dadosPedido;
             mostrarColumn(0, "gridProdutosPedido");
 
@@ -397,7 +398,7 @@
                 dadosRecebidos: dados
             }
 
-            $.post("@Url.Action("Create","Pedidos")", data, voltarindex);
+            $.post("@Url.Action("Edit","Pedidos")", data, voltarindex);
 
         }
         function gettoken() {
@@ -407,6 +408,7 @@
         }
         function preencherdropdownCliente() {
             $("#cliente").val(@Model.cliente.Id);
+            idCliente = @Model.cliente.Id;
 
         }
         function voltarindex() {

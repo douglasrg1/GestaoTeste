@@ -126,12 +126,49 @@ namespace Gestao.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,dataPedido,valorComissao,observacao,totalPedido,totalPago,valorDevedor")] Pedido pedido)
+        public ActionResult Edit( Pedido pedido)
         {
-            if (ModelState.IsValid)
+            var dados = dadosRecebidos();
+
+            pedido.id = dados.dadosPedido.idPedido;
+            pedido.cliente = db.Cliente.Where(c => c.Id == dados.dadosPedido.idCliente).First();
+            pedido.numeroPedido = dados.dadosPedido.numeroPedido;
+            pedido.observacao = dados.dadosPedido.observacao;
+            pedido.totalPago = dados.dadosPedido.totalPago;
+            pedido.totalPedido = dados.dadosPedido.totalPedido;
+            pedido.valorComissao = dados.dadosPedido.valorComissao;
+            pedido.valorDevedor = dados.dadosPedido.valorDevedor;
+            pedido.dataPedido = DateTime.Now;
+
+            db.Entry(pedido).State = EntityState.Modified;
+
+            if (db.SaveChanges() != 0)
             {
-                db.Entry(pedido).State = EntityState.Modified;
-                db.SaveChanges();
+                removeProdutosPedido(pedido.id);
+                ProdutoPedido produtoPedido = new ProdutoPedido();
+                foreach (var item in dados.produtosPedidos)
+                {
+                    produtoPedido.observacao = item.obs;
+                    produtoPedido.Pedido = pedido;
+                    produtoPedido.porcDesconto = item.porcDesconto;
+                    produtoPedido.Produto = db.Produto.Find(item.idproduto);
+                    produtoPedido.quantidade = item.quantidade;
+                    produtoPedido.valorDesconto = item.valorDesconto;
+                    produtoPedido.valorTotal = item.valorTotal;
+                    produtoPedido.valorUnitario = item.valorUnitario;
+                    produtoPedido.Produto_id = item.idproduto;
+
+                    db.ProdutoPedido.Add(produtoPedido);
+                    if (db.SaveChanges() != 0)
+                    {
+                        var produto = db.Produto.Find(item.idproduto);
+                        produto.dataUltimaSaida = DateTime.Now;
+                        produto.quantidadeEstoque -= item.quantidade;
+                        db.Entry(produto).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
+
                 return RedirectToAction("Index");
             }
 
@@ -229,6 +266,7 @@ namespace Gestao.Controllers
             produtosPedido produtosPedido = new produtosPedido();
 
             //dados pedido
+            dadosPedido.idPedido = Convert.ToInt32(Request["dadosRecebidos[dadosPedido][idPedido]"]);
             dadosPedido.numeroPedido = Convert.ToInt32(Request["dadosRecebidos[dadosPedido][numeroPedido]"]);
             dadosPedido.idCliente = Convert.ToInt32(Request["dadosRecebidos[dadosPedido][idCliente]"]);
             dadosPedido.valorComissao = Convert.ToDecimal(Request["dadosRecebidos[dadosPedido][valorComissao]"]);
@@ -266,6 +304,17 @@ namespace Gestao.Controllers
             return dadosRecebidos;
         }
 
+        private void removeProdutosPedido(int idpedido)
+        {
+            var produtosPedido = db.ProdutoPedido.Where(p => p.Pedido.id == idpedido).ToList();
+
+            foreach(var item in produtosPedido)
+            {
+                db.ProdutoPedido.Remove(item);
+                db.SaveChanges();
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -279,6 +328,7 @@ namespace Gestao.Controllers
 
 public struct dadosPedido
 {
+    public int idPedido { get; set; }
     public int idCliente { get; set; }
     public decimal valorComissao { get; set; }
     public string observacao { get; set; }
