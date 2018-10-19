@@ -146,6 +146,10 @@ namespace Gestao.Controllers
             {
                 removeProdutosPedido(pedido.id);
                 ProdutoPedido produtoPedido = new ProdutoPedido();
+
+                if(dados.produtosPedidos == null)
+                    return RedirectToAction("Index");
+
                 foreach (var item in dados.produtosPedidos)
                 {
                     produtoPedido.observacao = item.obs;
@@ -311,7 +315,15 @@ namespace Gestao.Controllers
             foreach(var item in produtosPedido)
             {
                 db.ProdutoPedido.Remove(item);
-                db.SaveChanges();
+                
+                if(db.SaveChanges() != 0)
+                {
+                    var produto = db.Produto.Find(item.Produto_id);
+                    produto.quantidadeEstoque += item.quantidade;
+
+                    db.Entry(produto).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
             }
         }
 
