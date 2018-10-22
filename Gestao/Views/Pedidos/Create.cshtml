@@ -36,10 +36,10 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-md-4">
-                            @Html.LabelFor(model => model.cliente)
+                            @Html.LabelFor(model => model.Cliente)
                             <div>
-                                @Html.DropDownListFor(model => model.cliente, (IList<SelectListItem>)ViewBag.clientes, "Selecione...", new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.cliente, "", new { @class = "text-danger" })
+                                @Html.DropDownListFor(model => model.Cliente, (IList<SelectListItem>)ViewBag.clientes, "Selecione...", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Cliente, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="form-group col-md-4">
@@ -232,8 +232,8 @@
             $("#totalPedido").change(calculaTotalDevedor);
             $("#totalPago").change(calculaTotalDevedor);
             $("#formpedido").submit(salvarPedido);
-            $("#cliente").change(function () {
-                idCliente = $("#cliente").val();
+            $("#Cliente").change(function () {
+                idCliente = $("#Cliente").val();
             });
             iniciarCamposZerados();
         })
