@@ -243,6 +243,10 @@
     <Compile Include="Migrations\201810191905106_addForeingkeypedidoClienteToCliente.Designer.cs">
       <DependentUpon>201810191905106_addForeingkeypedidoClienteToCliente.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810221210461_addUniqueKeyInNumeroPedido.cs" />
+    <Compile Include="Migrations\201810221210461_addUniqueKeyInNumeroPedido.Designer.cs">
+      <DependentUpon>201810221210461_addUniqueKeyInNumeroPedido.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Adicionais\Estados.cs" />
     <Compile Include="Models\Adicionais\Municipios.cs" />
@@ -403,6 +407,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810191905106_addForeingkeypedidoClienteToCliente.resx">
       <DependentUpon>201810191905106_addForeingkeypedidoClienteToCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810221210461_addUniqueKeyInNumeroPedido.resx">
+      <DependentUpon>201810221210461_addUniqueKeyInNumeroPedido.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
