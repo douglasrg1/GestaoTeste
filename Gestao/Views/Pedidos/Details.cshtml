@@ -4,63 +4,46 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>Detalhes Do Pedido</h2>
 
 <div>
-    <h4>Pedido</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.dataPedido)
-        </dt>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayName("Cliente")</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.Cliente.Nome)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.dataPedido)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.dataPedido)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold"> @Html.DisplayNameFor(model => model.valorComissao)</p> </div>
+        <div class="col-md-4">  @Html.DisplayFor(model => model.valorComissao)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.observacao)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.observacao)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.totalPedido)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.totalPedido)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.totalPago)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.totalPago)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.valorDevedor)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.valorDevedor)</div>
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.dataPedido)
-        </dd>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
 
-        <dt>
-            @Html.DisplayNameFor(model => model.valorComissao)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.valorComissao)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.observacao)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.observacao)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.totalPedido)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.totalPedido)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.totalPago)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.totalPago)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.valorDevedor)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.valorDevedor)
-        </dd>
-
-    </dl>
+    <div class="form-actions no-color">
+        @Html.ActionLink("Editar ", "Edit", new { id = Model.id }, new { @class = "btn btn-primary" }) |
+        @Html.ActionLink("Voltar ", "Index", null, new { @class = "btn btn-primary" })
+    </div>
+    }
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

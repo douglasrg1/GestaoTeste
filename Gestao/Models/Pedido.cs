@@ -15,6 +15,7 @@ namespace Gestao.Models
         [Required]
         [Display(Name ="Cliente")]
         public virtual Cliente Cliente { get; set; }
+        [Display(Name ="Data do Pedido")]
         public DateTime dataPedido { get; set; }
         [Display(Name ="Valor Comissão")]
         public decimal? valorComissao { get; set; }
