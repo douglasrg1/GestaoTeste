@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -91,6 +92,7 @@ namespace Gestao.Controllers
                     }
                 }
 
+                TempData["msg"] = "Pedido Registrado com Sucesso";
                 return RedirectToAction("Index");
             }
 
@@ -173,7 +175,7 @@ namespace Gestao.Controllers
                         db.SaveChanges();
                     }
                 }
-
+                TempData["msg"] = "Pedido Editado com Sucesso";
                 return RedirectToAction("Index");
             }
 
@@ -206,6 +208,7 @@ namespace Gestao.Controllers
             Pedido pedido = db.Pedido.Find(id);
             db.Pedido.Remove(pedido);
             db.SaveChanges();
+            TempData["mensagem"] = "Pedido Removido com Sucesso";
             return RedirectToAction("Index");
         }
 
@@ -326,6 +329,23 @@ namespace Gestao.Controllers
                     db.SaveChanges();
                 }
             }
+        }
+        public JsonResult listarPedidos(int current, int rowCount, string searchPhrase)
+        {
+            string chave = Request.Form.AllKeys.Where(k => k.StartsWith("sort")).First();
+            string campoOrdenacao = chave.Replace("sort[", "").Replace("]", "").Trim();
+            string tipoOrdenacao = Request[chave];
+            var pedidos = db.Pedido.ToList();
+            var ordenacao = string.Format("{0} {1}", campoOrdenacao, tipoOrdenacao);
+
+            if (!string.IsNullOrWhiteSpace(searchPhrase))
+            {
+                pedidos = pedidos.Where("Cliente.Nome.Contains(@0)", searchPhrase).ToList();
+            }
+
+            var pedidosPaginados = pedidos.OrderBy(ordenacao).Skip((current - 1) * rowCount).Take(rowCount);
+
+            return Json(new {current = current, rowCount = rowCount, rows = pedidosPaginados, total = pedidos.Count }, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)

@@ -7,58 +7,75 @@
 <h2>Pedidos</h2>
 
 <p>
-    @Html.ActionLink("Novo Pedido", "Create",null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Novo Pedido", "Create", null, new { @class = "btn btn-primary" })
 </p>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.dataPedido)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.valorComissao)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.observacao)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.totalPedido)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.totalPago)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.valorDevedor)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.dataPedido)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.valorComissao)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.observacao)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.totalPedido)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.totalPago)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.valorDevedor)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
-        </td>
-    </tr>
-}
+<table class="table" id="grid-pedidos">
+    <thead>
+        <tr>
+            <th data-column-id="Cliente">
+                @Html.DisplayName("Cliente")
+            </th>
+            <th data-column-id="dataPedido" data-order="desc">
+                @Html.DisplayNameFor(model => model.dataPedido)
+            </th>
+            <th data-column-id="totalPedido">
+                @Html.DisplayNameFor(model => model.totalPedido)
+            </th>
+            <th data-column-id="totalPago">
+                @Html.DisplayNameFor(model => model.totalPago)
+            </th>
+            <th data-column-id="valorDevedor">
+                @Html.DisplayNameFor(model => model.valorDevedor)
+            </th>
+            <th data-column-id="observacao">
+                @Html.DisplayNameFor(model => model.observacao)
+            </th>
+            <th data-formatter="acoes"></th>
+        </tr>
+    </thead>
 
 </table>
+
+@section scripts{
+
+    <script type="text/javascript">
+        var labels = {
+            all: "Todos", infos: "Mostrando de {{ctx.start}} Até {{ctx.end}} De um total de {{ctx.total}} Valores",
+            loading: "Carregando", noResults: "Nenhum Resultado Encontrado", refresh: "Recarregar", search:"Pesquisar"
+        }
+
+        $(document).ready(function () {
+
+            $("#grid-pedidos").bootgrid({
+                ajax: true,
+                url:"@Url.Action("listarPedidos", "Pedidos")",
+                labels: labels,
+                formatters: {
+                    "acoes": function (column, row) {
+                        return "<a href='@Url.Action("Details", "Pedidos")/" + row.id + "' class = 'btn btn-warning'><span class='glyphicon glyphicon-list-alt'></span></a>" +
+                               "<a href='@Url.Action("Edit", "Pedidos")/" + row.id + "' class = 'btn btn-info'><span class='glyphicon glyphicon-edit'></a>" +
+                               "<a href='@Url.Action("Delete", "Pedidos")/" + row.id + "' class = 'btn btn-danger'><span class='glyphicon glyphicon-trash'></a>";
+                    }
+                }
+            });
+
+        })
+
+
+        var mensagem = "@TempData["msg"]";
+
+        if (mensagem != null) {
+            if (mensagem == "Pedido Registrado com Sucesso" || mensagem == "Pedido Editado com Sucesso" || mensagem == "Cadastro editado com Sucesso") {
+                toastr.success(mensagem);
+            }
+
+            else if (mensagem == "Falha ao cadastrar cliente" || mensagem == "Erro ao remover cliente" || mensagem == "Erro ao editar cadastro") {
+                toastr.error(mensagem);
+            }
+        }
+
+
+    </script>
+
+}
