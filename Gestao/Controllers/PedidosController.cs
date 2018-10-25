@@ -20,8 +20,8 @@ namespace Gestao.Controllers
         // GET: Pedidos
         public ActionResult Index()
         {
-            var a = TempData["msg"];
-            return View("Index");
+            var pedido = db.Pedido.ToList();
+            return View("Index",pedido);
         }
 
         // GET: Pedidos/Details/5
