@@ -344,8 +344,29 @@ namespace Gestao.Controllers
             }
 
             var pedidosPaginados = pedidos.OrderBy(ordenacao).Skip((current - 1) * rowCount).Take(rowCount);
+            var pedidosp = retornaRowsTable(pedidosPaginados);
 
-            return Json(new {current = current, rowCount = rowCount, rows = pedidosPaginados, total = pedidos.Count }, JsonRequestBehavior.AllowGet);
+            return Json(new {current = current, rowCount = rowCount, rows = pedidosp, total = pedidos.Count }, JsonRequestBehavior.AllowGet);
+        }
+        private List<rowsTable> retornaRowsTable(IEnumerable<Pedido> pedidos)
+        {
+            List<rowsTable> listapedidos = new List<rowsTable>();
+            foreach(var i in pedidos)
+            {
+                listapedidos.Add(new rowsTable
+                {
+                    id = i.id,
+                    dataPedido = i.dataPedido.ToString(),
+                    nomeCliente = i.Cliente.Nome,
+                    numeroPedido = i.numeroPedido,
+                    observacao = i.observacao,
+                    totalPago = i.totalPago,
+                    totalPedido = i.totalPedido,
+                    valorDevedor = i.valorDevedor
+                });
+            }
+
+            return listapedidos;
         }
 
         protected override void Dispose(bool disposing)
@@ -387,4 +408,15 @@ public struct dadosRecebidos
 {
     public dadosPedido dadosPedido;
     public List<produtosPedido> produtosPedidos;
+}
+public struct rowsTable
+{
+    public int id { get; set; }
+    public string nomeCliente { get; set; }
+    public string dataPedido { get; set; }
+    public string observacao { get; set; }
+    public decimal totalPedido { get; set; }
+    public decimal totalPago { get; set; }
+    public decimal valorDevedor { get; set; }
+    public int numeroPedido { get; set; }
 }
