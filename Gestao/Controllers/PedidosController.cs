@@ -44,6 +44,16 @@ namespace Gestao.Controllers
         {
             ViewBag.produtos = listProdutos();
             ViewBag.clientes = listItemclientes();
+            var countPedido = db.Pedido.Count();
+            if (countPedido == 0)
+                ViewBag.numeropedido = 00001;
+            else
+            {
+                int numeropedido = db.Pedido.OrderByDescending(p => p.id).FirstOrDefault().numeroPedido + 1;
+                ViewBag.numeropedido = numeropedido;
+            }
+                
+            
             return View();
         }
 

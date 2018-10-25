@@ -221,6 +221,7 @@
         var idCliente = -1;
 
         $(document).ready(function () {
+            $("#numeroPedido").val(@ViewBag.numeropedido);
             ocultaColumn(0, "gridProdutosPedido");
             $("#ValorUnitario").change(calculaValortotalProduto);
             $("#Quantidade").change(calculaValortotalProduto);
@@ -367,7 +368,7 @@
             var valorDevedor = $("#valorDevedor").val().replace('.', ',');
             var numeroPedido = $("#numeroPedido").val();
 
-            var dadosPedido = { numeroPedido: 1, idCliente: idCLiente, valorComissao: valorComicao, observacao: observacao, totalPedido: totalPedido, totalPago: totalPago, valorDevedor: valorDevedor };
+            var dadosPedido = { numeroPedido: numeroPedido, idCliente: idCLiente, valorComissao: valorComicao, observacao: observacao, totalPedido: totalPedido, totalPago: totalPago, valorDevedor: valorDevedor };
             dados.dadosPedido = dadosPedido;
             mostrarColumn(0, "gridProdutosPedido");
 
