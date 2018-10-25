@@ -63,16 +63,17 @@
         })
 
 
-        var mensagem = "@TempData["msg"]";
+        var mensagem2 = "@TempData["msg"]";
 
-        if (mensagem != null) {
-            if (mensagem == "Pedido Registrado com Sucesso" || mensagem == "Pedido Editado com Sucesso" || mensagem == "Cadastro editado com Sucesso") {
-                toastr.success(mensagem);
+        if (mensagem2 != null) {
+            if (mensagem2 == "Pedido Registrado com Sucesso" || mensagem2 == "Pedido Editado com Sucesso" || mensagem2 == "Pedido Removido com Sucesso") {
+                toastr.success(mensagem2);
             }
 
-            else if (mensagem == "Falha ao cadastrar cliente" || mensagem == "Erro ao remover cliente" || mensagem == "Erro ao editar cadastro") {
-                toastr.error(mensagem);
+            else if (mensagem2 == "Falha ao registrar pedido" || mensagem2 == "Erro ao editar pedido" || mensagem2 == "Erro ao remover pedido") {
+                toastr.error(mensagem2);
             }
+    
         }
 
 

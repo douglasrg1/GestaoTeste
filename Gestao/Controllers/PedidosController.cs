@@ -20,8 +20,8 @@ namespace Gestao.Controllers
         // GET: Pedidos
         public ActionResult Index()
         {
-            var pedidos = db.Pedido.OrderByDescending(p => p.dataPedido).ToList();
-            return View("Index",pedidos);
+            var a = TempData["msg"];
+            return View("Index");
         }
 
         // GET: Pedidos/Details/5
@@ -93,7 +93,7 @@ namespace Gestao.Controllers
                 }
 
                 TempData["msg"] = "Pedido Registrado com Sucesso";
-                return RedirectToAction("Index");
+                
             }
 
             ViewBag.produtos = listProdutos();
@@ -150,33 +150,34 @@ namespace Gestao.Controllers
                 removeProdutosPedido(pedido.id);
                 ProdutoPedido produtoPedido = new ProdutoPedido();
 
-                if(dados.produtosPedidos == null)
-                    return RedirectToAction("Index");
-
-                foreach (var item in dados.produtosPedidos)
+                if(dados.produtosPedidos != null)
                 {
-                    produtoPedido.observacao = item.obs;
-                    produtoPedido.Pedido = pedido;
-                    produtoPedido.porcDesconto = item.porcDesconto;
-                    produtoPedido.Produto = db.Produto.Find(item.idproduto);
-                    produtoPedido.quantidade = item.quantidade;
-                    produtoPedido.valorDesconto = item.valorDesconto;
-                    produtoPedido.valorTotal = item.valorTotal;
-                    produtoPedido.valorUnitario = item.valorUnitario;
-                    produtoPedido.Produto_id = item.idproduto;
-
-                    db.ProdutoPedido.Add(produtoPedido);
-                    if (db.SaveChanges() != 0)
+                    foreach (var item in dados.produtosPedidos)
                     {
-                        var produto = db.Produto.Find(item.idproduto);
-                        produto.dataUltimaSaida = DateTime.Now;
-                        produto.quantidadeEstoque -= item.quantidade;
-                        db.Entry(produto).State = EntityState.Modified;
-                        db.SaveChanges();
+                        produtoPedido.observacao = item.obs;
+                        produtoPedido.Pedido = pedido;
+                        produtoPedido.porcDesconto = item.porcDesconto;
+                        produtoPedido.Produto = db.Produto.Find(item.idproduto);
+                        produtoPedido.quantidade = item.quantidade;
+                        produtoPedido.valorDesconto = item.valorDesconto;
+                        produtoPedido.valorTotal = item.valorTotal;
+                        produtoPedido.valorUnitario = item.valorUnitario;
+                        produtoPedido.Produto_id = item.idproduto;
+
+                        db.ProdutoPedido.Add(produtoPedido);
+                        if (db.SaveChanges() != 0)
+                        {
+                            var produto = db.Produto.Find(item.idproduto);
+                            produto.dataUltimaSaida = DateTime.Now;
+                            produto.quantidadeEstoque -= item.quantidade;
+                            db.Entry(produto).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
                     }
                 }
+
                 TempData["msg"] = "Pedido Editado com Sucesso";
-                return RedirectToAction("Index");
+                
             }
 
             ViewBag.produtos = listProdutos();
@@ -208,7 +209,7 @@ namespace Gestao.Controllers
             Pedido pedido = db.Pedido.Find(id);
             db.Pedido.Remove(pedido);
             db.SaveChanges();
-            TempData["mensagem"] = "Pedido Removido com Sucesso";
+            TempData["msg"] = "Pedido Removido com Sucesso";
             return RedirectToAction("Index");
         }
 
