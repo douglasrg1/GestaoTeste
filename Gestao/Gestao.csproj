@@ -247,6 +247,14 @@
     <Compile Include="Migrations\201810221210461_addUniqueKeyInNumeroPedido.Designer.cs">
       <DependentUpon>201810221210461_addUniqueKeyInNumeroPedido.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810292003402_addTableMovimentaEstoque.cs" />
+    <Compile Include="Migrations\201810292003402_addTableMovimentaEstoque.Designer.cs">
+      <DependentUpon>201810292003402_addTableMovimentaEstoque.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810292007163_updateTableMovimentaestoque.cs" />
+    <Compile Include="Migrations\201810292007163_updateTableMovimentaestoque.Designer.cs">
+      <DependentUpon>201810292007163_updateTableMovimentaestoque.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Adicionais\Estados.cs" />
     <Compile Include="Models\Adicionais\Municipios.cs" />
@@ -255,6 +263,7 @@
     <Compile Include="Models\Empresa.cs" />
     <Compile Include="Models\Fornecedor.cs" />
     <Compile Include="Models\Funcionario.cs" />
+    <Compile Include="Models\MovimentaEstoque.cs" />
     <Compile Include="Models\Pedido.cs" />
     <Compile Include="Models\Produto.cs" />
     <Compile Include="Models\ProdutoPedido.cs" />
@@ -410,6 +419,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810221210461_addUniqueKeyInNumeroPedido.resx">
       <DependentUpon>201810221210461_addUniqueKeyInNumeroPedido.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810292003402_addTableMovimentaEstoque.resx">
+      <DependentUpon>201810292003402_addTableMovimentaEstoque.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810292007163_updateTableMovimentaestoque.resx">
+      <DependentUpon>201810292007163_updateTableMovimentaestoque.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

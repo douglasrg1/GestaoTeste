@@ -33,6 +33,7 @@ namespace Gestao.Models
         public DbSet<Funcionario> Funcionario { get; set; }
         public DbSet<ProdutoPedido> ProdutoPedido { get; set; }
         public DbSet<Pedido> Pedido { get; set; }
+        public DbSet<MovimentaEstoque> movimentaEstoque { get; set; }
 
     }
 

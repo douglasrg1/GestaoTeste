@@ -8,6 +8,7 @@ namespace Gestao.Models
 {
     public class Fornecedor
     {
+        [Key]
         public int id { get; set; }
         [Required]
         [Display(Name = "Razão Social")]
