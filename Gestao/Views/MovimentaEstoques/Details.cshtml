@@ -1,0 +1,90 @@
+﻿@model Gestao.Models.MovimentaEstoque
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>MovimentaEstoque</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Fornecedor.razaoSocial)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fornecedor.razaoSocial)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.datamovimentacao)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.datamovimentacao)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tipoMovimentacao)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tipoMovimentacao)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.nrDocumento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nrDocumento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.totalMovimentacao)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.totalMovimentacao)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.valorFrete)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.valorFrete)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.valorIpi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.valorIpi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.valorIcms)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.valorIcms)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cfop)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cfop)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.idMovimentacao }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
