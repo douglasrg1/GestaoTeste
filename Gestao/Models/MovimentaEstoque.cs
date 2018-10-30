@@ -33,7 +33,7 @@ namespace Gestao.Models
         public string cfop { get; set; }
         [ForeignKey("Fornecedor")]
         public int? idFornecedor { get; set; }
-        [Required(ErrorMessage ="Campo Obrigatorio")]
+        [Required(ErrorMessage ="Campo Obrigatório")]
         [Display(Name ="Fornecedor")]
         public virtual Fornecedor Fornecedor { get; set; }
 
