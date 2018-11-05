@@ -39,14 +39,30 @@ namespace Gestao.Controllers
         
         public ActionResult Create()
         {
+            List<SelectListItem> tipomov = new List<SelectListItem>();
+            tipomov.Add(new SelectListItem
+            {
+                Text = "Entrada",
+                Value = "Entrada",
+                Selected = false
+            });
+            tipomov.Add(new SelectListItem
+            {
+                Text = "Saída",
+                Value = "Saída",
+                Selected = false
+            });
+            
             ViewBag.idFornecedor = new SelectList(db.Fornecedor, "id", "razaoSocial");
+            ViewBag.Produto = new SelectList(db.Produto, "id", "nome");
+            ViewBag.tipoMovimentacao = new SelectList(tipomov);
             return View();
         }
 
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "idMovimentacao,datamovimentacao,tipoMovimentacao,nrDocumento,totalMovimentacao,valorFrete,valorIpi,valorIcms,cfop,idFornecedor")] MovimentaEstoque movimentaEstoque)
+        public ActionResult Create( MovimentaEstoque movimentaEstoque)
         {
             if (ModelState.IsValid)
             {
