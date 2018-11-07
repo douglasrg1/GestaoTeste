@@ -55,7 +55,7 @@ namespace Gestao.Controllers
             
             ViewBag.idFornecedor = new SelectList(db.Fornecedor, "id", "razaoSocial");
             ViewBag.Produto = new SelectList(db.Produto, "id", "nome");
-            ViewBag.tipoMovimentacao = new SelectList(tipomov);
+            ViewBag.tipoMovimentacao = tipomov;
             return View();
         }
 
@@ -130,6 +130,11 @@ namespace Gestao.Controllers
             db.movimentaEstoque.Remove(movimentaEstoque);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+        public decimal retornarValorProduto(int id)
+        {
+            var valorProduto = db.Produto.Where(p => p.id == id).First().valorVenda;
+            return valorProduto;
         }
 
         protected override void Dispose(bool disposing)
