@@ -151,6 +151,9 @@
                             <th>Valor desconto</th>
                             <th>Valor Total</th>
                             <th>OBS</th>
+                            <th>Ipi</th>
+                            <th>Icms</th>
+                            <th>Cfop</th>
                             <th>Remover</th>
                         </tr>
                     </thead>
@@ -217,7 +220,10 @@
                 a.innerHTML = d.getElementsByName('Valor Total')[0].value;
 
                 newRow.insertCell(7).innerHTML = d.getElementsByName('Observações')[0].value;
-                newRow.insertCell(8).innerHTML = "<a class = ' excluir btn btn-danger'><span class='glyphicon glyphicon-trash'></a>";
+                newRow.insertCell(8).innerHTML = d.getElementsByName('valorIpi')[0].value;
+                newRow.insertCell(9).innerHTML = d.getElementsByName('valorIcms')[0].value;
+                newRow.insertCell(10).innerHTML = d.getElementsByName('cfop')[0].value;
+                newRow.insertCell(11).innerHTML = "<a class = ' excluir btn btn-danger'><span class='glyphicon glyphicon-trash'></a>";
 
                 mostrarColumn(0, "gridProdutosMovimentacao");
                 d.getElementById("gridProdutosMovimentacao").appendChild(newRow);
@@ -340,48 +346,49 @@
         }
         function salvarmovimentacao(event) {
             event.preventDefault();
-            if (validaCamposPedido() == false) {
-                alert("Preencha todos os campos antes de salvar o pedido");
+            if (validaCamposMovimentacao() == false) {
+                alert("Preencha todos os campos antes de salvar a movimentação.");
                 return;
             }
-            var dados = { produtosPedido: [] }
+            var dados = { produtosMovimentacao: [] }
 
-            var idCLiente = idCliente;
-            var valorComicao = $("#valorComissao").val().replace('.',',');
-            var observacao = $("#observacao").val();
-            var totalPedido = $("#totalPedido").val().replace('.', ',');
-            var totalPago = $("#totalPago").val().replace('.', ',');
-            var valorDevedor = $("#valorDevedor").val().replace('.', ',');
-            var numeroPedido = $("#numeroPedido").val();
+            var totalMovimentacao = $("#totalMovimentacao").val().replace('.', ',');
+            var numeroDocumento = $("#nrDocumento").val();
+            var valorFrete = $("#valorFrete").val().replace('.', ',');
+            var idForncedor = $("#idFornecedor").val();
+            var tipoMovimentacao = $("#tipoMovimentacao option:selected").text();
 
-            var dadosPedido = { numeroPedido: numeroPedido, idCliente: idCLiente, valorComissao: valorComicao, observacao: observacao, totalPedido: totalPedido, totalPago: totalPago, valorDevedor: valorDevedor };
-            dados.dadosPedido = dadosPedido;
+            var dadosMovimentacao = { tipoMovimentacao: tipoMovimentacao, idForncedor:idForncedor,valorFrete:valorFrete,numeroDocumento: numeroDocumento, totalMovimentacao: totalMovimentacao };
+            dados.dadosMovimentacao = dadosMovimentacao;
             mostrarColumn(0, "gridProdutosMovimentacao");
 
             var table = $('#gridProdutosMovimentacao');
 
             table.find('tr:gt(0)').each(function () {
-                var produtosPedido = {
+                var produtosMovimentacao = {
                     idproduto: $(this).find('td').eq(0).text(),
                     valorUnitario: $(this).find('td').eq(2).text().replace('.', ','),
                     quantidade: $(this).find('td').eq(3).text().replace('.', ','),
                     porcDesconto: $(this).find('td').eq(4).text().replace('.', ','),
                     valorDesconto: $(this).find('td').eq(5).text().replace('.', ','),
                     valorTotal: $(this).find('td').eq(6).text().replace('.', ','),
-                    obs: $(this).find('td').eq(7).text()
+                    obs: $(this).find('td').eq(7).text(),
+                    valorIpi: $(this).find('td').eq(8).text().replace('.', ','),
+                    valorIcms: $(this).find('td').eq(9).text().replace('.', ','),
+                    cfop: $(this).find('td').eq(10).text().replace('.', ',')
                 }
                 
-                dados.produtosPedido.push(produtosPedido);
+                dados.produtosMovimentacao.push(produtosMovimentacao);
 
             });
             ocultaColumn(0, "gridProdutosMovimentacao");
-            //var dados2 = $("#formpedido").serialize();
+
             var data = {
                 __RequestVerificationToken: gettoken(),
                 dadosRecebidos: dados
             }
 
-            $.post("@Url.Action("Create","MovimentaEstoques")", data, voltarindex);
+            $.post("@Url.Action("Create","MovimentaEstoques")", data);
 
         }
         function gettoken() {
@@ -411,5 +418,13 @@
             $("#ValorDesconto").val(0.00);
            
         }
+        function validaCamposMovimentacao() {
+            var resultado = true;
+            if ($("#nrDocumento").val() == "")
+                resultado = false;
+
+            return resultado;
+        }
+
     </script>
 }
