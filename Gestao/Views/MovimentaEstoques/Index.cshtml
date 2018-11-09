@@ -41,41 +41,53 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Fornecedor.razaoSocial)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.datamovimentacao)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.tipoMovimentacao)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.nrDocumento)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.totalMovimentacao)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.valorFrete)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.valorIpi)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.valorIcms)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.cfop)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.idMovimentacao }) |
-            @Html.ActionLink("Details", "Details", new { id=item.idMovimentacao }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.idMovimentacao })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fornecedor.razaoSocial)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.datamovimentacao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.tipoMovimentacao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.nrDocumento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.totalMovimentacao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.valorFrete)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.valorIpi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.valorIcms)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.cfop)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.idMovimentacao }) |
+                @Html.ActionLink("Details", "Details", new { id = item.idMovimentacao }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.idMovimentacao })
+            </td>
+        </tr>
+    }
 
 </table>
+
+@section Scripts {
+    <script>
+        var mensagem = "@TempData["msgsucesso"]";
+
+        if (mensagem != null && mensagem != "") {
+            toastr.success(mensagem);
+    
+        }
+    </script>
+}

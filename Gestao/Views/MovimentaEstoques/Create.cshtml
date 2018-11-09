@@ -31,7 +31,7 @@
                     <div class="form-group col-md-4">
                         @Html.LabelFor(model => model.tipoMovimentacao)
                         <div>
-                            @Html.DropDownList("tipoMovimentacao",null,"Selecione...", new { @class = "form-control" })
+                            @Html.DropDownList("tipoMovimentacao",null,null, new { @class = "form-control", @disabled = "disabled" })
                             @Html.ValidationMessageFor(model => model.tipoMovimentacao, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -185,7 +185,7 @@
                 <div class="form-group">
                     <div>
                         <input type="submit" value="Salvar" class="btn btn-default" />
-                        @Html.ActionLink("Voltar", "Index", null, new { @class = "btn btn-primary" })
+                        @Html.ActionLink("Voltar", "Index", null, new { @class = "btn btn-primary", @id = "btnVoltar" })
                     </div>
                 </div>
 
@@ -273,8 +273,8 @@
             d.getElementsByName('Valor Total')[0].value = "";
             d.getElementsByName('Observações')[0].value = "";
             $('#ValorDesconto').attr('readonly', false);
-            $('#valorIpi').val("");
-            $('#valorIcms').val("");
+            $("#valorIpi").val("");
+            $("#valorIcms").val("");
             $('#cfop').val("");
         }
         function Excluir() {
@@ -388,7 +388,7 @@
                 dadosRecebidos: dados
             }
 
-            $.post("@Url.Action("Create","MovimentaEstoques")", data);
+            $.post("@Url.Action("Create","MovimentaEstoques")", data, voltarindex);
 
         }
         function gettoken() {
@@ -406,11 +406,15 @@
                 $.get("@Url.Action("retornarValorProduto")/?id=" + idproduto, function (data) {
                     var valorUnitario = data;
                     $("#ValorUnitario").val(Number(valorUnitario));
-                    $("#ValorTotal").val(Number(valorUnitario))
+                    $("#ValorTotal").val(Number(valorUnitario));
+                    $("#valorIpi").val(0.00);
+                    $("#valorIcms").val(0.00);
                 });
             } else {
                 $("#ValorUnitario").val(0.00);
                 $("#ValorTotal").val(0.00)
+                $("#valorIpi").val(0.00);
+                $("#valorIcms").val(0.00);
             }
 
             $("#Quantidade").val(1);
@@ -424,6 +428,17 @@
                 resultado = false;
 
             return resultado;
+        }
+        function voltarindex() {
+            var botao = document.getElementById("btnVoltar");
+            botao.click();
+        }
+
+        var mensagem = "@TempData["msg"]";
+
+        if (mensagem != null && mensagem != "") {
+            toastr.error(mensagem);
+    
         }
 
     </script>

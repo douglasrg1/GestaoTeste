@@ -26,7 +26,7 @@ namespace Gestao.Models
         public decimal valorUnitario { get; set; }
         public decimal valorTotal { get; set; }
         public decimal? aliqICMS { get; set; }
-        public decimal? CFOP { get; set; }
+        public string CFOP { get; set; }
         public decimal? valorICMS { get; set; }
         public string cst_cson { get; set; }
         public decimal? aliqIPI { get; set; }

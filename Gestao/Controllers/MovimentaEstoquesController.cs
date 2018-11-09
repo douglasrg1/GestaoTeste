@@ -39,23 +39,10 @@ namespace Gestao.Controllers
         
         public ActionResult Create()
         {
-            List<SelectListItem> tipomov = new List<SelectListItem>();
-            tipomov.Add(new SelectListItem
-            {
-                Text = "Entrada",
-                Value = "Entrada",
-                Selected = false
-            });
-            tipomov.Add(new SelectListItem
-            {
-                Text = "Saída",
-                Value = "Saída",
-                Selected = false
-            });
-            
+  
             ViewBag.idFornecedor = new SelectList(db.Fornecedor, "id", "razaoSocial");
             ViewBag.Produto = new SelectList(db.Produto, "id", "nome");
-            ViewBag.tipoMovimentacao = tipomov;
+            ViewBag.tipoMovimentacao = tipomov();
             return View();
         }
 
@@ -65,15 +52,29 @@ namespace Gestao.Controllers
         public ActionResult Create( MovimentaEstoque movimentaEstoque)
         {
             var dados = dadosRecebidos();
+            var idmov = salvaMovimentacao(dados.dadosMovimentacao);
 
-            if (ModelState.IsValid)
+            if (idmov != 0)
             {
-                db.movimentaEstoque.Add(movimentaEstoque);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if(dados.produtosMovimentacao != null)
+                {
+                    var resposta = salvaProdutosMovimentacao(idmov, dados.produtosMovimentacao);
+
+                    if (resposta)
+                        TempData["msgsucesso"] = "Movimentação Inserida com sucesso.";
+                    else
+                        TempData["msgsucesso"] = "Erro ao adicionar os produtos na movimentação, confira os dados e tente novamente.";
+                }
+                else
+                    TempData["msgsucesso"] = "Movimentação Inserida com sucesso.";
             }
+            else
+                TempData["msg"] = "Erro ao salvar a movimentação, confira os dados e tente novamente.";
+
 
             ViewBag.idFornecedor = new SelectList(db.Fornecedor, "id", "razaoSocial", movimentaEstoque.idFornecedor);
+            ViewBag.Produto = new SelectList(db.Produto, "id", "nome");
+            ViewBag.tipoMovimentacao = tipomov();
             return View(movimentaEstoque);
         }
 
@@ -171,7 +172,7 @@ namespace Gestao.Controllers
                 produtosMovimentacao.obs = Request["dadosRecebidos[produtosMovimentacao][" + i + "][obs]"];
                 produtosMovimentacao.valorIpi = Convert.ToDecimal(Request["dadosRecebidos[produtosMovimentacao][" + i + "][valorIpi]"]);
                 produtosMovimentacao.valorIcms = Convert.ToDecimal(Request["dadosRecebidos[produtosMovimentacao][" + i + "][valorIcms]"]);
-                produtosMovimentacao.Cfop = Convert.ToDecimal(Request["dadosRecebidos[produtosMovimentacao][" + i + "][cfop]"]);
+                produtosMovimentacao.Cfop = Request["dadosRecebidos[produtosMovimentacao][" + i + "][cfop]"];
 
                 dadosRecebidosmov.produtosMovimentacao.Add(produtosMovimentacao);
 
@@ -181,6 +182,71 @@ namespace Gestao.Controllers
 
 
             return dadosRecebidosmov;
+        }
+        private int salvaMovimentacao(dadosMovimentacao dados)
+        {
+            var resposta = true;
+            MovimentaEstoque movestoque = new MovimentaEstoque();
+            movestoque.datamovimentacao = DateTime.Now;
+            movestoque.idFornecedor = dados.idFornecedor;
+            movestoque.Fornecedor = db.Fornecedor.Find(dados.idFornecedor);
+            movestoque.nrDocumento = dados.numeroDocumento;
+            movestoque.tipoMovimentacao = dados.tipoMovimentacao;
+            movestoque.totalMovimentacao = dados.totalMovimentacao;
+            movestoque.valorFrete = dados.valorFrete;
+
+            db.movimentaEstoque.Add(movestoque);
+
+            var a = db.SaveChanges();
+
+            return movestoque.idMovimentacao;
+        }
+        private bool salvaProdutosMovimentacao(int idmovimentacao,List<produtosMovimentacao> produtos)
+        {
+            var resposta = true;
+            ProdutosMovimentacao produtosmov;
+
+            foreach(var item in produtos)
+            {
+                produtosmov = (new ProdutosMovimentacao
+                {
+                    CFOP = item.Cfop,
+                    idMovimentacaoEstoque = idmovimentacao,
+                    quantidade = item.quantidade,
+                    valorDesconto = item.valorDesconto,
+                    idProduto = item.idproduto,
+                    valorICMS = item.valorIcms,
+                    valorIPI = item.valorIpi,
+                    valorTotal = item.valorTotal,
+                    valorUnitario = item.valorUnitario
+                    
+                });
+
+                db.produtosMovimentacao.Add(produtosmov);
+                if (db.SaveChanges() == 0)
+                    return false;
+            }
+            
+
+            return resposta;
+        }
+        private List<SelectListItem> tipomov()
+        {
+            List<SelectListItem> tipomov = new List<SelectListItem>();
+            tipomov.Add(new SelectListItem
+            {
+                Text = "Entrada",
+                Value = "Entrada",
+                Selected = true
+            });
+            tipomov.Add(new SelectListItem
+            {
+                Text = "Saída",
+                Value = "Saída",
+                Selected = false
+            });
+
+            return tipomov;
         }
 
         protected override void Dispose(bool disposing)
@@ -216,7 +282,7 @@ public struct produtosMovimentacao
     public decimal valorUnitario { get; set; }
     public decimal valorIcms { get; set; }
     public decimal valorIpi { get; set; }
-    public decimal Cfop { get; set; }
+    public string Cfop { get; set; }
 
 }
 public struct dadosRecebidosMovimentacao
