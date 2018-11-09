@@ -4,85 +4,65 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Movimentações de Estoque</h2>
+
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Nova Movimentação", "Create", null, new { @class = "btn btn-primary" })
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Fornecedor.razaoSocial)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.datamovimentacao)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.tipoMovimentacao)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.nrDocumento)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.totalMovimentacao)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.valorFrete)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.valorIpi)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.valorIcms)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.cfop)
-        </th>
-        <th></th>
-    </tr>
+<table class="table" id="tableMovimentacoes">
 
-    @foreach (var item in Model)
-    {
+    <thead>
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fornecedor.razaoSocial)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.datamovimentacao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.tipoMovimentacao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.nrDocumento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.totalMovimentacao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.valorFrete)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.valorIpi)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.valorIcms)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.cfop)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.idMovimentacao }) |
-                @Html.ActionLink("Details", "Details", new { id = item.idMovimentacao }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.idMovimentacao })
-            </td>
+            <th data-column-id="razaoSocial">
+                @Html.DisplayName("Fornecedor")
+            </th>
+            <th data-column-id="datamovimentacao" data-order="asc">
+                @Html.DisplayNameFor(model => model.datamovimentacao)
+            </th>
+            <th data-column-id="tipoMovimentacao">
+                @Html.DisplayNameFor(model => model.tipoMovimentacao)
+            </th>
+            <th data-column-id="nrdocumento">
+                @Html.DisplayNameFor(model => model.nrDocumento)
+            </th>
+            <th data-column-id="totalMovimentacao">
+                @Html.DisplayNameFor(model => model.totalMovimentacao)
+            </th>
+            <th data-column-id="valorFrete">
+                @Html.DisplayNameFor(model => model.valorFrete)
+            </th>
+            <th data-formatter="acoes"></th>
         </tr>
-    }
+    </thead>
 
 </table>
 
 @section Scripts {
     <script>
+
+        var labels = {
+            all: "Todos", infos: "Mostrando de {{ctx.start}} Até {{ctx.end}} De um total de {{ctx.total}} Valores",
+            loading: "Carregando", noResults: "Nenhum Resultado Encontrado", refresh: "Recarregar", search:"Pesquisar"
+        }
+
+        $(document).ready(function () {
+
+            $("#tableMovimentacoes").bootgrid({
+                ajax: true,
+                url:"@Url.Action("listarMovimentacoes", "MovimentaEstoques")",
+                labels: labels,
+                formatters: {
+                    "acoes": function (column, row) {
+                        return "<a href='@Url.Action("Details", "MovimentaEstoques")/" + row.id + "' class = 'btn btn-warning'><span class='glyphicon glyphicon-list-alt'></span></a>" +
+                               "<a href='@Url.Action("Edit", "MovimentaEstoques")/" + row.id + "' class = 'btn btn-info'><span class='glyphicon glyphicon-edit'></a>" +
+                               "<a href='@Url.Action("Delete", "MovimentaEstoques")/" + row.id + "' class = 'btn btn-danger'><span class='glyphicon glyphicon-trash'></a>";
+                    }
+                }
+            });
+
+        })
+
         var mensagem = "@TempData["msgsucesso"]";
 
         if (mensagem != null && mensagem != "") {

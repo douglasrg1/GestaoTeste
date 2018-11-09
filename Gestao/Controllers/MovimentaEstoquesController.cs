@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -248,6 +249,43 @@ namespace Gestao.Controllers
 
             return tipomov;
         }
+        public JsonResult listarMovimentacoes(int current, int rowCount, string searchPhrase)
+        {
+            string chave = Request.Form.AllKeys.Where(k => k.StartsWith("sort")).First();
+            string campoOrdenacao = chave.Replace("sort[", "").Replace("]", "").Trim();
+            string tipoOrdenacao = Request[chave];
+            var movimenacoes = db.movimentaEstoque.ToList();
+            var ordenacao = string.Format("{0} {1}", campoOrdenacao, tipoOrdenacao);
+
+            if (!string.IsNullOrWhiteSpace(searchPhrase))
+            {
+                movimenacoes = movimenacoes.Where("Fornecedor.razaoSocial.Contains(@0)", searchPhrase).ToList();
+            }
+
+            var movpaginadas = movimenacoes.OrderBy(ordenacao).Skip((current - 1) * rowCount).Take(rowCount);
+            var movimentacoesp = retornaRowsTable(movpaginadas);
+
+            return Json(new { current = current, rowCount = rowCount, rows = movimentacoesp, total = movimenacoes.Count }, JsonRequestBehavior.AllowGet);
+        }
+        private List<rowsTablemov> retornaRowsTable(IEnumerable<MovimentaEstoque> movestoque)
+        {
+            List<rowsTablemov> listaMovimentacoes = new List<rowsTablemov>();
+            foreach (var i in movestoque)
+            {
+                listaMovimentacoes.Add(new rowsTablemov
+                {
+                    id = i.idMovimentacao,
+                    datamovimentacao = i.datamovimentacao.ToString(),
+                    nrDocumento = i.nrDocumento,
+                    razaoSocial = i.Fornecedor.razaoSocial,
+                    tipoMovimentacao = i.tipoMovimentacao,
+                    totalMovimentacao = i.totalMovimentacao,
+                    valorFrete = i.valorFrete
+                });
+            }
+
+            return listaMovimentacoes;
+        }
 
         protected override void Dispose(bool disposing)
         {
@@ -289,4 +327,14 @@ public struct dadosRecebidosMovimentacao
 {
     public dadosMovimentacao dadosMovimentacao;
     public List<produtosMovimentacao> produtosMovimentacao;
+}
+public struct rowsTablemov
+{
+    public int id { get; set; }
+    public string razaoSocial { get; set; }
+    public string datamovimentacao { get; set; }
+    public string tipoMovimentacao { get; set; }
+    public string nrDocumento { get; set; }
+    public decimal? totalMovimentacao { get; set; }
+    public decimal? valorFrete { get; set; }
 }
