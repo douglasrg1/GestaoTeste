@@ -169,7 +169,9 @@ namespace Gestao.Controllers
         {
             MovimentaEstoque movimentaEstoque = db.movimentaEstoque.Find(id);
             db.movimentaEstoque.Remove(movimentaEstoque);
-            db.SaveChanges();
+            if(db.SaveChanges() != 0)
+                TempData["msgsucesso"] = "Movimentação Removida com sucesso.";
+
             return RedirectToAction("Index");
         }
         public decimal retornarValorProduto(int id)

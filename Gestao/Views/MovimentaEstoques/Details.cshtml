@@ -4,87 +4,44 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>Detalhes da Movimentação.</h2>
 
 <div>
-    <h4>MovimentaEstoque</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Fornecedor.razaoSocial)
-        </dt>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.Fornecedor.razaoSocial)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.Fornecedor.razaoSocial)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.datamovimentacao)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.datamovimentacao)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">  @Html.DisplayNameFor(model => model.tipoMovimentacao)</p> </div>
+        <div class="col-md-4">  @Html.DisplayFor(model => model.tipoMovimentacao)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.nrDocumento)</p> </div>
+        <div class="col-md-4">  @Html.DisplayFor(model => model.nrDocumento)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.totalMovimentacao)</p> </div>
+        <div class="col-md-4">  @Html.DisplayFor(model => model.totalMovimentacao)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.valorFrete)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.valorFrete)</div>
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Fornecedor.razaoSocial)
-        </dd>
+    <hr />
 
-        <dt>
-            @Html.DisplayNameFor(model => model.datamovimentacao)
-        </dt>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
 
-        <dd>
-            @Html.DisplayFor(model => model.datamovimentacao)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.tipoMovimentacao)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.tipoMovimentacao)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.nrDocumento)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.nrDocumento)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.totalMovimentacao)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.totalMovimentacao)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.valorFrete)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.valorFrete)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.valorIpi)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.valorIpi)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.valorIcms)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.valorIcms)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.cfop)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.cfop)
-        </dd>
-
-    </dl>
+        <div class="form-actions no-color">
+            @Html.ActionLink("Editar ", "Edit", new { id = Model.idMovimentacao }, new { @class = "btn btn-primary" }) |
+            @Html.ActionLink("Voltar ", "Index", null, new { @class = "btn btn-primary" })
+        </div>
+    }
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.idMovimentacao }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
