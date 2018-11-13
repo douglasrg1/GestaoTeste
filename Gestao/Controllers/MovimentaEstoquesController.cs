@@ -264,8 +264,16 @@ namespace Gestao.Controllers
                 });
 
                 db.produtosMovimentacao.Add(produtosmov);
-                if (db.SaveChanges() == 0)
+                if (db.SaveChanges() != 0)
+                {
+                    var produto = db.Produto.Find(produtosmov.idProduto);
+                    produto.quantidadeEstoque += item.quantidade;
+                    db.Entry(produto).State = EntityState.Modified;
+                    var resp = db.SaveChanges();
+                }
+                else
                     return false;
+                   
             }
             
 
