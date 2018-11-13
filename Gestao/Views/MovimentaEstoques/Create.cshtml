@@ -352,13 +352,14 @@
             }
             var dados = { produtosMovimentacao: [] }
 
+            var idMovimentacao = @Model.idMovimentacao;
             var totalMovimentacao = $("#totalMovimentacao").val().replace('.', ',');
             var numeroDocumento = $("#nrDocumento").val();
             var valorFrete = $("#valorFrete").val().replace('.', ',');
             var idForncedor = $("#idFornecedor").val();
             var tipoMovimentacao = $("#tipoMovimentacao option:selected").text();
 
-            var dadosMovimentacao = { tipoMovimentacao: tipoMovimentacao, idForncedor:idForncedor,valorFrete:valorFrete,numeroDocumento: numeroDocumento, totalMovimentacao: totalMovimentacao };
+            var dadosMovimentacao = { idMovimentacao: idMovimentacao, tipoMovimentacao: tipoMovimentacao, idForncedor:idForncedor,valorFrete:valorFrete,numeroDocumento: numeroDocumento, totalMovimentacao: totalMovimentacao };
             dados.dadosMovimentacao = dadosMovimentacao;
             mostrarColumn(0, "gridProdutosMovimentacao");
 

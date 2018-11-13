@@ -34,5 +34,7 @@ namespace Gestao.Models
         public decimal? valorBaseICMSST { get; set; }
         public decimal? valorICMSST { get; set; }
         public decimal? valorDesconto { get; set; }
+        public string observacao { get; set; }
+        public decimal? porcdesconto { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Linq.Dynamic;
 using System.Net;
@@ -91,6 +92,9 @@ namespace Gestao.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.Produto = new SelectList(db.Produto, "id", "nome");
+            ViewBag.tipoMovimentacao = tipomov();
             ViewBag.idFornecedor = new SelectList(db.Fornecedor, "id", "razaoSocial", movimentaEstoque.idFornecedor);
             return View(movimentaEstoque);
         }
@@ -98,16 +102,49 @@ namespace Gestao.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "idMovimentacao,datamovimentacao,tipoMovimentacao,nrDocumento,totalMovimentacao,valorFrete,valorIpi,valorIcms,cfop,idFornecedor")] MovimentaEstoque movimentaEstoque)
+        public ActionResult Edit(MovimentaEstoque movimentaEstoque)
         {
-            if (ModelState.IsValid)
+            var dados = dadosRecebidos();
+            movimentaEstoque.cfop = "";
+            movimentaEstoque.datamovimentacao = db.movimentaEstoque.Find((int)dados.dadosMovimentacao.idMovimetacao).datamovimentacao;
+            movimentaEstoque.Fornecedor = db.Fornecedor.Find((int)dados.dadosMovimentacao.idFornecedor);
+            movimentaEstoque.idFornecedor = dados.dadosMovimentacao.idFornecedor;
+            movimentaEstoque.idMovimentacao = dados.dadosMovimentacao.idMovimetacao;
+            movimentaEstoque.nrDocumento = dados.dadosMovimentacao.numeroDocumento;
+            movimentaEstoque.tipoMovimentacao = dados.dadosMovimentacao.tipoMovimentacao;
+            movimentaEstoque.totalMovimentacao = dados.dadosMovimentacao.totalMovimentacao;
+            movimentaEstoque.valorFrete = dados.dadosMovimentacao.valorFrete;
+            movimentaEstoque.valorIcms = 0;
+            movimentaEstoque.valorIpi = 0;
+
+            db.Set<MovimentaEstoque>().AddOrUpdate(movimentaEstoque);
+
+            if (db.SaveChanges() != 0)
             {
-                db.Entry(movimentaEstoque).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                removeProdutosMovimentacao(movimentaEstoque.idMovimentacao);
+                ProdutosMovimentacao produtosMovimentacao = new ProdutosMovimentacao();
+
+                if (dados.produtosMovimentacao != null)
+                {
+                    var resposta = salvaProdutosMovimentacao(movimentaEstoque.idMovimentacao, dados.produtosMovimentacao);
+
+                    if (resposta)
+                        TempData["msgsucesso"] = "Movimentação Atualizada com sucesso.";
+                    else
+                        TempData["msgsucesso"] = "Erro ao adicionar os produtos na movimentação, confira os dados e tente novamente.";
+                }
+                else
+                    TempData["msgsucesso"] = "Movimentação Atualizada com sucesso.";
+
             }
+            else
+                TempData["msg"] = "Erro ao salvar a movimentação, confira os dados e tente novamente.";
+
             ViewBag.idFornecedor = new SelectList(db.Fornecedor, "id", "razaoSocial", movimentaEstoque.idFornecedor);
+            ViewBag.Produto = new SelectList(db.Produto, "id", "nome");
+            ViewBag.tipoMovimentacao = tipomov();
             return View(movimentaEstoque);
+
         }
 
         
@@ -147,6 +184,7 @@ namespace Gestao.Controllers
             produtosMovimentacao produtosMovimentacao = new produtosMovimentacao();
 
             //dados movimentacao
+            dadosMovimentacao.idMovimetacao = Convert.ToInt32(Request["dadosRecebidos[dadosMovimentacao][idMovimentacao]"]);
             dadosMovimentacao.idFornecedor = Convert.ToInt32(Request["dadosRecebidos[dadosMovimentacao][idForncedor]"]);
             dadosMovimentacao.numeroDocumento = Request["dadosRecebidos[dadosMovimentacao][numeroDocumento]"];
             dadosMovimentacao.totalMovimentacao = Convert.ToDecimal(Request["dadosRecebidos[dadosMovimentacao][totalMovimentacao]"]);
@@ -219,7 +257,9 @@ namespace Gestao.Controllers
                     valorICMS = item.valorIcms,
                     valorIPI = item.valorIpi,
                     valorTotal = item.valorTotal,
-                    valorUnitario = item.valorUnitario
+                    valorUnitario = item.valorUnitario,
+                    observacao = item.obs,
+                    porcdesconto = item.porcDesconto
                     
                 });
 
@@ -286,6 +326,33 @@ namespace Gestao.Controllers
 
             return listaMovimentacoes;
         }
+        public ActionResult retornaProdutosDaMovimentacao(int idmovimentacao)
+        {
+            var produtos = db.produtosMovimentacao.Where(p => p.idMovimentacaoEstoque == idmovimentacao).ToList();
+            foreach (var produto in produtos)
+            {
+                produto.Produto = db.Produto.Where(p => p.id == produto.idProduto).First();
+            }
+            return Json(produtos, JsonRequestBehavior.AllowGet);
+        }
+        private void removeProdutosMovimentacao(int idmovimentacao)
+        {
+            var produtosMovimentacao = db.produtosMovimentacao.Where(p => p.idMovimentacaoEstoque == idmovimentacao).ToList();
+
+            foreach (var item in produtosMovimentacao)
+            {
+                db.produtosMovimentacao.Remove(item);
+
+                if (db.SaveChanges() != 0)
+                {
+                    var produto = db.Produto.Find(item.idProduto);
+                    produto.quantidadeEstoque -= item.quantidade;
+
+                    db.Entry(produto).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+        }
 
         protected override void Dispose(bool disposing)
         {
@@ -300,6 +367,7 @@ namespace Gestao.Controllers
 
 public struct dadosMovimentacao
 {
+    public int idMovimetacao { get; set; }
     public decimal totalMovimentacao { get; set; }
     public string numeroDocumento { get; set; }
     public decimal valorFrete { get; set; }

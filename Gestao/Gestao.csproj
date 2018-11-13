@@ -264,6 +264,10 @@
     <Compile Include="Migrations\201811091320461_convertCfopDecimalToString.Designer.cs">
       <DependentUpon>201811091320461_convertCfopDecimalToString.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811131644209_addFieldsOnTableProdutosMovEstoque.cs" />
+    <Compile Include="Migrations\201811131644209_addFieldsOnTableProdutosMovEstoque.Designer.cs">
+      <DependentUpon>201811131644209_addFieldsOnTableProdutosMovEstoque.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Adicionais\Estados.cs" />
     <Compile Include="Models\Adicionais\Municipios.cs" />
@@ -447,6 +451,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811091320461_convertCfopDecimalToString.resx">
       <DependentUpon>201811091320461_convertCfopDecimalToString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811131644209_addFieldsOnTableProdutosMovEstoque.resx">
+      <DependentUpon>201811131644209_addFieldsOnTableProdutosMovEstoque.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

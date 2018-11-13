@@ -4,103 +4,477 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<h2>Editar movimentação</h2>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "formMovimentacao" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>MovimentaEstoque</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.idMovimentacao)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.datamovimentacao, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.datamovimentacao, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.datamovimentacao, "", new { @class = "text-danger" })
+        <div class="container">
+
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#home">Pedido</a></li>
+                <li><a data-toggle="tab" href="#menu1">Produtos</a></li>
+                <li><a data-toggle="tab" href="#menu2">Financeiro</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="home" class="tab-pane fade in active">
+                    <br />
+
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.tipoMovimentacao)
+                            <div>
+                                @Html.DropDownList("tipoMovimentacao", null, null, new { @class = "form-control", @disabled = "disabled" })
+                                @Html.ValidationMessageFor(model => model.tipoMovimentacao, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.nrDocumento)
+                            <div>
+                                @Html.EditorFor(model => model.nrDocumento, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.nrDocumento, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.idFornecedor, "Fornecedor", "idFornecedor")
+                            <div>
+                                @Html.DropDownList("idFornecedor", null, "Selecione...", htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.idFornecedor, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="menu1" class="tab-pane fade">
+                    <br />
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            @Html.Label("Produto")
+                            <div>
+                                @Html.DropDownList("Produto", null, "Selecione...", new { @class = "form-control" })
+                                @Html.ValidationMessage("Produto", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.Label("Valor Unitario")
+                            <div>
+                                @Html.Editor("Valor Unitario", new { htmlAttributes = new { @class = "form-control", @id = "ValorUnitario", @type = "number", @value = "0" } })
+                                @Html.ValidationMessage("Valor Unitario", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.Label("Quantidade")
+                            <div>
+                                @Html.Editor("Quantidade", new { htmlAttributes = new { @class = "form-control", @type = "number", @value = "0" } })
+                                @Html.ValidationMessage("Quantidade", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            @Html.Label("Porcentagem de Desconto")
+                            <div>
+                                @Html.Editor("Porcentagem de Desconto", new { htmlAttributes = new { @class = "form-control", @id = "PorcentagemdeDesconto", @type = "number", @value = "0" } })
+                                @Html.ValidationMessage("Porcentagem de Desconto", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.Label("Valor Desconto")
+                            <div>
+                                @Html.Editor("Valor Desconto", new { htmlAttributes = new { @class = "form-control", @id = "ValorDesconto", @type = "number", @value = "0" } })
+                                @Html.ValidationMessage("Valor Desconto", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.Label("Valor Total")
+                            <div>
+                                @Html.Editor("Valor Total", new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id = "ValorTotal" } })
+                                @Html.ValidationMessage("Valor Total", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.valorIpi)
+                            <div>
+                                @Html.EditorFor(model => model.valorIpi, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.valorIpi, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.valorIcms)
+                            <div>
+                                @Html.EditorFor(model => model.valorIcms, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.valorIcms, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.cfop)
+                            <div>
+                                @Html.EditorFor(model => model.cfop, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.cfop, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            @Html.Label("Observações")
+                            <div>
+                                @Html.Editor("Observações", new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessage("Observações", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div>
+                            <button type="button" class="btn btn-primary" onclick="processar()"> Adicionar Produto </button>
+                        </div>
+                    </div>
+
+                    <table id="gridProdutosMovimentacao" class="table table-condensed table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nome</th>
+                                <th>Valor Unitario</th>
+                                <th>Quantidade</th>
+                                <th>Porcentagem Desconto</th>
+                                <th>Valor desconto</th>
+                                <th>Valor Total</th>
+                                <th>OBS</th>
+                                <th>Ipi</th>
+                                <th>Icms</th>
+                                <th>Cfop</th>
+                                <th>Remover</th>
+                            </tr>
+                        </thead>
+                        <tbody id="myTable"></tbody>
+                    </table>
+                </div>
+                <div id="menu2" class="tab-pane fade">
+                    <br />
+
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.totalMovimentacao)
+                            <div>
+                                @Html.EditorFor(model => model.totalMovimentacao, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.totalMovimentacao, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.valorFrete)
+                            <div>
+                                @Html.EditorFor(model => model.valorFrete, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.valorFrete, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <div>
+                            <input type="submit" value="Salvar" class="btn btn-default" />
+                            @Html.ActionLink("Voltar", "Index", null, new { @class = "btn btn-primary", @id = "btnVoltar" })
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.tipoMovimentacao, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.tipoMovimentacao, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.tipoMovimentacao, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.nrDocumento, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.nrDocumento, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.nrDocumento, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.totalMovimentacao, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.totalMovimentacao, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.totalMovimentacao, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.valorFrete, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.valorFrete, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.valorFrete, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.valorIpi, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.valorIpi, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.valorIpi, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.valorIcms, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.valorIcms, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.valorIcms, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.cfop, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.cfop, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.cfop, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.idFornecedor, "idFornecedor", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("idFornecedor", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.idFornecedor, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        var d = document;
+        function processar(idTabela) {
+            if (validaCamposProduto()) {
+
+                var newRow = d.createElement('tr');
+                var id = $("#Produto option:selected").val();
+
+                newRow.insertCell(0).innerHTML = id;
+                newRow.insertCell(1).innerHTML = $("#Produto option:selected").text();
+                newRow.insertCell(2).innerHTML = d.getElementsByName('Valor Unitario')[0].value;
+                newRow.insertCell(3).innerHTML = d.getElementsByName('Quantidade')[0].value;
+                newRow.insertCell(4).innerHTML = d.getElementsByName('Porcentagem de Desconto')[0].value;
+                newRow.insertCell(5).innerHTML = d.getElementsByName('Valor Desconto')[0].value;
+
+                var a = newRow.insertCell(6);
+                a.setAttribute("data-valor", d.getElementsByName('Valor Total')[0].value);
+                a.innerHTML = d.getElementsByName('Valor Total')[0].value;
+
+                newRow.insertCell(7).innerHTML = d.getElementsByName('Observações')[0].value;
+                newRow.insertCell(8).innerHTML = d.getElementsByName('valorIpi')[0].value;
+                newRow.insertCell(9).innerHTML = d.getElementsByName('valorIcms')[0].value;
+                newRow.insertCell(10).innerHTML = d.getElementsByName('cfop')[0].value;
+                newRow.insertCell(11).innerHTML = "<a class = ' excluir btn btn-danger'><span class='glyphicon glyphicon-trash'></a>";
+
+                mostrarColumn(0, "gridProdutosMovimentacao");
+                d.getElementById("gridProdutosMovimentacao").appendChild(newRow);
+                ocultaColumn(0, "gridProdutosMovimentacao");
+                var totalmovimentacao = Number($("#totalMovimentacao").val().replace(",",".")) + Number($("#ValorTotal").val());
+                $("#totalMovimentacao").val(Number(totalmovimentacao.toFixed(2)));
+                $('.excluir').unbind();
+                $(".excluir").on("click", Excluir);
+
+                limparDados();
+
+
+                return false;
+            }
+
+        }
+
+        $(document).ready(function () {
+            ocultaColumn(0, "gridProdutosMovimentacao");
+            $("#ValorUnitario").change(calculaValortotalProduto);
+            $("#Quantidade").change(calculaValortotalProduto);
+            $("#ValorDesconto").change(calculaValortotalProduto);
+            $("#PorcentagemdeDesconto").change(calculaValorDesconto);
+            $("#Produto").change(function () {
+                valorUnitarioProduto($("#Produto option:selected").val());
+            });
+            $("#formMovimentacao").submit(salvarmovimentacao);
+            preencherdropdowntipoMovimentacao();
+            preencherTabelaComProdutos();
+        })
+
+        function ocultaColumn(colIndex, idtable) {
+            var table = document.getElementById(idtable);
+            for (var r = 0; r < table.rows.length; r++)
+                table.rows[r].cells[colIndex].style.display = 'none';
+        }
+        function mostrarColumn(colIndex, idtable) {
+            var table = document.getElementById(idtable);
+            for (var r = 0; r < table.rows.length; r++)
+                table.rows[r].cells[colIndex].style.display = 'inline';
+        }
+        function limparDados() {
+            $("#Produto").val( $('option:contains("Selecione...")').val() );
+            d.getElementsByName('Valor Unitario')[0].value = "";
+            d.getElementsByName('Quantidade')[0].value = "";
+            d.getElementsByName('Porcentagem de Desconto')[0].value = "";
+            d.getElementsByName('Valor Desconto')[0].value = "";
+            d.getElementsByName('Valor Total')[0].value = "";
+            d.getElementsByName('Observações')[0].value = "";
+            $('#ValorDesconto').attr('readonly', false);
+            $("#valorIpi").val("");
+            $("#valorIcms").val("");
+            $('#cfop').val("");
+        }
+        function Excluir() {
+
+            var tr = $(this).closest('tr');
+            var valorprod = tr.find('td[data-valor]').data("valor");
+            var valoratual = $("#totalMovimentacao").val().replace(",",".");
+            var valorMovimentacao = (Number(valoratual) - Number(valorprod));
+            $("#totalMovimentacao").val(valorMovimentacao.toFixed(2));
+
+            tr.remove();
+        };
+        function calculaValortotalProduto() {
+            var valorUnitario = $("#ValorUnitario").val().replace(',','.');
+            var quantidade = $("#Quantidade").val();
+            var desconto = $("#ValorDesconto").val().replace(',', '.');
+
+            if (valorUnitario != "" && quantidade != "") {
+                var total = valorUnitario * quantidade - desconto;
+                total = Number((total).toFixed(2));
+                $("#ValorTotal").val(total);
+            }
+
+
+        }
+        function calculaValorDesconto() {
+            var total = $("#ValorTotal").val();
+            var porcDesconto = $("#PorcentagemdeDesconto").val();
+
+            if (porcDesconto != "" && total != "") {
+                var valordesconto = (porcDesconto / 100) * total;
+                valordesconto = Number((valordesconto).toFixed(2));
+                $("#ValorDesconto").val(valordesconto);
+                $('#ValorDesconto').attr('readonly', true);
+            }
+            else {
+                $("#ValorDesconto").val("");
+                $('#ValorDesconto').attr('readonly', false);
+            }
+            calculaValortotalProduto();
+        }
+        function validaCamposProduto() {
+            var resultado = true;
+
+            if ($("#Produto option:selected").val() == "")
+                resultado = false;
+            if ($("#Produto option:selected").text() == "Selecione...")
+                resultado = false;
+            if (d.getElementsByName('Valor Unitario')[0].value == "")
+                resultado = false;
+            if (d.getElementsByName('Quantidade')[0].value == "")
+                resultado = false;
+            if (d.getElementsByName('Valor Total')[0].value == "")
+                resultado = false;
+
+            return resultado;
+        }
+        function validaCamposPedido() {
+            var resposta = true;
+
+            if (idCliente < 0)
+                resposta = false;
+            if ($("#totalPedido").val() == "")
+                resposta = false;
+            if ($("#valorDevedor").val() == "")
+                resposta = false;
+
+            return resposta;
+        }
+        function salvarmovimentacao(event) {
+            event.preventDefault();
+            if (validaCamposMovimentacao() == false) {
+                alert("Preencha todos os campos antes de salvar a movimentação.");
+                return;
+            }
+            var dados = { produtosMovimentacao: [] }
+
+            var idMovimentacao = @Model.idMovimentacao;
+            var totalMovimentacao = $("#totalMovimentacao").val().replace('.', ',');
+            var numeroDocumento = $("#nrDocumento").val();
+            var valorFrete = $("#valorFrete").val().replace('.', ',');
+            var idForncedor = $("#idFornecedor").val();
+            var tipoMovimentacao = $("#tipoMovimentacao option:selected").text();
+
+            var dadosMovimentacao = { idMovimentacao: idMovimentacao, tipoMovimentacao: tipoMovimentacao, idForncedor: idForncedor, valorFrete: valorFrete, numeroDocumento: numeroDocumento, totalMovimentacao: totalMovimentacao };
+            dados.dadosMovimentacao = dadosMovimentacao;
+            mostrarColumn(0, "gridProdutosMovimentacao");
+
+            var table = $('#gridProdutosMovimentacao');
+
+            table.find('tr:gt(0)').each(function () {
+                var produtosMovimentacao = {
+                    idproduto: $(this).find('td').eq(0).text(),
+                    valorUnitario: $(this).find('td').eq(2).text().replace('.', ','),
+                    quantidade: $(this).find('td').eq(3).text().replace('.', ','),
+                    porcDesconto: $(this).find('td').eq(4).text().replace('.', ','),
+                    valorDesconto: $(this).find('td').eq(5).text().replace('.', ','),
+                    valorTotal: $(this).find('td').eq(6).text().replace('.', ','),
+                    obs: $(this).find('td').eq(7).text(),
+                    valorIpi: $(this).find('td').eq(8).text().replace('.', ','),
+                    valorIcms: $(this).find('td').eq(9).text().replace('.', ','),
+                    cfop: $(this).find('td').eq(10).text().replace('.', ',')
+                }
+
+                dados.produtosMovimentacao.push(produtosMovimentacao);
+
+            });
+            ocultaColumn(0, "gridProdutosMovimentacao");
+
+            var data = {
+                __RequestVerificationToken: gettoken(),
+                dadosRecebidos: dados
+            }
+
+            $.post("@Url.Action("Edit","MovimentaEstoques")", data, voltarindex);
+
+        }
+        function gettoken() {
+            var token = '@Html.AntiForgeryToken()';
+            token = $(token).val();
+            return token;
+        }
+        
+        function valorUnitarioProduto(idproduto) {
+            if (idproduto != "") {
+                $.get("@Url.Action("retornarValorProduto")/?id=" + idproduto, function (data) {
+                    var valorUnitario = data;
+                    $("#ValorUnitario").val(Number(valorUnitario));
+                    $("#ValorTotal").val(Number(valorUnitario));
+                    $("#valorIpi").val(0.00);
+                    $("#valorIcms").val(0.00);
+                });
+            } else {
+                $("#ValorUnitario").val(0.00);
+                $("#ValorTotal").val(0.00)
+                $("#valorIpi").val(0.00);
+                $("#valorIcms").val(0.00);
+            }
+
+            $("#Quantidade").val(1);
+            $("#PorcentagemdeDesconto").val(0.00);
+            $("#ValorDesconto").val(0.00);
+
+        }
+        function validaCamposMovimentacao() {
+            var resultado = true;
+            if ($("#nrDocumento").val() == "")
+                resultado = false;
+
+            return resultado;
+        }
+        function voltarindex() {
+            var botao = document.getElementById("btnVoltar");
+            botao.click();
+        }
+        function preencherdropdowntipoMovimentacao() {
+            $("#tipoMovimentacao").val("@Model.tipoMovimentacao");
+
+        }
+        function preencherTabelaComProdutos() {
+
+            $.getJSON("@Url.Action("retornaProdutosDaMovimentacao")/?idmovimentacao=" + @Model.idMovimentacao, preencherTableIni)
+
+        }
+        function preencherTableIni(json) {
+            $.each(json, function (index, item) {
+                var newRow = d.createElement('tr');
+                newRow.insertCell(0).innerHTML = item.Produto.id;
+                newRow.insertCell(1).innerHTML = item.Produto.nome;
+                newRow.insertCell(2).innerHTML = item.valorUnitario;
+                newRow.insertCell(3).innerHTML = item.quantidade;
+                newRow.insertCell(4).innerHTML = item.porcDesconto == null ? 0 : item.porcDesconto;
+                newRow.insertCell(5).innerHTML = item.valorDesconto;
+
+                var a = newRow.insertCell(6);
+                a.setAttribute("data-valor", item.valorTotal);
+                a.innerHTML = item.valorTotal;
+
+                newRow.insertCell(7).innerHTML = item.observacao == null ? "" : item.observacao;
+                newRow.insertCell(8).innerHTML = item.valorIpi == null ? 0 : item.valorIpi;
+                newRow.insertCell(9).innerHTML = item.valorIcms == null ? 0 : item.valorIcms;
+                newRow.insertCell(10).innerHTML = item.cfop == null ? "" : item.cfop;
+
+                newRow.insertCell(11).innerHTML = "<a class = ' excluir btn btn-danger'><span class='glyphicon glyphicon-trash'></a>";
+
+                mostrarColumn(0, "gridProdutosMovimentacao");
+                d.getElementById("gridProdutosMovimentacao").appendChild(newRow);
+                ocultaColumn(0, "gridProdutosMovimentacao");
+                $('.excluir').unbind();
+                $(".excluir").on("click", Excluir);
+            })
+        }
+
+        var mensagem = "@TempData["msg"]";
+
+        if (mensagem != null && mensagem != "") {
+            toastr.error(mensagem);
+
+        }
+
+    </script>
 }
