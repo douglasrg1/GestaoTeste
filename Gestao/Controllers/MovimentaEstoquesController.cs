@@ -293,7 +293,7 @@ namespace Gestao.Controllers
             tipomov.Add(new SelectListItem
             {
                 Text = "Saída",
-                Value = "Saída",
+                Value = "Saida",
                 Selected = false
             });
 
@@ -327,7 +327,7 @@ namespace Gestao.Controllers
                     id = i.idMovimentacao,
                     datamovimentacao = i.datamovimentacao.ToString(),
                     nrDocumento = i.nrDocumento,
-                    razaoSocial = i.Fornecedor.razaoSocial,
+                    razaoSocial = i.Fornecedor != null ? i.Fornecedor.razaoSocial : "",
                     tipoMovimentacao = i.tipoMovimentacao,
                     totalMovimentacao = i.totalMovimentacao,
                     valorFrete = i.valorFrete

@@ -432,7 +432,7 @@
             botao.click();
         }
         function preencherdropdowntipoMovimentacao() {
-            $("#tipoMovimentacao").val("@Model.tipoMovimentacao");
+            $("#tipoMovimentacao").val("@Model.tipoMovimentacao.Replace("í","i")");
 
         }
         function preencherTabelaComProdutos() {

@@ -78,6 +78,8 @@ namespace Gestao.Controllers
 
             if (db.SaveChanges() != 0 )
             {
+                 var idmov = adicionarMovimentacaoEstoque(pedido);
+
                 ProdutoPedido produtoPedido = new ProdutoPedido();
                 foreach(var item in dados.produtosPedidos)
                 {
@@ -94,6 +96,8 @@ namespace Gestao.Controllers
                     db.ProdutoPedido.Add(produtoPedido);
                     if(db.SaveChanges() != 0)
                     {
+                        adicionaProdutoMovimentacao(produtoPedido, idmov);
+
                         var produto = db.Produto.Find(item.idproduto);
                         produto.dataUltimaSaida = DateTime.Now;
                         produto.quantidadeEstoque -= item.quantidade;
@@ -153,10 +157,13 @@ namespace Gestao.Controllers
             pedido.valorDevedor = dados.dadosPedido.valorDevedor;
             pedido.dataPedido = DateTime.Now;
 
+            var idmov = db.movimentaEstoque.Where(m => m.nrDocumento == "PD-" + pedido.numeroPedido).FirstOrDefault().idMovimentacao;
+
             db.Entry(pedido).State = EntityState.Modified;
 
             if (db.SaveChanges() != 0)
             {
+                editaMovimentacao(pedido);
                 removeProdutosPedido(pedido.id);
                 ProdutoPedido produtoPedido = new ProdutoPedido();
 
@@ -177,6 +184,8 @@ namespace Gestao.Controllers
                         db.ProdutoPedido.Add(produtoPedido);
                         if (db.SaveChanges() != 0)
                         {
+                            adicionaProdutoMovimentacao(produtoPedido, idmov);
+
                             var produto = db.Produto.Find(item.idproduto);
                             produto.dataUltimaSaida = DateTime.Now;
                             produto.quantidadeEstoque -= item.quantidade;
@@ -218,7 +227,10 @@ namespace Gestao.Controllers
         {
             Pedido pedido = db.Pedido.Find(id);
             db.Pedido.Remove(pedido);
-            db.SaveChanges();
+
+            if (db.SaveChanges() != 0)
+                removeMovimentacao(pedido);
+           
             TempData["msg"] = "Pedido Removido com Sucesso";
             return RedirectToAction("Index");
         }
@@ -338,6 +350,8 @@ namespace Gestao.Controllers
 
                     db.Entry(produto).State = EntityState.Modified;
                     db.SaveChanges();
+
+                    removeProdutoMovimentacao(db.Pedido.Where(p => p.id == idpedido).First(), item.Produto_id);
                 }
             }
         }
@@ -378,6 +392,77 @@ namespace Gestao.Controllers
             }
 
             return listapedidos;
+        }
+        private int adicionarMovimentacaoEstoque(Pedido pedido)
+        {
+            var resposta = 0;
+
+            MovimentaEstoque movimentacao = new MovimentaEstoque();
+            movimentacao.datamovimentacao = DateTime.Now;
+            movimentacao.idFornecedor = null;
+            movimentacao.nrDocumento = "PD-" + pedido.numeroPedido;
+            movimentacao.tipoMovimentacao = "Saída";
+            movimentacao.totalMovimentacao = pedido.totalPedido;
+            db.movimentaEstoque.Add(movimentacao);
+
+            if(db.SaveChanges()!= 0)
+            {
+                resposta = movimentacao.idMovimentacao;
+            }
+
+            return resposta;
+        }
+        private void adicionaProdutoMovimentacao(ProdutoPedido produto,int idMovimentacao)
+        {
+            ProdutosMovimentacao produtomov = new ProdutosMovimentacao();
+            produtomov.idMovimentacaoEstoque = idMovimentacao;
+            produtomov.MovimentaEstoque = db.movimentaEstoque.Find(idMovimentacao);
+            produtomov.idProduto = produto.Produto_id;
+            produtomov.observacao = produto.observacao;
+            produtomov.porcdesconto = produto.porcDesconto;
+            produtomov.Produto = db.Produto.Find(produto.Produto_id);
+            produtomov.quantidade = produto.quantidade;
+            produtomov.valorDesconto = produto.valorDesconto;
+            produtomov.valorTotal = produto.valorTotal;
+            produtomov.valorUnitario = produto.valorUnitario;
+
+            db.produtosMovimentacao.Add(produtomov);
+            var resp = db.SaveChanges();
+        }
+        private void removeProdutoMovimentacao(Pedido pedido, int idProduto)
+        {
+            var movimentacao = db.movimentaEstoque.Where(p => p.nrDocumento == "PD-" + pedido.numeroPedido).FirstOrDefault();
+
+            var produtosMov = db.produtosMovimentacao.Where(p => p.idMovimentacaoEstoque == movimentacao.idMovimentacao).ToList();
+
+            var produto = produtosMov.Where(p=>p.idProduto == idProduto).FirstOrDefault();
+
+            if(produto != null)
+            {
+                db.produtosMovimentacao.Remove(produto);
+                var resp = db.SaveChanges();
+            }
+                
+        }
+        private void removeMovimentacao(Pedido pedido)
+        {
+            var movimentacao = db.movimentaEstoque.Where(p => p.nrDocumento == "PD-" + pedido.numeroPedido).FirstOrDefault();
+
+            if(movimentacao != null)
+            {
+                db.movimentaEstoque.Remove(movimentacao);
+                var resp = db.SaveChanges();
+            }
+            
+        }
+        private void editaMovimentacao(Pedido pedido)
+        {
+            var movimentacao = db.movimentaEstoque.Where(p => p.nrDocumento == "PD-" + pedido.numeroPedido).FirstOrDefault();
+
+            movimentacao.totalMovimentacao = pedido.totalPedido;
+
+            db.Entry(movimentacao).State = EntityState.Modified;
+            var resp = db.SaveChanges();
         }
 
         protected override void Dispose(bool disposing)
