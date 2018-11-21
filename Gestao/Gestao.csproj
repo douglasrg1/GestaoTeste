@@ -277,6 +277,7 @@
     <Compile Include="Models\Adicionais\Municipios.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\Cliente.cs" />
+    <Compile Include="Models\DuplicatasReceber.cs" />
     <Compile Include="Models\Empresa.cs" />
     <Compile Include="Models\Fornecedor.cs" />
     <Compile Include="Models\Funcionario.cs" />
