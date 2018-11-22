@@ -11,6 +11,8 @@ namespace Gestao.Models
     {
         [Key]
         public int idDuplicataReceber { get; set; }
+        [Required]
+        [Display(Name = "Numero Duplicata")]
         public string numeroDuplicata { get; set; }
         [ForeignKey("Cliente")]
         public int idCliente { get; set; }
