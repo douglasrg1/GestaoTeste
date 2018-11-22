@@ -170,6 +170,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ClientesController.cs" />
+    <Compile Include="Controllers\DuplicatasReceberController.cs" />
     <Compile Include="Controllers\EmpresasController.cs" />
     <Compile Include="Controllers\FornecedoresController.cs" />
     <Compile Include="Controllers\FuncionariosController.cs" />
@@ -271,6 +272,10 @@
     <Compile Include="Migrations\201811201309225_removrequiredFornecedor.cs" />
     <Compile Include="Migrations\201811201309225_removrequiredFornecedor.Designer.cs">
       <DependentUpon>201811201309225_removrequiredFornecedor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811221205061_addtableDuplicatasAReceber.cs" />
+    <Compile Include="Migrations\201811221205061_addtableDuplicatasAReceber.Designer.cs">
+      <DependentUpon>201811221205061_addtableDuplicatasAReceber.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Adicionais\Estados.cs" />
@@ -376,6 +381,11 @@
     <Content Include="Views\MovimentaEstoques\Details.cshtml" />
     <Content Include="Views\MovimentaEstoques\Edit.cshtml" />
     <Content Include="Views\MovimentaEstoques\Index.cshtml" />
+    <Content Include="Views\DuplicatasReceber\Create.cshtml" />
+    <Content Include="Views\DuplicatasReceber\Delete.cshtml" />
+    <Content Include="Views\DuplicatasReceber\Details.cshtml" />
+    <Content Include="Views\DuplicatasReceber\Edit.cshtml" />
+    <Content Include="Views\DuplicatasReceber\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -462,6 +472,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811201309225_removrequiredFornecedor.resx">
       <DependentUpon>201811201309225_removrequiredFornecedor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811221205061_addtableDuplicatasAReceber.resx">
+      <DependentUpon>201811221205061_addtableDuplicatasAReceber.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

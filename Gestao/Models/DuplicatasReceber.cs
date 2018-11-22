@@ -43,5 +43,7 @@ namespace Gestao.Models
         public string statusDuplicata { get; set; }
         [ForeignKey("Pedido")]
         public int idPedido { get; set; }
+        public virtual Pedido Pedido { get; set; }
+
     }
 }

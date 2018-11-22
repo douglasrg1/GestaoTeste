@@ -1,0 +1,111 @@
+﻿@model IEnumerable<Gestao.Models.DuplicatasReceber>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Cliente.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Pedido.observacao)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.numeroDuplicata)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dataHemissao)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dataVencimento)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dataPagamento)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.valorDuplicata)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.valorDesconto)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.valorPago)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.valorDevedor)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.valorMulta)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.valorJurosPorDia)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.observacao)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.statusDuplicata)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cliente.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Pedido.observacao)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.numeroDuplicata)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dataHemissao)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dataVencimento)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dataPagamento)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.valorDuplicata)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.valorDesconto)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.valorPago)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.valorDevedor)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.valorMulta)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.valorJurosPorDia)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.observacao)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.statusDuplicata)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.idDuplicataReceber }) |
+            @Html.ActionLink("Details", "Details", new { id=item.idDuplicataReceber }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.idDuplicataReceber })
+        </td>
+    </tr>
+}
+
+</table>

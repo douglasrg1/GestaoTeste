@@ -29,6 +29,7 @@ namespace Gestao.Models
         [Display(Name ="Total Devedor")]
         public decimal valorDevedor { get; set; }
         public List<ProdutoPedido> ProdutoPedido { get; set; }
+        public List<DuplicatasReceber> duplicatasReceber { get; set; }
         [Display(Name ="Numero do Pedido")]
         [Index(IsUnique = true)]
         public int numeroPedido { get; set; }
