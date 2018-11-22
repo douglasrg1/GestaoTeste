@@ -19,6 +19,7 @@ namespace Gestao.Controllers
         public ActionResult Index()
         {
             var duplicatasReceber = db.duplicatasReceber.Include(d => d.Cliente).Include(d => d.Pedido);
+            
             return View(duplicatasReceber.ToList());
         }
 
@@ -42,6 +43,7 @@ namespace Gestao.Controllers
         {
             ViewBag.idCliente = new SelectList(db.Cliente, "Id", "Nome");
             ViewBag.idPedido = new SelectList(db.Pedido, "id", "observacao");
+            ViewBag.statusDuplicata = selectListStatusDuplicata();
             return View();
         }
 
@@ -50,6 +52,8 @@ namespace Gestao.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(DuplicatasReceber duplicatasReceber)
         {
+            
+
             if (ModelState.IsValid)
             {
                 db.duplicatasReceber.Add(duplicatasReceber);
@@ -59,6 +63,7 @@ namespace Gestao.Controllers
 
             ViewBag.idCliente = new SelectList(db.Cliente, "Id", "Nome", duplicatasReceber.idCliente);
             ViewBag.idPedido = new SelectList(db.Pedido, "id", "observacao", duplicatasReceber.idPedido);
+            ViewBag.statusDuplicata = selectListStatusDuplicata();
             return View(duplicatasReceber);
         }
 
@@ -76,6 +81,7 @@ namespace Gestao.Controllers
             }
             ViewBag.idCliente = new SelectList(db.Cliente, "Id", "Nome", duplicatasReceber.idCliente);
             ViewBag.idPedido = new SelectList(db.Pedido, "id", "observacao", duplicatasReceber.idPedido);
+            ViewBag.statusDuplicata = selectListStatusDuplicata();
             return View(duplicatasReceber);
         }
 
@@ -92,6 +98,7 @@ namespace Gestao.Controllers
             }
             ViewBag.idCliente = new SelectList(db.Cliente, "Id", "Nome", duplicatasReceber.idCliente);
             ViewBag.idPedido = new SelectList(db.Pedido, "id", "observacao", duplicatasReceber.idPedido);
+            ViewBag.statusDuplicata = selectListStatusDuplicata();
             return View(duplicatasReceber);
         }
 
@@ -158,6 +165,37 @@ namespace Gestao.Controllers
             }
 
             return listaMovimentacoes;
+        }
+        private IList<SelectListItem> selectListStatusDuplicata()
+        {
+            IList<SelectListItem> list = new List<SelectListItem>()
+            {
+                new SelectListItem
+                {
+                    Text = "Pago",
+                    Value = "Pago",
+                    Selected = false
+                },
+                new SelectListItem
+                {
+                    Text = "Não Pago",
+                    Value = "Não Pago",
+                    Selected = false
+                },
+                new SelectListItem
+                {
+                    Text = "Parcialmente Pago",
+                    Value = "Parcialmente Pago",
+                    Selected = false
+                }
+            };
+
+            return list;
+        }
+        private decimal trocaPontoPorVirgula(decimal valor)
+        {
+            var a = valor.ToString().Replace(".", ",");
+            return Convert.ToDecimal(a);
         }
 
         protected override void Dispose(bool disposing)

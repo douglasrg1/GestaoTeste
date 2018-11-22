@@ -281,6 +281,10 @@
     <Compile Include="Migrations\201811221312364_addRequiredinNumeroDuplicataReceber.Designer.cs">
       <DependentUpon>201811221312364_addRequiredinNumeroDuplicataReceber.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811221417140_statusDuplicataIsRequired.cs" />
+    <Compile Include="Migrations\201811221417140_statusDuplicataIsRequired.Designer.cs">
+      <DependentUpon>201811221417140_statusDuplicataIsRequired.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Adicionais\Estados.cs" />
     <Compile Include="Models\Adicionais\Municipios.cs" />
@@ -482,6 +486,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811221312364_addRequiredinNumeroDuplicataReceber.resx">
       <DependentUpon>201811221312364_addRequiredinNumeroDuplicataReceber.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811221417140_statusDuplicataIsRequired.resx">
+      <DependentUpon>201811221417140_statusDuplicataIsRequired.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

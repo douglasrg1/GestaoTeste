@@ -41,7 +41,8 @@ namespace Gestao.Models
         public decimal valorJurosPorDia { get; set; }
         [Display(Name = "Observação")]
         public string observacao { get; set; }
-        [Display(Name = "Status da duplicata")]
+        [Required]
+        [Display(Name = "Status da Duplicata")]
         public string statusDuplicata { get; set; }
         [ForeignKey("Pedido")]
         public int idPedido { get; set; }
