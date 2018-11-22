@@ -16,7 +16,7 @@ namespace Gestao.Models
         public int idCliente { get; set; }
         [Required]
         [Display(Name = "Cliente")]
-        public virtual Cliente cliente { get; set; }
+        public virtual Cliente Cliente { get; set; }
         [Required]
         [Display(Name = "Data Hemissão")]
         public DateTime dataHemissao { get; set; }
