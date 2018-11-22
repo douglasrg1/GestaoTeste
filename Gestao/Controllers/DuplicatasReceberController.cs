@@ -52,13 +52,20 @@ namespace Gestao.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(DuplicatasReceber duplicatasReceber)
         {
-            
+            duplicatasReceber.Cliente = db.Cliente.First(c => c.Id == duplicatasReceber.idCliente);
+            duplicatasReceber.idPedido = duplicatasReceber.idPedido == 0 ? null : duplicatasReceber.idPedido;
 
-            if (ModelState.IsValid)
+            try
             {
                 db.duplicatasReceber.Add(duplicatasReceber);
-                db.SaveChanges();
+                if (db.SaveChanges() != 0)
+                    TempData["msgsucesso"] = "Registro salvo com sucesso";
+
                 return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                TempData["msgerro"] = "Erro ao tentar salvar registro.";
             }
 
             ViewBag.idCliente = new SelectList(db.Cliente, "Id", "Nome", duplicatasReceber.idCliente);
@@ -153,14 +160,15 @@ namespace Gestao.Controllers
             {
                 listaMovimentacoes.Add(new rowsTableduplicatasreceber
                 {
+                    id = i.idDuplicataReceber,
                     Cliente = i.Cliente.Nome,
-                    dataHemissao = i.dataHemissao.ToString(),
-                    dataVencimento = i.dataVencimento.ToString(),
+                    dataHemissao = i.dataHemissao.ToString("dd/MM/yyyy"),
+                    dataVencimento = i.dataVencimento.ToString("dd/MM/yyyy"),
                     numeroDuplicata = i.numeroDuplicata,
                     observacao = i.observacao,
                     statusDuplicata = i.statusDuplicata,
-                    valorDevedor = i.valorDevedor,
-                    valorDuplicata = i.valorDuplicata
+                    valorDevedor = i.valorDevedor.ToString().Replace(".",","),
+                    valorDuplicata = i.valorDuplicata.ToString().Replace(".", ",")
                 });
             }
 
@@ -192,11 +200,6 @@ namespace Gestao.Controllers
 
             return list;
         }
-        private decimal trocaPontoPorVirgula(decimal valor)
-        {
-            var a = valor.ToString().Replace(".", ",");
-            return Convert.ToDecimal(a);
-        }
 
         protected override void Dispose(bool disposing)
         {
@@ -211,12 +214,13 @@ namespace Gestao.Controllers
 
 public struct rowsTableduplicatasreceber
 {
+    public int id { get; set; }
     public string Cliente { get; set; }
     public string numeroDuplicata { get; set; }
     public string dataHemissao { get; set; }
     public string dataVencimento { get; set; }
-    public decimal? valorDuplicata { get; set; }
-    public decimal? valorDevedor { get; set; }
+    public string valorDuplicata { get; set; }
+    public string valorDevedor { get; set; }
     public string observacao { get; set; }
     public string statusDuplicata { get; set; }
 }

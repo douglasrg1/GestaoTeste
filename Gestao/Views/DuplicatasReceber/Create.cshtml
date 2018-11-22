@@ -145,16 +145,61 @@
     @Scripts.Render("~/bundles/jqueryval")
 
     <script>
+
         $(document).ready(function () {
-            $("#formDuplicataReceber").submit(salvarduplicatarecer);
+            removePontoDecimal();
+            $("#valorDuplicata").change(calculaValorDevedor);
+            $("#valorDesconto").change(calculaValorDevedor);
+            $("#valorPago").change(calculaValorDevedor);
         });
 
-        function salvarduplicatarecer(e) {
-            e.preventDefault();
+        function removePontoDecimal() {
+            $("#valorDuplicata").keyup(function () {
+                var valor = $(this).val();
+                $(this).val(valor.replace(".", ""));
+            });
 
-            var dados = $("#formDuplicataReceber").serialize();
-            var a = "nada";
-            $.post("@Url.Action("Create","DuplicatasReceber")", dados);
+            $("#valorDesconto").keyup(function () {
+                var valor = $(this).val();
+                $(this).val(valor.replace(".", ""));
+            });
+
+            $("#valorPago").keyup(function () {
+                var valor = $(this).val();
+                $(this).val(valor.replace(".", ""));
+            });
+
+            $("#valorDevedor").keyup(function () {
+                var valor = $(this).val();
+                $(this).val(valor.replace(".", ""));
+            });
+
+            $("#valorMulta").keyup(function () {
+                var valor = $(this).val();
+                $(this).val(valor.replace(".", ""));
+            });
+
+            $("#valorJurosPorDia").keyup(function () {
+                var valor = $(this).val();
+                $(this).val(valor.replace(".", ""));
+            });
+
+            
+        }
+        function calculaValorDevedor() {
+            var valorDuplicata = $("#valorDuplicata").val() == "" ? 0 : Number($("#valorDuplicata").val().replace(",","."));
+            var valorDesconto = $("#valorDesconteo").val() == "" ? 0 : Number($("#valorDesconto").val().replace(",", "."));
+            var valorPago = $("#valorPago").val() == "" ? 0 : Number($("#valorPago").val().replace(",", "."));
+            var valorDevedor = Number((valorDuplicata - valorPago - valorDesconto).toFixed(2));
+
+            $("#valorDevedor").val(valorDevedor.toString() == 0 ? "" : valorDevedor.toString().replace(".", ","));
+        }
+
+       var mensagem = "@TempData["msgerro"]";
+
+        if (mensagem != null && mensagem != "") {
+            toastr.success(mensagem);
+
         }
     </script>
 }

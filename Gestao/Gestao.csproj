@@ -285,6 +285,10 @@
     <Compile Include="Migrations\201811221417140_statusDuplicataIsRequired.Designer.cs">
       <DependentUpon>201811221417140_statusDuplicataIsRequired.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811221651072_idpedidoNullAble.cs" />
+    <Compile Include="Migrations\201811221651072_idpedidoNullAble.Designer.cs">
+      <DependentUpon>201811221651072_idpedidoNullAble.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Adicionais\Estados.cs" />
     <Compile Include="Models\Adicionais\Municipios.cs" />
@@ -489,6 +493,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811221417140_statusDuplicataIsRequired.resx">
       <DependentUpon>201811221417140_statusDuplicataIsRequired.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811221651072_idpedidoNullAble.resx">
+      <DependentUpon>201811221651072_idpedidoNullAble.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
