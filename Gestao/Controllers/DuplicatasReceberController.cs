@@ -99,14 +99,25 @@ namespace Gestao.Controllers
         // POST: DuplicatasReceber/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(DuplicatasReceber duplicatasReceber)
+        public ActionResult Edit(DuplicatasReceber duplicatasReceber, int id)
         {
-            if (ModelState.IsValid)
+            duplicatasReceber.Cliente = db.Cliente.First(c => c.Id == duplicatasReceber.idCliente);
+            duplicatasReceber.idPedido = duplicatasReceber.idPedido == 0 ? null : duplicatasReceber.idPedido;
+            duplicatasReceber.idDuplicataReceber = id;
+
+            try
             {
                 db.Entry(duplicatasReceber).State = EntityState.Modified;
-                db.SaveChanges();
+                if (db.SaveChanges() != 0)
+                    TempData["msgsucesso"] = "Registro editado com sucesso";
+
                 return RedirectToAction("Index");
             }
+            catch (Exception ex)
+            {
+                TempData["msgerro"] = "Erro ao tentar editar registro.";
+            }
+
             ViewBag.idCliente = new SelectList(db.Cliente, "Id", "Nome", duplicatasReceber.idCliente);
             ViewBag.idPedido = new SelectList(db.Pedido, "id", "observacao", duplicatasReceber.idPedido);
             ViewBag.statusDuplicata = selectListStatusDuplicata();
@@ -192,7 +203,7 @@ namespace Gestao.Controllers
                 new SelectListItem
                 {
                     Text = "Não Pago",
-                    Value = "Não Pago",
+                    Value = "Nao Pago",
                     Selected = false
                 },
                 new SelectListItem

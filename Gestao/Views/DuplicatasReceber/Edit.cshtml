@@ -196,6 +196,9 @@
             $("#valorDevedor").val(valorDevedor.toString() == 0 ? "" : valorDevedor.toString().replace(".", ","));
         }
         function preencheCamposIniciais() {
+
+            $("#statusDuplicata").val("@Model.statusDuplicata");
+
             if ("@ViewBag.datpag" != "")
                $("#dataPagamento").val(convertData("@ViewBag.datpag"));
 
@@ -217,7 +220,7 @@
        var mensagem = "@TempData["msgerro"]";
 
         if (mensagem != null && mensagem != "") {
-            toastr.success(mensagem);
+            toastr.error(mensagem);
 
         }
     </script>
