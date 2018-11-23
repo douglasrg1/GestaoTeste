@@ -216,6 +216,19 @@ namespace Gestao.Controllers
 
             return list;
         }
+        public decimal calcularJuros(int idDuplicata)
+        {
+            decimal valorMulta = 0;
+            var duplicata = db.duplicatasReceber.First(d => d.idDuplicataReceber == idDuplicata);
+
+            if(DateTime.Now > duplicata.dataVencimento && duplicata.statusDuplicata != "Pago")
+            {
+                var diasDeAtraso = (DateTime.Now.Date - duplicata.dataVencimento.Date).TotalDays;
+                valorMulta = duplicata.valorMulta + (Convert.ToDecimal(diasDeAtraso) * duplicata.valorJurosPorDia);
+            }
+
+            return valorMulta;
+        }
 
         protected override void Dispose(bool disposing)
         {

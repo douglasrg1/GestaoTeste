@@ -121,7 +121,7 @@
         </div>
 
         <div class="row">
-            <div class="form-group col-md-12">
+            <div class="form-group col-md-4">
                 @Html.LabelFor(model => model.statusDuplicata)
                 <div>
                     @Html.DropDownListFor(model => model.statusDuplicata, (IList<SelectListItem>)ViewBag.statusDuplicata, "Selecione...", new { @class = "form-control" })
@@ -129,8 +129,14 @@
 
                 </div>
             </div>
-        </div>
 
+            <div class="form-group col-md-4">
+                @Html.Label("Juros por atraso")
+                <div>
+                    @Html.Editor("juros", new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        </div>
 
         <div class="form-group">
             <div>
@@ -139,6 +145,7 @@
             </div>
         </div>
     </div>
+
 }
 
 @section Scripts {
@@ -152,6 +159,7 @@
             $("#valorDuplicata").change(calculaValorDevedor);
             $("#valorDesconto").change(calculaValorDevedor);
             $("#valorPago").change(calculaValorDevedor);
+            $("#juros").click(calculaJuros);
         });
 
         function removePontoDecimal() {
@@ -193,17 +201,7 @@
             var valorPago = $("#valorPago").val() == "" ? 0 : Number($("#valorPago").val().replace(",", "."));
             var valorDevedor = Number((valorDuplicata - valorPago - valorDesconto).toFixed(2));
 
-            $("#valorDevedor").val(valorDevedor.toString() == 0 ? "" : valorDevedor.toString().replace(".", ","));
-        }
-        function preencheCamposIniciais() {
-
-            $("#statusDuplicata").val("@Model.statusDuplicata");
-
-            if ("@ViewBag.datpag" != "")
-               $("#dataPagamento").val(convertData("@ViewBag.datpag"));
-
-            $("#dataHemissao").val(convertData("@Model.dataHemissao.ToString("yyyy/MM/dd")"));
-            $("#dataVencimento").val(convertData("@Model.dataVencimento.ToString("yyyy/MM/dd")"));
+            $("#valorDevedor").val(valorDevedor.toString().replace(".", ","));
         }
         function convertData(data) {
             var dados = data.split("/");
@@ -215,6 +213,25 @@
                 dados[2] = "0" + dados[2].lenght;
 
             return dados[0] + "-" + dados[1] + "-" + dados[2];
+        }
+
+        function preencheCamposIniciais() {
+
+            $("#statusDuplicata").val("@Model.statusDuplicata");
+
+            if ("@ViewBag.datpag" != "")
+               $("#dataPagamento").val(convertData("@ViewBag.datpag"));
+
+            $("#dataHemissao").val(convertData("@Model.dataHemissao.ToString("yyyy/MM/dd")"));
+            $("#dataVencimento").val(convertData("@Model.dataVencimento.ToString("yyyy/MM/dd")"));
+        }
+
+        function calculaJuros() {
+            var juros = $.get("@Url.Action("calcularJuros","DuplicatasReceber")" +
+                "?idDuplicata=" + "@Model.idDuplicataReceber", preencheCampoJuros);
+        }
+        function preencheCampoJuros(data) {
+            $("#juros").val(data.replace(".",","));
         }
 
        var mensagem = "@TempData["msgerro"]";
