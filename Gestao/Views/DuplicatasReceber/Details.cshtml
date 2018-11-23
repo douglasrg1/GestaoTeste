@@ -4,127 +4,74 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>Detalhes</h2>
 
 <div>
-    <h4>DuplicatasReceber</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Cliente.Nome)
-        </dt>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayName("Cliente")</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.Cliente.Nome)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.observacao)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.observacao)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold"> @Html.DisplayNameFor(model => model.numeroDuplicata)</p> </div>
+        <div class="col-md-4">  @Html.DisplayFor(model => model.numeroDuplicata)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.dataHemissao)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.dataHemissao)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.dataVencimento)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.dataVencimento)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.dataPagamento)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.dataPagamento)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.valorDuplicata)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.valorDuplicata)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.valorDesconto)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.valorDesconto)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.valorPago)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.valorPago)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.valorDevedor)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.valorDevedor)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.valorMulta)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.valorMulta)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.valorJurosPorDia)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.valorJurosPorDia)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.observacao)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.observacao)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.statusDuplicata)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.statusDuplicata)</div>
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Cliente.Nome)
-        </dd>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Pedido.observacao)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Pedido.observacao)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.numeroDuplicata)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.numeroDuplicata)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.dataHemissao)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.dataHemissao)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.dataVencimento)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.dataVencimento)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.dataPagamento)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.dataPagamento)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.valorDuplicata)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.valorDuplicata)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.valorDesconto)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.valorDesconto)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.valorPago)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.valorPago)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.valorDevedor)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.valorDevedor)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.valorMulta)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.valorMulta)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.valorJurosPorDia)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.valorJurosPorDia)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.observacao)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.observacao)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.statusDuplicata)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.statusDuplicata)
-        </dd>
-
-    </dl>
+        <div class="form-actions no-color">
+            @Html.ActionLink("Editar ", "Edit", new { id = Model.idDuplicataReceber }, new { @class = "btn btn-primary" }) |
+            @Html.ActionLink("Voltar ", "Index", null, new { @class = "btn btn-primary" })
+        </div>
+    }
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.idDuplicataReceber }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

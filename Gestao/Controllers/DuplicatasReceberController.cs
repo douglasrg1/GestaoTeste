@@ -88,6 +88,10 @@ namespace Gestao.Controllers
             }
             ViewBag.idCliente = new SelectList(db.Cliente, "Id", "Nome", duplicatasReceber.idCliente);
             ViewBag.idPedido = new SelectList(db.Pedido, "id", "observacao", duplicatasReceber.idPedido);
+
+            if (duplicatasReceber.dataPagamento != null)
+                ViewBag.datpag = Convert.ToDateTime(duplicatasReceber.dataPagamento).ToString("yyyy/MM/dd");
+
             ViewBag.statusDuplicata = selectListStatusDuplicata();
             return View(duplicatasReceber);
         }
@@ -132,6 +136,7 @@ namespace Gestao.Controllers
             DuplicatasReceber duplicatasReceber = db.duplicatasReceber.Find(id);
             db.duplicatasReceber.Remove(duplicatasReceber);
             db.SaveChanges();
+            TempData["msgsucesso"] = "Registro removido com sucesso";
             return RedirectToAction("Index");
         }
         public JsonResult listarDuplicatas(int current, int rowCount, string searchPhrase)
