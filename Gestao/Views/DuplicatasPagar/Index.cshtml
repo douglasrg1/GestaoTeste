@@ -9,103 +9,67 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Fornecedor.razaoSocial)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.numeroDuplicata)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.dataHemissao)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.dataVencimento)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.dataPagamento)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.valorDuplicata)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.valorDesconto)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.valorPago)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.valorDevedor)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.valorMulta)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.valorJurosPorDia)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.observacao)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.statusDuplicata)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.nrDocumento)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Fornecedor.razaoSocial)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.numeroDuplicata)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.dataHemissao)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.dataVencimento)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.dataPagamento)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.valorDuplicata)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.valorDesconto)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.valorPago)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.valorDevedor)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.valorMulta)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.valorJurosPorDia)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.observacao)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.statusDuplicata)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.nrDocumento)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.idDuplicataPagar }) |
-            @Html.ActionLink("Details", "Details", new { id=item.idDuplicataPagar }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.idDuplicataPagar })
-        </td>
-    </tr>
-}
+<table class="table" id="duplicatasPagar">
+    <thead>
+        <tr>
+            <th data-column-id="Fornecedor">
+                @Html.DisplayName("Fornecedor")
+            </th>
+            <th data-column-id="numeroDuplicata">
+                @Html.DisplayNameFor(model => model.numeroDuplicata)
+            </th>
+            <th data-column-id="dataHemissao" data-order="desc">
+                @Html.DisplayNameFor(model => model.dataHemissao)
+            </th>
+            <th data-column-id="dataVencimento">
+                @Html.DisplayNameFor(model => model.dataVencimento)
+            </th>
+            <th data-column-id="valorDuplicata">
+                @Html.DisplayNameFor(model => model.valorDuplicata)
+            </th>
+            <th data-column-id="statusDuplicata">
+                @Html.DisplayNameFor(model => model.statusDuplicata)
+            </th>
+            <th data-column-id="nrDocumento">
+                @Html.DisplayNameFor(model => model.nrDocumento)
+            </th>
+            <th data-formatter="acoes"></th>
+        </tr>
+    </thead>
+    
 
 </table>
+
+@section Scripts {
+    <script>
+
+        var labels = {
+            all: "Todos", infos: "Mostrando de {{ctx.start}} Até {{ctx.end}} De um total de {{ctx.total}} Valores",
+            loading: "Carregando", noResults: "Nenhum Resultado Encontrado", refresh: "Recarregar", search:"Pesquisar"
+        }
+
+        $(document).ready(function () {
+
+            $("#duplicatasPagar").bootgrid({
+                ajax: true,
+                url:"@Url.Action("listarDuplicatas", "DuplicatasPagar")",
+                labels: labels,
+                formatters: {
+                    "acoes": function (column, row) {
+                        return "<a href='@Url.Action("Details", "DuplicatasPagar")/" + row.id + "' class = 'btn btn-warning'><span class='glyphicon glyphicon-list-alt'></span></a>" +
+                            "<a href='@Url.Action("Edit", "DuplicatasPagar")/" + row.id + "' class = 'btn btn-info'><span class='glyphicon glyphicon-edit'></a>" +
+                            "<a href='@Url.Action("Delete", "DuplicatasPagar")/" + row.id + "' class = 'btn btn-danger'><span class='glyphicon glyphicon-trash'></a>";
+                    }
+                }
+            });
+
+        })
+
+        var mensagem = "@TempData["msgsucesso"]";
+
+        if (mensagem != null && mensagem != "") {
+            toastr.success(mensagem);
+
+        }
+    </script>
+}

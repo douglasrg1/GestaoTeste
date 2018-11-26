@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -44,8 +45,6 @@ namespace Gestao.Controllers
         }
 
         // POST: DuplicatasPagar/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "idDuplicataPagar,numeroDuplicata,idFornecedor,dataHemissao,dataVencimento,dataPagamento,valorDuplicata,valorDesconto,valorPago,valorDevedor,valorMulta,valorJurosPorDia,observacao,statusDuplicata,nrDocumento")] DuplicatasPagar duplicatasPagar)
@@ -78,8 +77,6 @@ namespace Gestao.Controllers
         }
 
         // POST: DuplicatasPagar/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "idDuplicataPagar,numeroDuplicata,idFornecedor,dataHemissao,dataVencimento,dataPagamento,valorDuplicata,valorDesconto,valorPago,valorDevedor,valorMulta,valorJurosPorDia,observacao,statusDuplicata,nrDocumento")] DuplicatasPagar duplicatasPagar)
@@ -119,6 +116,44 @@ namespace Gestao.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        public JsonResult listarDuplicatas(int current, int rowCount, string searchPhrase)
+        {
+            string chave = Request.Form.AllKeys.Where(k => k.StartsWith("sort")).First();
+            string campoOrdenacao = chave.Replace("sort[", "").Replace("]", "").Trim();
+            string tipoOrdenacao = Request[chave];
+            var duplicatas = db.duplicatasPagar.ToList();
+            var ordenacao = string.Format("{0} {1}", campoOrdenacao, tipoOrdenacao);
+
+            if (!string.IsNullOrWhiteSpace(searchPhrase))
+            {
+                duplicatas = duplicatas.Where("Fornecedor.razaoSocial.Contains(@0) OR numeroDuplicata.Contains(@0)", searchPhrase).ToList();
+            }
+
+            var duplicataspaginadas = duplicatas.OrderBy(ordenacao).Skip((current - 1) * rowCount).Take(rowCount);
+            var duplicatasr = retornaRowsTable(duplicataspaginadas);
+
+            return Json(new { current = current, rowCount = rowCount, rows = duplicatasr, total = duplicatas.Count }, JsonRequestBehavior.AllowGet);
+        }
+        private List<rowsTableduplicatasPagar> retornaRowsTable(IEnumerable<DuplicatasPagar> duplicataspaginadas)
+        {
+            List<rowsTableduplicatasPagar> listaMovimentacoes = new List<rowsTableduplicatasPagar>();
+            foreach (var i in duplicataspaginadas)
+            {
+                listaMovimentacoes.Add(new rowsTableduplicatasPagar
+                {
+                    id = i.idDuplicataPagar,
+                    Fornecedor = i.Fornecedor.razaoSocial,
+                    dataHemissao = i.dataHemissao.ToString("dd/MM/yyyy"),
+                    dataVencimento = i.dataVencimento.ToString("dd/MM/yyyy"),
+                    numeroDuplicata = i.numeroDuplicata,
+                    statusDuplicata = i.statusDuplicata,
+                    valorDuplicata = i.valorDuplicata.ToString().Replace(".", ","),
+                    nrDocumento = i.nrDocumento
+                });
+            }
+
+            return listaMovimentacoes;
+        }
 
         protected override void Dispose(bool disposing)
         {
@@ -129,4 +164,16 @@ namespace Gestao.Controllers
             base.Dispose(disposing);
         }
     }
+}
+
+public struct rowsTableduplicatasPagar
+{
+    public int id { get; set; }
+    public string Fornecedor { get; set; }
+    public string numeroDuplicata { get; set; }
+    public string dataHemissao { get; set; }
+    public string dataVencimento { get; set; }
+    public string valorDuplicata { get; set; }
+    public string statusDuplicata { get; set; }
+    public string nrDocumento { get; set; }
 }
