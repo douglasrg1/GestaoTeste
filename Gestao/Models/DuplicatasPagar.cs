@@ -15,6 +15,7 @@ namespace Gestao.Models
         public string numeroDuplicata { get; set; }
         [ForeignKey("Fornecedor")]
         [Required]
+        [Display(Name ="Fornecedor")]
         public int idFornecedor { get; set; }
         public virtual Fornecedor Fornecedor { get; set; }
         [Display(Name = "Data Hemissão")]
@@ -38,6 +39,7 @@ namespace Gestao.Models
         [Display(Name = "Observação")]
         public string observacao { get; set; }
         [Display(Name = "Status Duplicata")]
+        [Required]
         public string statusDuplicata { get; set; }
         [Display(Name = "Numero Documento")]
         public string nrDocumento { get; set; }

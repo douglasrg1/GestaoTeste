@@ -41,19 +41,29 @@ namespace Gestao.Controllers
         public ActionResult Create()
         {
             ViewBag.idFornecedor = new SelectList(db.Fornecedor, "id", "razaoSocial");
+            ViewBag.statusDuplicata = selectListStatusDuplicata();
             return View();
         }
 
         // POST: DuplicatasPagar/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "idDuplicataPagar,numeroDuplicata,idFornecedor,dataHemissao,dataVencimento,dataPagamento,valorDuplicata,valorDesconto,valorPago,valorDevedor,valorMulta,valorJurosPorDia,observacao,statusDuplicata,nrDocumento")] DuplicatasPagar duplicatasPagar)
+        public ActionResult Create( DuplicatasPagar duplicatasPagar)
         {
             if (ModelState.IsValid)
             {
-                db.duplicatasPagar.Add(duplicatasPagar);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                try
+                {
+                    db.duplicatasPagar.Add(duplicatasPagar);
+                    if (db.SaveChanges() != 0)
+                        TempData["msgsucesso"] = "Registro salvo com sucesso";
+
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    TempData["msgerro"] = "Erro ao tentar salvar registro.";
+                }
             }
 
             ViewBag.idFornecedor = new SelectList(db.Fornecedor, "id", "razaoSocial", duplicatasPagar.idFornecedor);
@@ -73,6 +83,7 @@ namespace Gestao.Controllers
                 return HttpNotFound();
             }
             ViewBag.idFornecedor = new SelectList(db.Fornecedor, "id", "razaoSocial", duplicatasPagar.idFornecedor);
+            ViewBag.statusDuplicata = selectListStatusDuplicata();
             return View(duplicatasPagar);
         }
 
@@ -153,6 +164,32 @@ namespace Gestao.Controllers
             }
 
             return listaMovimentacoes;
+        }
+        private IList<SelectListItem> selectListStatusDuplicata()
+        {
+            IList<SelectListItem> list = new List<SelectListItem>()
+            {
+                new SelectListItem
+                {
+                    Text = "Pago",
+                    Value = "Pago",
+                    Selected = false
+                },
+                new SelectListItem
+                {
+                    Text = "Não Pago",
+                    Value = "Nao Pago",
+                    Selected = false
+                },
+                new SelectListItem
+                {
+                    Text = "Parcialmente Pago",
+                    Value = "Parcialmente Pago",
+                    Selected = false
+                }
+            };
+
+            return list;
         }
 
         protected override void Dispose(bool disposing)

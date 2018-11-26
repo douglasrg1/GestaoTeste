@@ -294,6 +294,10 @@
     <Compile Include="Migrations\201811261118099_addTableDuplicatasaPagar.Designer.cs">
       <DependentUpon>201811261118099_addTableDuplicatasaPagar.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811261231387_alterNullAbleForStatusDuplicataPagar.cs" />
+    <Compile Include="Migrations\201811261231387_alterNullAbleForStatusDuplicataPagar.Designer.cs">
+      <DependentUpon>201811261231387_alterNullAbleForStatusDuplicataPagar.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Adicionais\Estados.cs" />
     <Compile Include="Models\Adicionais\Municipios.cs" />
@@ -510,6 +514,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811261118099_addTableDuplicatasaPagar.resx">
       <DependentUpon>201811261118099_addTableDuplicatasaPagar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811261231387_alterNullAbleForStatusDuplicataPagar.resx">
+      <DependentUpon>201811261231387_alterNullAbleForStatusDuplicataPagar.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
