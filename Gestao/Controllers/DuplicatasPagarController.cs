@@ -82,6 +82,10 @@ namespace Gestao.Controllers
             {
                 return HttpNotFound();
             }
+
+            if (duplicatasPagar.dataPagamento != null)
+                ViewBag.datpag = Convert.ToDateTime(duplicatasPagar.dataPagamento).ToString("yyyy/MM/dd");
+
             ViewBag.idFornecedor = new SelectList(db.Fornecedor, "id", "razaoSocial", duplicatasPagar.idFornecedor);
             ViewBag.statusDuplicata = selectListStatusDuplicata();
             return View(duplicatasPagar);
@@ -90,15 +94,31 @@ namespace Gestao.Controllers
         // POST: DuplicatasPagar/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "idDuplicataPagar,numeroDuplicata,idFornecedor,dataHemissao,dataVencimento,dataPagamento,valorDuplicata,valorDesconto,valorPago,valorDevedor,valorMulta,valorJurosPorDia,observacao,statusDuplicata,nrDocumento")] DuplicatasPagar duplicatasPagar)
+        public ActionResult Edit(DuplicatasPagar duplicatasPagar,int id)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(duplicatasPagar).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+
+                try
+                {
+                    duplicatasPagar.idDuplicataPagar = id;
+                    db.Entry(duplicatasPagar).State = EntityState.Modified;
+                    if (db.SaveChanges() != 0)
+                        TempData["msgsucesso"] = "Registro editado com sucesso";
+
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    TempData["msgerro"] = "Erro ao tentar editar registro.";
+                }
             }
+
+            if (duplicatasPagar.dataPagamento != null)
+                ViewBag.datpag = Convert.ToDateTime(duplicatasPagar.dataPagamento).ToString("yyyy/MM/dd");
+
             ViewBag.idFornecedor = new SelectList(db.Fornecedor, "id", "razaoSocial", duplicatasPagar.idFornecedor);
+            ViewBag.statusDuplicata = selectListStatusDuplicata();
             return View(duplicatasPagar);
         }
 
