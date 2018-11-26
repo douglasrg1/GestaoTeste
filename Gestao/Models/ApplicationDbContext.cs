@@ -36,6 +36,7 @@ namespace Gestao.Models
         public DbSet<MovimentaEstoque> movimentaEstoque { get; set; }
         public DbSet<ProdutosMovimentacao> produtosMovimentacao { get; set; }
         public DbSet<DuplicatasReceber> duplicatasReceber { get; set; }
+        public DbSet<DuplicatasPagar> duplicatasPagar { get; set; }
 
     }
 

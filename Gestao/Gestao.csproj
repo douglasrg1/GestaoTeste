@@ -170,6 +170,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ClientesController.cs" />
+    <Compile Include="Controllers\DuplicatasPagarController.cs" />
     <Compile Include="Controllers\DuplicatasReceberController.cs" />
     <Compile Include="Controllers\EmpresasController.cs" />
     <Compile Include="Controllers\FornecedoresController.cs" />
@@ -289,11 +290,16 @@
     <Compile Include="Migrations\201811221651072_idpedidoNullAble.Designer.cs">
       <DependentUpon>201811221651072_idpedidoNullAble.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811261118099_addTableDuplicatasaPagar.cs" />
+    <Compile Include="Migrations\201811261118099_addTableDuplicatasaPagar.Designer.cs">
+      <DependentUpon>201811261118099_addTableDuplicatasaPagar.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Adicionais\Estados.cs" />
     <Compile Include="Models\Adicionais\Municipios.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\Cliente.cs" />
+    <Compile Include="Models\DuplicatasPagar.cs" />
     <Compile Include="Models\DuplicatasReceber.cs" />
     <Compile Include="Models\Empresa.cs" />
     <Compile Include="Models\Fornecedor.cs" />
@@ -398,6 +404,11 @@
     <Content Include="Views\DuplicatasReceber\Details.cshtml" />
     <Content Include="Views\DuplicatasReceber\Edit.cshtml" />
     <Content Include="Views\DuplicatasReceber\Index.cshtml" />
+    <Content Include="Views\DuplicatasPagar\Create.cshtml" />
+    <Content Include="Views\DuplicatasPagar\Delete.cshtml" />
+    <Content Include="Views\DuplicatasPagar\Details.cshtml" />
+    <Content Include="Views\DuplicatasPagar\Edit.cshtml" />
+    <Content Include="Views\DuplicatasPagar\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -496,6 +507,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811221651072_idpedidoNullAble.resx">
       <DependentUpon>201811221651072_idpedidoNullAble.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811261118099_addTableDuplicatasaPagar.resx">
+      <DependentUpon>201811261118099_addTableDuplicatasaPagar.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
