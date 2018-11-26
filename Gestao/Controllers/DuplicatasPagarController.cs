@@ -145,6 +145,7 @@ namespace Gestao.Controllers
             DuplicatasPagar duplicatasPagar = db.duplicatasPagar.Find(id);
             db.duplicatasPagar.Remove(duplicatasPagar);
             db.SaveChanges();
+            TempData["msgsucesso"] = "Registro removido com sucesso";
             return RedirectToAction("Index");
         }
         public JsonResult listarDuplicatas(int current, int rowCount, string searchPhrase)
