@@ -179,6 +179,7 @@
     <Compile Include="Controllers\MovimentaEstoquesController.cs" />
     <Compile Include="Controllers\PedidosController.cs" />
     <Compile Include="Controllers\ProdutosController.cs" />
+    <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -298,6 +299,10 @@
     <Compile Include="Migrations\201811261231387_alterNullAbleForStatusDuplicataPagar.Designer.cs">
       <DependentUpon>201811261231387_alterNullAbleForStatusDuplicataPagar.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811301301321_addTableUsurio.cs" />
+    <Compile Include="Migrations\201811301301321_addTableUsurio.Designer.cs">
+      <DependentUpon>201811301301321_addTableUsurio.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Adicionais\Estados.cs" />
     <Compile Include="Models\Adicionais\Municipios.cs" />
@@ -313,6 +318,7 @@
     <Compile Include="Models\Produto.cs" />
     <Compile Include="Models\ProdutoPedido.cs" />
     <Compile Include="Models\ProdutosMovimentacao.cs" />
+    <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\MovimentaEstoqueViewModel.cs" />
   </ItemGroup>
@@ -413,6 +419,8 @@
     <Content Include="Views\DuplicatasPagar\Details.cshtml" />
     <Content Include="Views\DuplicatasPagar\Edit.cshtml" />
     <Content Include="Views\DuplicatasPagar\Index.cshtml" />
+    <Content Include="Views\Usuario\Create.cshtml" />
+    <Content Include="Views\Usuario\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -517,6 +525,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811261231387_alterNullAbleForStatusDuplicataPagar.resx">
       <DependentUpon>201811261231387_alterNullAbleForStatusDuplicataPagar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811301301321_addTableUsurio.resx">
+      <DependentUpon>201811301301321_addTableUsurio.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

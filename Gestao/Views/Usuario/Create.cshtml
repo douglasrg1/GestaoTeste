@@ -1,0 +1,149 @@
+﻿@model Gestao.Models.Usuario
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Novo Usuario</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="row">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.cnpj)
+                <div>
+                    @Html.EditorFor(model => model.cnpj, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.cnpj, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.razaoSocial)
+                <div>
+                    @Html.EditorFor(model => model.razaoSocial, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.razaoSocial, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.endereco)
+                <div>
+                    @Html.EditorFor(model => model.endereco, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.endereco, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.bairro)
+                <div>
+                    @Html.EditorFor(model => model.bairro, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.bairro, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.numero)
+                <div>
+                    @Html.EditorFor(model => model.numero, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.numero, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.estado)
+                <div>
+                    @Html.DropDownListFor(model => model.estado, null, "Selecione...", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.estado, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.cidade)
+                <div>
+                    @Html.DropDownListFor(model => model.cidade, null, "Selecione...",new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.cidade, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.email)
+                <div>
+                    @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control", @type = "email" } })
+                    @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.telefoneContato1)
+                <div>
+                    @Html.EditorFor(model => model.telefoneContato1, new { htmlAttributes = new { @class = "form-control", @type = "tel" } })
+                    @Html.ValidationMessageFor(model => model.telefoneContato1, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.telefoneContato2)
+                <div>
+                    @Html.EditorFor(model => model.telefoneContato2, new { htmlAttributes = new { @class = "form-control",@type = "tel" } })
+                    @Html.ValidationMessageFor(model => model.telefoneContato2, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.senha)
+                <div>
+                    @Html.EditorFor(model => model.senha, new { htmlAttributes = new { @class = "form-control",@type ="password" } })
+                    @Html.ValidationMessageFor(model => model.senha, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div>
+                <input type="submit" value="Salvar" class="btn btn-primary" />
+                @Html.ActionLink("Voltar", "Index",null, new {@class ="btn btn-default" })
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            $("#estado").change(function () {
+                buscarcidades($(this).val())
+            })
+        })
+
+        function buscarcidades(sigla) {
+            $.getJSON("@Url.Action("Listarcidades")/?siglauf=" + sigla, populaCidades)
+        }
+
+        function populaCidades(json) {
+
+            $("#cidade").empty();
+
+            $(json).each(function (index,element) {
+                $("#cidade").append($('<option/>', {
+                    value: element.Value,
+                    text: element.Text
+                }));
+            })
+        }
+    </script>
+}
