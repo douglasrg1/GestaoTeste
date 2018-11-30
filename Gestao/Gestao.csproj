@@ -530,6 +530,12 @@
       <DependentUpon>201811301301321_addTableUsurio.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GestaoUsuarios\GestaoUsuarios.csproj">
+      <Project>{cd2c7b03-4590-481d-81a3-dc2698ac68e6}</Project>
+      <Name>GestaoUsuarios</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
