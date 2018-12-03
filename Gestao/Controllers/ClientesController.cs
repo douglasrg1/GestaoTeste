@@ -19,6 +19,8 @@ namespace Gestao.Controllers
         // GET: Clientes
         public ActionResult Index()
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
 
             return View(db.Cliente.ToList());
         }
@@ -26,6 +28,9 @@ namespace Gestao.Controllers
         // GET: Clientes/Details/5
         public ActionResult Details(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -41,6 +46,9 @@ namespace Gestao.Controllers
         // GET: Clientes/Create
         public ActionResult Create()
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             var itens = db.Estados.ToList();
 
             IList<SelectListItem> listItens = new List<SelectListItem>();
@@ -96,6 +104,8 @@ namespace Gestao.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Nome,TipoCliente,CnpjCpf,Rua,Numero,Bairro,cidade,Estado,Telefone1,Telefone2,Email,DataCadastro,DataUtimaCompra")] Cliente cliente)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
 
             if (ModelState.IsValid)
             {
@@ -116,6 +126,9 @@ namespace Gestao.Controllers
         // GET: Clientes/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -187,6 +200,9 @@ namespace Gestao.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Nome,TipoCliente,CnpjCpf,Rua,Numero,Bairro,cidade,Estado,Telefone1,Telefone2,Email,DataCadastro,DataUtimaCompra")] Cliente cliente)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (ModelState.IsValid)
             {
                 db.Entry(cliente).State = EntityState.Modified;
@@ -204,6 +220,9 @@ namespace Gestao.Controllers
         // GET: Clientes/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -221,6 +240,9 @@ namespace Gestao.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             Cliente cliente = db.Cliente.Find(id);
             db.Cliente.Remove(cliente);
             if (db.SaveChanges() != 0)
@@ -233,6 +255,9 @@ namespace Gestao.Controllers
         [HttpGet]
         public ActionResult Listarcidades(string siglauf)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             var itens = db.Municipios.Where(m => m.Uf == siglauf).ToList();
             IList<SelectListItem> listItens = new List<SelectListItem>();
 

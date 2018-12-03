@@ -20,6 +20,9 @@ namespace Gestao.Controllers
         // GET: Pedidos
         public ActionResult Index()
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             var pedido = db.Pedido.ToList();
             return View("Index",pedido);
         }
@@ -27,6 +30,9 @@ namespace Gestao.Controllers
         // GET: Pedidos/Details/5
         public ActionResult Details(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -42,6 +48,9 @@ namespace Gestao.Controllers
         // GET: Pedidos/Create
         public ActionResult Create()
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             ViewBag.produtos = listProdutos();
             ViewBag.clientes = listItemclientes();
             var countPedido = db.Pedido.Count();
@@ -119,6 +128,9 @@ namespace Gestao.Controllers
         // GET: Pedidos/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -208,6 +220,9 @@ namespace Gestao.Controllers
         // GET: Pedidos/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -282,6 +297,9 @@ namespace Gestao.Controllers
         
         public ActionResult retornaProdutosDoPedido(int idreceita)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             var produtos = db.ProdutoPedido.Where(p => p.Pedido.id == idreceita).ToList();
             foreach(var produto in produtos)
             {
@@ -357,6 +375,8 @@ namespace Gestao.Controllers
         }
         public JsonResult listarPedidos(int current, int rowCount, string searchPhrase)
         {
+            
+
             string chave = Request.Form.AllKeys.Where(k => k.StartsWith("sort")).First();
             string campoOrdenacao = chave.Replace("sort[", "").Replace("]", "").Trim();
             string tipoOrdenacao = Request[chave];
@@ -395,6 +415,7 @@ namespace Gestao.Controllers
         }
         private int adicionarMovimentacaoEstoque(Pedido pedido)
         {
+           
             var resposta = 0;
 
             MovimentaEstoque movimentacao = new MovimentaEstoque();
@@ -414,6 +435,7 @@ namespace Gestao.Controllers
         }
         private void adicionaProdutoMovimentacao(ProdutoPedido produto,int idMovimentacao)
         {
+            
             ProdutosMovimentacao produtomov = new ProdutosMovimentacao();
             produtomov.idMovimentacaoEstoque = idMovimentacao;
             produtomov.MovimentaEstoque = db.movimentaEstoque.Find(idMovimentacao);
@@ -431,6 +453,8 @@ namespace Gestao.Controllers
         }
         private void removeProdutoMovimentacao(Pedido pedido, int idProduto)
         {
+           
+
             var movimentacao = db.movimentaEstoque.Where(p => p.nrDocumento == "PD-" + pedido.numeroPedido).FirstOrDefault();
 
             var produtosMov = db.produtosMovimentacao.Where(p => p.idMovimentacaoEstoque == movimentacao.idMovimentacao).ToList();

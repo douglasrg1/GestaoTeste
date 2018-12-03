@@ -18,6 +18,9 @@ namespace Gestao.Controllers
         // GET: DuplicatasPagar
         public ActionResult Index()
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             var duplicatasPagar = db.duplicatasPagar.Include(d => d.Fornecedor);
             return View(duplicatasPagar.ToList());
         }
@@ -25,6 +28,9 @@ namespace Gestao.Controllers
         // GET: DuplicatasPagar/Details/5
         public ActionResult Details(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -40,6 +46,9 @@ namespace Gestao.Controllers
         // GET: DuplicatasPagar/Create
         public ActionResult Create()
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             ViewBag.idFornecedor = new SelectList(db.Fornecedor, "id", "razaoSocial");
             ViewBag.statusDuplicata = selectListStatusDuplicata();
             return View();
@@ -50,6 +59,9 @@ namespace Gestao.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create( DuplicatasPagar duplicatasPagar)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (ModelState.IsValid)
             {
                 try
@@ -73,6 +85,9 @@ namespace Gestao.Controllers
         // GET: DuplicatasPagar/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -96,6 +111,9 @@ namespace Gestao.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(DuplicatasPagar duplicatasPagar,int id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (ModelState.IsValid)
             {
 
@@ -125,6 +143,9 @@ namespace Gestao.Controllers
         // GET: DuplicatasPagar/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -142,6 +163,9 @@ namespace Gestao.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             DuplicatasPagar duplicatasPagar = db.duplicatasPagar.Find(id);
             db.duplicatasPagar.Remove(duplicatasPagar);
             db.SaveChanges();

@@ -56,7 +56,7 @@ namespace Gestao.Controllers
                 db.usuario.Add(usuario);
                 db.SaveChanges();
                 p.Criar(convertUsers(usuario));
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Login");
 
             }
 

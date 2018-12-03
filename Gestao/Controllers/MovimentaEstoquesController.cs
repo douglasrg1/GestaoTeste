@@ -19,6 +19,9 @@ namespace Gestao.Controllers
         
         public ActionResult Index()
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             var movimentaEstoque = db.movimentaEstoque.Include(m => m.Fornecedor);
             return View(movimentaEstoque.ToList());
         }
@@ -26,6 +29,9 @@ namespace Gestao.Controllers
         
         public ActionResult Details(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -41,7 +47,9 @@ namespace Gestao.Controllers
         
         public ActionResult Create()
         {
-  
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             ViewBag.idFornecedor = new SelectList(db.Fornecedor, "id", "razaoSocial");
             ViewBag.Produto = new SelectList(db.Produto, "id", "nome");
             ViewBag.tipoMovimentacao = tipomov();
@@ -83,6 +91,9 @@ namespace Gestao.Controllers
         
         public ActionResult Edit(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -104,6 +115,9 @@ namespace Gestao.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(MovimentaEstoque movimentaEstoque)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             var dados = dadosRecebidos();
             movimentaEstoque.cfop = "";
             movimentaEstoque.datamovimentacao = db.movimentaEstoque.Find((int)dados.dadosMovimentacao.idMovimetacao).datamovimentacao;
@@ -150,6 +164,9 @@ namespace Gestao.Controllers
         
         public ActionResult Delete(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -301,6 +318,8 @@ namespace Gestao.Controllers
         }
         public JsonResult listarMovimentacoes(int current, int rowCount, string searchPhrase)
         {
+            
+
             string chave = Request.Form.AllKeys.Where(k => k.StartsWith("sort")).First();
             string campoOrdenacao = chave.Replace("sort[", "").Replace("]", "").Trim();
             string tipoOrdenacao = Request[chave];

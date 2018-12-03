@@ -10,19 +10,26 @@ namespace Gestao.Controllers
     {
         public ActionResult Index()
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             return View();
         }
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
+            
 
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
 
             return View();
         }

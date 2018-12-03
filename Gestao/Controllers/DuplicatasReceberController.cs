@@ -18,6 +18,9 @@ namespace Gestao.Controllers
         // GET: DuplicatasReceber
         public ActionResult Index()
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             var duplicatasReceber = db.duplicatasReceber.Include(d => d.Cliente).Include(d => d.Pedido);
             
             return View(duplicatasReceber.ToList());
@@ -26,6 +29,9 @@ namespace Gestao.Controllers
         // GET: DuplicatasReceber/Details/5
         public ActionResult Details(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -41,6 +47,9 @@ namespace Gestao.Controllers
         // GET: DuplicatasReceber/Create
         public ActionResult Create()
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             ViewBag.idCliente = new SelectList(db.Cliente, "Id", "Nome");
             ViewBag.idPedido = new SelectList(db.Pedido, "id", "observacao");
             ViewBag.statusDuplicata = selectListStatusDuplicata();
@@ -77,6 +86,9 @@ namespace Gestao.Controllers
         // GET: DuplicatasReceber/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -127,6 +139,9 @@ namespace Gestao.Controllers
         // GET: DuplicatasReceber/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -152,6 +167,7 @@ namespace Gestao.Controllers
         }
         public JsonResult listarDuplicatas(int current, int rowCount, string searchPhrase)
         {
+
             string chave = Request.Form.AllKeys.Where(k => k.StartsWith("sort")).First();
             string campoOrdenacao = chave.Replace("sort[", "").Replace("]", "").Trim();
             string tipoOrdenacao = Request[chave];

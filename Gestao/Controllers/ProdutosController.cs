@@ -18,12 +18,18 @@ namespace Gestao.Controllers
         // GET: Produtos
         public ActionResult Index()
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             return View(db.Produto.ToList());
         }
 
         // GET: Produtos/Details/5
         public ActionResult Details(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -39,6 +45,9 @@ namespace Gestao.Controllers
         // GET: Produtos/Create
         public ActionResult Create()
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             return View();
         }
 
@@ -74,6 +83,9 @@ namespace Gestao.Controllers
         // GET: Produtos/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -106,6 +118,9 @@ namespace Gestao.Controllers
         // GET: Produtos/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -134,6 +149,8 @@ namespace Gestao.Controllers
         }
         public JsonResult listarProdutos(int current, int rowCount, string searchPhrase)
         {
+           
+
             string chave = Request.Form.AllKeys.Where(k => k.StartsWith("sort")).First();
             string campoOrdenacao = chave.Replace("sort[", "").Replace("]", "").Trim();
             string tipoOrdenacao = Request[chave];

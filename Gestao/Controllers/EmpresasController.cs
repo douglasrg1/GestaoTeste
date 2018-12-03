@@ -17,12 +17,18 @@ namespace Gestao.Controllers
         // GET: Empresas
         public ActionResult Index()
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             return View(db.Empresa.ToList());
         }
 
         // GET: Empresas/Details/5
         public ActionResult Details(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -38,6 +44,9 @@ namespace Gestao.Controllers
         // GET: Empresas/Create
         public ActionResult Create()
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             int idempresa = 0;
             var empresa = db.Empresa.ToList();
             if (empresa.Count > 0)
@@ -99,6 +108,9 @@ namespace Gestao.Controllers
         // GET: Empresas/Edit/5
         public ActionResult Edit(int id = 1)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             Empresa empresa = db.Empresa.Find(id);
             if (empresa == null)
             {
@@ -163,6 +175,9 @@ namespace Gestao.Controllers
         // GET: Empresas/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -192,6 +207,7 @@ namespace Gestao.Controllers
 
         public JsonResult listarMunicipios(string uf)
         {
+           
             var cidades = db.Municipios.Where(m => m.Uf == uf).ToList();
             List<SelectListItem> list = new List<SelectListItem>();
 

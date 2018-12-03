@@ -18,12 +18,18 @@ namespace Gestao.Controllers
         // GET: Fornecedores
         public ActionResult Index()
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             return View(db.Fornecedor.ToList());
         }
 
         // GET: Fornecedores/Details/5
         public ActionResult Details(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -39,6 +45,9 @@ namespace Gestao.Controllers
         // GET: Fornecedores/Create
         public ActionResult Create()
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             var estados = db.Estados.ToList();
 
             List<SelectListItem> list = new List<SelectListItem>();
@@ -94,6 +103,9 @@ namespace Gestao.Controllers
         // GET: Fornecedores/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -164,6 +176,9 @@ namespace Gestao.Controllers
         // GET: Fornecedores/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -194,6 +209,7 @@ namespace Gestao.Controllers
 
         public JsonResult listarMunicipios(string uf)
         {
+
             var cidades = db.Municipios.Where(m => m.Uf == uf).ToList();
             List<SelectListItem> list = new List<SelectListItem>();
 
@@ -211,6 +227,7 @@ namespace Gestao.Controllers
         }
         public JsonResult listarFornecedores(int current, int rowCount, string searchPhrase)
         {
+
             string chave = Request.Form.AllKeys.Where(k => k.StartsWith("sort")).First();
             string campoOrdenacao = chave.Replace("sort[", "").Replace("]", "").Trim();
             string tipoOrdenacao = Request[chave];

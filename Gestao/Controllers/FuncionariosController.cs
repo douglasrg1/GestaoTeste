@@ -18,12 +18,18 @@ namespace Gestao.Controllers
         // GET: Funcionarios
         public ActionResult Index()
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             return View(db.Funcionario.ToList());
         }
 
         // GET: Funcionarios/Details/5
         public ActionResult Details(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -39,6 +45,9 @@ namespace Gestao.Controllers
         // GET: Funcionarios/Create
         public ActionResult Create()
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             var itens = db.Estados.ToList();
 
             IList<SelectListItem> listItens = new List<SelectListItem>();
@@ -92,6 +101,9 @@ namespace Gestao.Controllers
         // GET: Funcionarios/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -158,6 +170,9 @@ namespace Gestao.Controllers
         // GET: Funcionarios/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -186,6 +201,9 @@ namespace Gestao.Controllers
         }
         public ActionResult Listarcidades(string siglauf)
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
             var itens = db.Municipios.Where(m => m.Uf == siglauf).ToList();
             IList<SelectListItem> listItens = new List<SelectListItem>();
 
@@ -204,6 +222,8 @@ namespace Gestao.Controllers
         }
         public JsonResult listarFuncionarios(int current, int rowCount, string searchPhrase)
         {
+            
+
             string chave = Request.Form.AllKeys.Where(k => k.StartsWith("sort")).First();
             string campoOrdenacao = chave.Replace("sort[", "").Replace("]", "").Trim();
             string tipoOrdenacao = Request[chave];
@@ -223,6 +243,7 @@ namespace Gestao.Controllers
 
         public JsonResult baixaFuncionario()
         {
+
             return Json("", JsonRequestBehavior.AllowGet);
         }
 
