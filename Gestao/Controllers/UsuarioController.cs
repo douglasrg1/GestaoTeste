@@ -53,8 +53,6 @@ namespace Gestao.Controllers
             if (ModelState.IsValid)
             {
                 
-                db.usuario.Add(usuario);
-                db.SaveChanges();
                 p.Criar(convertUsers(usuario));
                 return RedirectToAction("Index","Login");
 
@@ -64,13 +62,19 @@ namespace Gestao.Controllers
         }
 
         // GET: Usuario/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit()
         {
+            if (Session["UsuarioLogado"] == null)
+                return RedirectToAction("Index", "Login");
+
+            Principal p = new Principal();
+            var user = Session["UsuarioLogado"];
+            var id = (int)user.GetType().GetProperty("idUsuario").GetValue(user);
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Usuario usuario = db.usuario.Find(id);
+            Usuario usuario = RevertUser(p.RetornarUser(id));
             if (usuario == null)
             {
                 return HttpNotFound();
@@ -87,13 +91,21 @@ namespace Gestao.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Usuario usuario)
         {
+            Principal p = new Principal();
             if (ModelState.IsValid)
             {
-                db.Entry(usuario).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var user = convertUsers(usuario);
+                user.senha = sha256(user.senha);
+                p.Editar(user);
+                Session.Remove("UsuarioLogado");
+                return RedirectToAction("Index","Login");
             }
             return View(usuario);
+        }
+        public ActionResult Sair()
+        {
+            Session.Remove("UsuarioLogado");
+            return RedirectToAction("Index", "Login");
         }
         public ActionResult Listarcidades(string siglauf)
         {
@@ -116,6 +128,24 @@ namespace Gestao.Controllers
         private GestaoUsuarios.Usuarios.Usuarios convertUsers(Usuario usuario)
         {
             GestaoUsuarios.Usuarios.Usuarios user = new GestaoUsuarios.Usuarios.Usuarios();
+            user.bairro = usuario.bairro;
+            user.cidade = usuario.cidade;
+            user.cnpj = usuario.cnpj;
+            user.email = usuario.email;
+            user.endereco = usuario.endereco;
+            user.estado = usuario.estado;
+            user.idUsuario = usuario.idUsuario;
+            user.numero = usuario.numero;
+            user.razaoSocial = usuario.razaoSocial;
+            user.senha = usuario.senha;
+            user.telefoneContato1 = usuario.telefoneContato1;
+            user.telefoneContato2 = usuario.telefoneContato2;
+
+            return user;
+        }
+        private Usuario RevertUser(GestaoUsuarios.Usuarios.Usuarios usuario)
+        {
+            Usuario user =new Usuario();
             user.bairro = usuario.bairro;
             user.cidade = usuario.cidade;
             user.cnpj = usuario.cnpj;

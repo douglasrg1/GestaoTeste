@@ -28,7 +28,7 @@ namespace Gestao.Controllers
             var users = context.usuario.Where(u => u.cnpj == user && u.senha == senha).ToList();
             if (users.Count > 0)
             {
-                Session["UsuarioLogado"] = users[0].cnpj;
+                Session["UsuarioLogado"] = users[0];
                 return RedirectToAction("Index", "Home");
             }
             else

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GestaoUsuarios.Usuarios;
+using System;
 using System.Linq;
 
 namespace GestaoUsuarios
@@ -20,6 +21,15 @@ namespace GestaoUsuarios
         {
             context.usuario.Add(usuario);
             var resp = context.SaveChanges();
+        }
+        public Usuarios.Usuarios RetornarUser(int id)
+        {
+            return context.usuario.Find(id);
+        }
+        public void Editar(Usuarios.Usuarios usuario)
+        {
+            context.Entry(usuario).State = System.Data.Entity.EntityState.Modified;
+            context.SaveChanges();
         }
     }
 }
