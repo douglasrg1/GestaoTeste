@@ -313,6 +313,16 @@ namespace Gestao.Controllers
             dadosRecebidos dadosRecebidos = new dadosRecebidos();
             dadosPedido dadosPedido = new dadosPedido();
             produtosPedido produtosPedido = new produtosPedido();
+            duplicatas duplicatas = new duplicatas();
+
+            //dados duplicatas
+
+            if (Request["dadosRecebidos[dadosDuplicata][dataVencimento]"] != null)
+            {
+                duplicatas.dataVencimento = Convert.ToDateTime(Request["dadosRecebidos[dadosDuplicata][dataVencimento]"]);
+                duplicatas.intervaloEntreDuplicatas = Convert.ToInt32(Request["dadosRecebidos[dadosDuplicata][diasIntervalo]"]);
+                duplicatas.numeroDuplicatas = Convert.ToInt32(Request["dadosRecebidos[dadosDuplicata][numeroDupl]"]);
+            }
 
             //dados pedido
             dadosPedido.idPedido = Convert.ToInt32(Request["dadosRecebidos[dadosPedido][idPedido]"]);
@@ -523,6 +533,12 @@ public struct produtosPedido
     public decimal valorTotal { get; set; }
     public decimal valorUnitario { get; set; }
 
+}
+public struct duplicatas
+{
+    public int numeroDuplicatas { get; set; }
+    public DateTime dataVencimento { get; set; }
+    public int intervaloEntreDuplicatas { get; set; }
 }
 public struct dadosRecebidos
 {
