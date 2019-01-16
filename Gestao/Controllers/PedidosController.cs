@@ -119,6 +119,11 @@ namespace Gestao.Controllers
                 
             }
 
+            if (dados.duplicatas.numeroDuplicatas != 0)
+            {
+                gerarDuplicatasPedido(dados, pedido.id);
+            }
+
             ViewBag.produtos = listProdutos();
             ViewBag.clientes = listItemclientes();
 
@@ -315,14 +320,17 @@ namespace Gestao.Controllers
             produtosPedido produtosPedido = new produtosPedido();
             duplicatas duplicatas = new duplicatas();
 
-            //dados duplicatas
 
+            //dados duplicatas
+            
             if (Request["dadosRecebidos[dadosDuplicata][dataVencimento]"] != null)
             {
                 duplicatas.dataVencimento = Convert.ToDateTime(Request["dadosRecebidos[dadosDuplicata][dataVencimento]"]);
                 duplicatas.intervaloEntreDuplicatas = Convert.ToInt32(Request["dadosRecebidos[dadosDuplicata][diasIntervalo]"]);
                 duplicatas.numeroDuplicatas = Convert.ToInt32(Request["dadosRecebidos[dadosDuplicata][numeroDupl]"]);
+                dadosRecebidos.duplicatas = duplicatas;
             }
+            
 
             //dados pedido
             dadosPedido.idPedido = Convert.ToInt32(Request["dadosRecebidos[dadosPedido][idPedido]"]);
@@ -498,6 +506,63 @@ namespace Gestao.Controllers
             db.Entry(movimentacao).State = EntityState.Modified;
             var resp = db.SaveChanges();
         }
+        private void gerarDuplicatasPedido(dadosRecebidos dadosDuplicata, int idpedido)
+        {
+            var datavencimento = dadosDuplicata.duplicatas.dataVencimento;
+            var valoresDuplicatas = calcularValorDuplicatas(dadosDuplicata.dadosPedido.valorDevedor, dadosDuplicata.duplicatas.numeroDuplicatas);
+
+            for(int i = 0; i < dadosDuplicata.duplicatas.numeroDuplicatas; i++)
+            {
+                DuplicatasReceber duplicata = new DuplicatasReceber()
+                {
+                    Cliente = db.Cliente.Find(dadosDuplicata.dadosPedido.idCliente),
+                    dataHemissao = DateTime.Now,
+                    dataPagamento = null,
+                    dataVencimento = datavencimento,
+                    idCliente = dadosDuplicata.dadosPedido.idCliente,
+                    idPedido = idpedido,
+                    numeroDuplicata = "PD-" + dadosDuplicata.dadosPedido.numeroPedido,
+                    Pedido = db.Pedido.Find(idpedido),
+                    statusDuplicata = "Nao Pago",
+                    valorDesconto = 0,
+                    valorDevedor = valoresDuplicatas[i],
+                    valorDuplicata = valoresDuplicatas[i],
+                    valorJurosPorDia = 0,
+                    valorMulta = 0,
+                    valorPago = valoresDuplicatas[i]
+                };
+
+                db.duplicatasReceber.Add(duplicata);
+                var resp = db.SaveChanges();
+                datavencimento = datavencimento.AddDays(dadosDuplicata.duplicatas.intervaloEntreDuplicatas);
+            }
+        }
+        private decimal[] calcularValorDuplicatas(decimal valorPedido, int numeroDuplicatas)
+        {
+            decimal[] duplicatas = new decimal[numeroDuplicatas];
+            var valor = valorPedido / numeroDuplicatas;
+            var valordecimal = valor.ToString().Split(',')[1];
+            decimal valorDuplicata = 0;
+            decimal valorUltimaDuplicata = 0;
+            if (valordecimal.Length > 2)
+            {
+                valorDuplicata = Convert.ToDecimal(valor.ToString().Split(',')[0] + "," + valordecimal.Substring(0,2));
+                valorUltimaDuplicata = valorPedido - (valorDuplicata * (numeroDuplicatas - 1));
+            }
+            else
+            {
+                valorDuplicata = valor;
+                valorUltimaDuplicata = valor;
+            }
+
+            for(int i = 0; i < numeroDuplicatas - 1; i++)
+            {
+                duplicatas[i] = valorDuplicata;
+            }
+            duplicatas[numeroDuplicatas - 1] = valorUltimaDuplicata;
+
+            return duplicatas;
+        }
 
         protected override void Dispose(bool disposing)
         {
@@ -544,6 +609,7 @@ public struct dadosRecebidos
 {
     public dadosPedido dadosPedido;
     public List<produtosPedido> produtosPedidos;
+    public duplicatas duplicatas;
 }
 public struct rowsTable
 {
