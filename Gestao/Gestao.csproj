@@ -169,6 +169,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CaixaController.cs" />
     <Compile Include="Controllers\ClientesController.cs" />
     <Compile Include="Controllers\DuplicatasPagarController.cs" />
     <Compile Include="Controllers\DuplicatasReceberController.cs" />
@@ -304,10 +305,15 @@
     <Compile Include="Migrations\201811301301321_addTableUsurio.Designer.cs">
       <DependentUpon>201811301301321_addTableUsurio.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901211315453_addTableCaixa.cs" />
+    <Compile Include="Migrations\201901211315453_addTableCaixa.Designer.cs">
+      <DependentUpon>201901211315453_addTableCaixa.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Adicionais\Estados.cs" />
     <Compile Include="Models\Adicionais\Municipios.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="Models\Caixa.cs" />
     <Compile Include="Models\Cliente.cs" />
     <Compile Include="Models\DuplicatasPagar.cs" />
     <Compile Include="Models\DuplicatasReceber.cs" />
@@ -424,6 +430,11 @@
     <Content Include="Views\Usuario\Create.cshtml" />
     <Content Include="Views\Usuario\Edit.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Caixa\Index.cshtml" />
+    <Content Include="Views\Caixa\Details.cshtml" />
+    <Content Include="Views\Caixa\Create.cshtml" />
+    <Content Include="Views\Caixa\Edit.cshtml" />
+    <Content Include="Views\Caixa\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -531,6 +542,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811301301321_addTableUsurio.resx">
       <DependentUpon>201811301301321_addTableUsurio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901211315453_addTableCaixa.resx">
+      <DependentUpon>201901211315453_addTableCaixa.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

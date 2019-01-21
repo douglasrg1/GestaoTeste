@@ -38,6 +38,7 @@ namespace Gestao.Models
         public DbSet<DuplicatasReceber> duplicatasReceber { get; set; }
         public DbSet<DuplicatasPagar> duplicatasPagar { get; set; }
         public DbSet<Usuario> usuario { get; set; }
+        public DbSet<Caixa> Caixa { get; set; }
 
     }
 
