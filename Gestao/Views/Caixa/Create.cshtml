@@ -1,7 +1,59 @@
-﻿
+﻿@model Gestao.Models.Caixa
 @{
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
+<h2>Criar Cliente</h2>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "formId" }))
+{
+    @Html.AntiForgeryToken();
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" });
+
+
+    <div class="form-horizontal">
+
+        <hr />
+
+        <div class="row">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.TipoMovimentacao)
+                <div>
+                    @Html.EditorFor(model => model.TipoMovimentacao, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TipoMovimentacao, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.ValorMovimentacao)
+                <div>
+                    @Html.EditorFor(model => model.ValorMovimentacao, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ValorMovimentacao, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.descricao)
+                <div>
+                    @Html.EditorFor(model => model.descricao, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.descricao, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div>
+                <input type="submit" value="Salvar" class="btn btn-primary" />
+                @Html.ActionLink("Voltar", "Index", null, new { @class = "btn btn-primary" })
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+
+    </script>
+   
+}
 

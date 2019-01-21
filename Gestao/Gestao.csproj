@@ -309,6 +309,10 @@
     <Compile Include="Migrations\201901211315453_addTableCaixa.Designer.cs">
       <DependentUpon>201901211315453_addTableCaixa.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901211443222_naosei1.cs" />
+    <Compile Include="Migrations\201901211443222_naosei1.Designer.cs">
+      <DependentUpon>201901211443222_naosei1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Adicionais\Estados.cs" />
     <Compile Include="Models\Adicionais\Municipios.cs" />
@@ -545,6 +549,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901211315453_addTableCaixa.resx">
       <DependentUpon>201901211315453_addTableCaixa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901211443222_naosei1.resx">
+      <DependentUpon>201901211443222_naosei1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
