@@ -53,6 +53,7 @@ namespace Gestao.Controllers
             };
 
             ViewBag.tipomov = tipomov;
+            ViewBag.FuncionarioId = new SelectList(db.Funcionario.ToList(),"id","nome");
             
 
             return View();
@@ -75,12 +76,32 @@ namespace Gestao.Controllers
                     else
                         TempData["mensagem"] = "Falha ao adicionar registro";
 
+                    return RedirectToAction("Index");
+
                 }
 
-                return RedirectToAction("Index");
+                IList<SelectListItem> tipomov = new List<SelectListItem>()
+                {
+                    new SelectListItem{Text = "Entrada",Value="Entrada",Selected = false},
+                    new SelectListItem{Text="Saída",Value = "Saida",Selected = false}
+                };
+
+                ViewBag.tipomov = tipomov;
+                ViewBag.FuncionarioId = new SelectList(db.Funcionario.ToList(), "id", "nome");
+
+                return View(caixa);
             }
             catch
             {
+                IList<SelectListItem> tipomov = new List<SelectListItem>()
+                {
+                    new SelectListItem{Text = "Entrada",Value="Entrada",Selected = false},
+                    new SelectListItem{Text="Saída",Value = "Saida",Selected = false}
+                };
+
+                ViewBag.tipomov = tipomov;
+                ViewBag.FuncionarioId = new SelectList(db.Funcionario.ToList(), "id", "nome");
+
                 return View(caixa);
             }
         }
