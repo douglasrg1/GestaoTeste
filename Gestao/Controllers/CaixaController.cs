@@ -46,6 +46,15 @@ namespace Gestao.Controllers
             if (Session["UsuarioLogado"] == null)
                 return RedirectToAction("Index", "Login");
 
+            IList<SelectListItem> tipomov = new List<SelectListItem>()
+            {
+                new SelectListItem{Text = "Entrada",Value="Entrada",Selected = false},
+                new SelectListItem{Text="Saída",Value = "Saida",Selected = false}
+            };
+
+            ViewBag.tipomov = tipomov;
+            
+
             return View();
         }
 
