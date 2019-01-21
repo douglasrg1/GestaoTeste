@@ -167,7 +167,7 @@ namespace Gestao.Controllers
             {
                 return HttpNotFound();
             }
-            return View();
+            return View(caixa);
         }
 
         // POST: Caixa/Delete/5
