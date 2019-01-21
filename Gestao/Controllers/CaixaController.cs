@@ -37,7 +37,7 @@ namespace Gestao.Controllers
             {
                 return HttpNotFound();
             }
-            return View();
+            return View(caixa);
         }
 
         // GET: Caixa/Create

@@ -1,7 +1,43 @@
-﻿
+﻿@model Gestao.Models.Caixa
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h3>Dados do Registro</h3>
+<div>
+    <hr />
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.TipoMovimentacao)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.TipoMovimentacao)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.descricao)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.descricao)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold"> @Html.DisplayNameFor(model => model.DataMovimentacao)</p> </div>
+        <div class="col-md-4">  @Html.DisplayFor(model => model.DataMovimentacao)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.Duplicata.numeroDuplicata)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.Duplicata.numeroDuplicata)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.Funcionario.nome)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.Funcionario.nome)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.Pedido.numeroPedido)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.Pedido.numeroPedido)</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><p style="font-weight:bold">@Html.DisplayNameFor(model => model.ValorMovimentacao)</p> </div>
+        <div class="col-md-4"> @Html.DisplayFor(model => model.ValorMovimentacao)</div>
+    </div>
 
+</div>
+
+<p>
+    @Html.ActionLink("Editar ", "Edit", new { id = Model.CaixaId }, new { @class = "btn btn-primary" }) |
+    @Html.ActionLink("Voltar ", "Index", null, new { @class = "btn btn-primary" })
+</p>
