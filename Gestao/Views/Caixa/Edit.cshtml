@@ -1,7 +1,70 @@
-﻿
+﻿@model Gestao.Models.Caixa
 @{
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<h2>Editar</h2>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "formId" }))
+{
+    @Html.AntiForgeryToken();
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" });
+
+    @Html.HiddenFor(model => model.CaixaId)
+    @Html.HiddenFor(model => model.DataMovimentacao)
+
+    <div class="form-horizontal">
+
+        <hr />
+
+        <div class="row">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.TipoMovimentacao)
+                <div>
+                    @Html.DropDownListFor(model => model.TipoMovimentacao, (IList<SelectListItem>)ViewBag.tipomov, "Selecione...", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.TipoMovimentacao, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.ValorMovimentacao)
+                <div>
+                    @Html.EditorFor(model => model.ValorMovimentacao, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ValorMovimentacao, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.descricao)
+                <div>
+                    @Html.EditorFor(model => model.descricao, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.descricao, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.FuncionarioId, "Funcionario")
+                <div>
+                    @Html.DropDownListFor(model => model.FuncionarioId, null, "Selecione...", new { @class = "form-control" })
+
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div>
+                <input type="submit" value="Salvar" class="btn btn-primary" />
+                @Html.ActionLink("Voltar", "Index", null, new { @class = "btn btn-primary" })
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+
+    </script>
+
+}
 

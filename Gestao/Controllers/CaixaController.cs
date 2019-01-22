@@ -123,6 +123,16 @@ namespace Gestao.Controllers
             {
                 return HttpNotFound();
             }
+
+            IList<SelectListItem> tipomov = new List<SelectListItem>()
+                {
+                    new SelectListItem{Text = "Entrada",Value="Entrada",Selected = false},
+                    new SelectListItem{Text="Saída",Value = "Saida",Selected = false}
+                };
+
+            ViewBag.tipomov = tipomov;
+            ViewBag.FuncionarioId = new SelectList(db.Funcionario.ToList(), "id", "nome");
+
             return View(caixa);
         }
 
@@ -131,6 +141,7 @@ namespace Gestao.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Caixa caixa)
         {
+            
             try
             {
                 if (ModelState.IsValid)
@@ -144,11 +155,27 @@ namespace Gestao.Controllers
                     return RedirectToAction("Index");
                 }
 
-                return View();
+                IList<SelectListItem> tipomov = new List<SelectListItem>()
+                {
+                    new SelectListItem{Text = "Entrada",Value="Entrada",Selected = false},
+                    new SelectListItem{Text="Saída",Value = "Saida",Selected = false}
+                };
+
+                ViewBag.tipomov = tipomov;
+                ViewBag.FuncionarioId = new SelectList(db.Funcionario.ToList(), "id", "nome");
+                return View(caixa);
             }
-            catch
+            catch(Exception ex)
             {
-                return View();
+                IList<SelectListItem> tipomov = new List<SelectListItem>()
+                {
+                    new SelectListItem{Text = "Entrada",Value="Entrada",Selected = false},
+                    new SelectListItem{Text="Saída",Value = "Saida",Selected = false}
+                };
+
+                ViewBag.tipomov = tipomov;
+                ViewBag.FuncionarioId = new SelectList(db.Funcionario.ToList(), "id", "nome");
+                return View(caixa);
             }
         }
 
