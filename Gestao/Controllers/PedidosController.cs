@@ -529,7 +529,7 @@ namespace Gestao.Controllers
                     valorDuplicata = valoresDuplicatas[i],
                     valorJurosPorDia = 0,
                     valorMulta = 0,
-                    valorPago = valoresDuplicatas[i]
+                    valorPago = 0
                 };
 
                 db.duplicatasReceber.Add(duplicata);

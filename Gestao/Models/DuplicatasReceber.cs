@@ -20,7 +20,7 @@ namespace Gestao.Models
         [Display(Name = "Cliente")]
         public virtual Cliente Cliente { get; set; }
         [Required]
-        [Display(Name = "Data Hemissão")]
+        [Display(Name = "Data Emissão")]
         public DateTime dataHemissao { get; set; }
         [Required]
         [Display(Name = "Data Vencimento")]

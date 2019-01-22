@@ -18,7 +18,7 @@ namespace Gestao.Models
         [Display(Name ="Fornecedor")]
         public int idFornecedor { get; set; }
         public virtual Fornecedor Fornecedor { get; set; }
-        [Display(Name = "Data Hemissão")]
+        [Display(Name = "Data Emissão")]
         public DateTime dataHemissao { get; set; }
         [Display(Name = "Data Vencimento")]
         public DateTime dataVencimento { get; set; }
