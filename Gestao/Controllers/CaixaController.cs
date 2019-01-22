@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -221,5 +222,50 @@ namespace Gestao.Controllers
                 return View();
             }
         }
+
+        public JsonResult listarRegistros(int current, int rowCount, string searchPhrase)
+        {
+            string chave = Request.Form.AllKeys.Where(k => k.StartsWith("sort")).First();
+            string campoOrdenacao = chave.Replace("sort[", "").Replace("]", "").Trim();
+            string tipoOrdenacao = Request[chave];
+            var registros = db.Caixa.ToList();
+            var ordenacao = string.Format("{0} {1}", campoOrdenacao, tipoOrdenacao);
+
+            if (!string.IsNullOrWhiteSpace(searchPhrase))
+            {
+                registros = registros.Where("TipoMovimentacao.Contains(@0) OR descricao.Contains(@0)", searchPhrase).ToList();
+            }
+
+            var registrosPaginados = registros.OrderBy(ordenacao).Skip((current - 1) * rowCount).Take(rowCount);
+            var registrosR = retornaRowsTable(registrosPaginados);
+
+            return Json(new { current = current, rowCount = rowCount, rows = registrosR, total = registros.Count }, JsonRequestBehavior.AllowGet);
+        }
+        private List<rowsTableCaixa> retornaRowsTable(IEnumerable<Caixa> caixaPaginadas)
+        {
+            List<rowsTableCaixa> listaMovimentacoes = new List<rowsTableCaixa>();
+            foreach (var i in caixaPaginadas)
+            {
+                listaMovimentacoes.Add(new rowsTableCaixa
+                {
+                    CaixaId = i.CaixaId,
+                    DataMovimentacao = i.DataMovimentacao.ToString("dd/MM/yyyy"),
+                    descricao = i.descricao,
+                    TipoMovimentacao = i.TipoMovimentacao,
+                    ValorMovimentacao = i.ValorMovimentacao.ToString()
+                });
+            }
+
+            return listaMovimentacoes;
+        }
     }
+}
+
+public struct rowsTableCaixa
+{
+    public int CaixaId { get; set; }
+    public string TipoMovimentacao { get; set; }
+    public string DataMovimentacao { get; set; }
+    public string ValorMovimentacao { get; set; }
+    public string descricao { get; set; }
 }
