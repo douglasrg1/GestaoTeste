@@ -70,6 +70,11 @@ namespace Gestao.Controllers
                 if (db.SaveChanges() != 0)
                     TempData["msgsucesso"] = "Registro salvo com sucesso";
 
+                if(duplicatasReceber.valorPago != 0)
+                {
+                    adicionarValorCaixa(duplicatasReceber.valorPago, duplicatasReceber.numeroDuplicata, duplicatasReceber.idPedido, duplicatasReceber.idDuplicataReceber);
+                }
+
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -113,6 +118,7 @@ namespace Gestao.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(DuplicatasReceber duplicatasReceber, int id)
         {
+            var dup = db.duplicatasReceber.AsNoTracking().Where(d=>d.idDuplicataReceber == id).FirstOrDefault();
             duplicatasReceber.Cliente = db.Cliente.First(c => c.Id == duplicatasReceber.idCliente);
             duplicatasReceber.idPedido = duplicatasReceber.idPedido == 0 ? null : duplicatasReceber.idPedido;
             duplicatasReceber.idDuplicataReceber = id;
@@ -122,6 +128,11 @@ namespace Gestao.Controllers
                 db.Entry(duplicatasReceber).State = EntityState.Modified;
                 if (db.SaveChanges() != 0)
                     TempData["msgsucesso"] = "Registro editado com sucesso";
+
+                if (duplicatasReceber.valorPago > dup.valorPago)
+                {
+                    adicionarValorCaixa((duplicatasReceber.valorPago - dup.valorPago), duplicatasReceber.numeroDuplicata, duplicatasReceber.idPedido, duplicatasReceber.idDuplicataReceber);
+                }
 
                 return RedirectToAction("Index");
             }
@@ -244,6 +255,21 @@ namespace Gestao.Controllers
             }
 
             return valorMulta;
+        }
+        private void adicionarValorCaixa(decimal valor, string numeroDuplicata, int? idPedido,int idDuplicata)
+        {
+            Caixa caixa = new Caixa()
+            {
+                DataMovimentacao = DateTime.Now,
+                descricao = "Pagamento relacionado a duplicata: " + numeroDuplicata,
+                PedidoId = idPedido,
+                TipoMovimentacao = "Entrada",
+                ValorMovimentacao = valor,
+                DuplicataId = idDuplicata
+            };
+
+            db.Caixa.Add(caixa);
+            db.SaveChanges();
         }
 
         protected override void Dispose(bool disposing)

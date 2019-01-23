@@ -123,6 +123,11 @@ namespace Gestao.Controllers
             {
                 gerarDuplicatasPedido(dados, pedido.id);
             }
+            if(pedido.totalPago != 0)
+            {
+                adicionarValorCaixa(pedido.totalPago,pedido.numeroPedido,pedido.id);
+            }
+            
 
             ViewBag.produtos = listProdutos();
             ViewBag.clientes = listItemclientes();
@@ -162,7 +167,7 @@ namespace Gestao.Controllers
         public ActionResult Edit( Pedido pedido)
         {
             var dados = dadosRecebidos();
-
+            var ped = db.Pedido.AsNoTracking().Where(p => p.id == dados.dadosPedido.idPedido).FirstOrDefault();
             pedido.id = dados.dadosPedido.idPedido;
             pedido.idCliente = dados.dadosPedido.idCliente;
             pedido.Cliente = db.Cliente.Find(dados.dadosPedido.idCliente);
@@ -210,6 +215,16 @@ namespace Gestao.Controllers
                             db.SaveChanges();
                         }
                     }
+                }
+
+                if(pedido.totalPago != ped.totalPago)
+                {
+                    var registros = db.Caixa.Where(c => c.PedidoId == pedido.id && c.DuplicataId == null).ToList();
+
+                    if(registros.Count > 0)
+                        db.Caixa.RemoveRange(registros);
+
+                    adicionarValorCaixa(pedido.totalPago, pedido.numeroPedido, pedido.id);
                 }
 
                 TempData["msg"] = "Pedido Editado com Sucesso";
@@ -562,6 +577,20 @@ namespace Gestao.Controllers
             duplicatas[numeroDuplicatas - 1] = valorUltimaDuplicata;
 
             return duplicatas;
+        }
+        private void adicionarValorCaixa(decimal valor,int numeroPedido,int idPedido)
+        {
+            Caixa caixa = new Caixa()
+            {
+                DataMovimentacao = DateTime.Now,
+                descricao = "Pagamento relacionado ao pedido " + numeroPedido,
+                PedidoId = idPedido,
+                TipoMovimentacao = "Entrada",
+                ValorMovimentacao = valor
+            };
+
+            db.Caixa.Add(caixa);
+            db.SaveChanges();
         }
 
         protected override void Dispose(bool disposing)
