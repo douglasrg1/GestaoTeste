@@ -25,6 +25,7 @@ namespace Gestao.Models
         public string Rua { get; set; }
         [Required(ErrorMessage = "O campo numero é obrigatório")]
         [MaxLength(15)]
+        [Display(Name = "Número")]
         public string Numero { get; set; }
         [Required(ErrorMessage ="O campo bairo é obrigatório")]
         [MaxLength(100)]

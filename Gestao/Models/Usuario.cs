@@ -27,7 +27,7 @@ namespace Gestao.Models
         public string bairro { get; set; }
 
         [Required]
-        [Display(Name = "Numero")]
+        [Display(Name = "Número")]
         public string numero { get; set; }
 
         [Required]

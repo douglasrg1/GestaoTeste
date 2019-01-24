@@ -25,7 +25,7 @@ namespace Gestao.Models
         public string rua { get; set; }
         [Required]
         [MaxLength(100)]
-        [Display(Name = "Numero")]
+        [Display(Name = "Número")]
         public string numero { get; set; }
         [Required]
         [MaxLength(100)]
