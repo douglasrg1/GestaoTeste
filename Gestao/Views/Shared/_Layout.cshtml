@@ -6,21 +6,6 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase.js"></script>
-    <script>
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyDH561cXq5EaN_qIU3NP64x_dSi_-XGjiA",
-            authDomain: "teste-umdouglas.firebaseapp.com",
-            databaseURL: "https://teste-umdouglas.firebaseio.com",
-            projectId: "teste-umdouglas",
-            storageBucket: "teste-umdouglas.appspot.com",
-            messagingSenderId: "590313491333"
-        };
-        firebase.initializeApp(config);
-    </script>
-    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -75,7 +60,9 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer></footer>
+        <footer>
+            
+        </footer>
     </div>
 
     @Scripts.Render("~/bundles/libs")
